@@ -12,12 +12,28 @@ public struct Sign {
 
     /// The degree of the coordinate
     public let value: Double
+    public let houseNumber: Int
+
+    var sign: Zodiac { Zodiac(rawValue: houseNumber)! }
+
+    var degree: Double { value }
+
+    var minute: Double { value.truncatingRemainder(dividingBy: 1) * 60 }
+
+    var second: Double { minute.truncatingRemainder(dividingBy: 1) * 60 }
 
     /// Creates a `Sign`.
-    /// - Parameter value: The latitudinal degree to set.
-    public init(value: Double) {
-        self.value = (value >= 360.0) ? (value - 360.0) : value
+    /// - Parameter value: The latitudinal degree to set, based on the ascendant being 0 degrees.
+    public init(value: Double, houseNumber: Int) {
+        let preRoundedValue = (value >= 360.0) ? (value - 360.0) : value
+        self.value = round(preRoundedValue * 1000) / 1000.0
+        self.houseNumber = houseNumber
+    }
+
+    var formatted: String {
+        "\(Int(degree)) Degrees (from Asc) " +
+        "\(sign.formatted) " +
+        "\(Int(minute))' " +
+        "\(Int(second))''"
     }
 }
-
-extension Sign: ZodiacCoordinate {}
