@@ -152,7 +152,8 @@ final class LilaCelestialBodyTests: XCTestCase {
         // Ascendent
         let ascCoordinate = houseSystem.ascendent
         XCTAssertEqual(ascCoordinate.sign, Zodiac.gemini)
-        XCTAssertEqual(ascCoordinate.formatted, "6 Degrees Gemini ♊︎ 16' 30''")
+        XCTAssertEqual(ascCoordinate.formatted, "6 Degrees Gemini ♊︎ 16\' 30\'\'")
+
         // MC
         let mc = houseSystem.midHeaven
         XCTAssertEqual(mc.sign, Zodiac.aquarius)
