@@ -16,7 +16,7 @@ public struct Sign {
     /// Creates a `Sign`.
     /// - Parameter value: The latitudinal degree to set.
     public init(value: Double) {
-        self.value = value
+        self.value = (value >= 360.0) ? (value - 360.0) : value
     }
 }
 
