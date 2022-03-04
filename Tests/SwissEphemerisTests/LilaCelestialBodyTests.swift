@@ -176,6 +176,24 @@ final class LilaCelestialBodyTests: XCTestCase {
         XCTAssertEqual(houseSystem.twelfth.sign, Zodiac.aries)
     }
 
+    func testSigns() {
+        let houseSystem = LilaMock.makeHouses()
+
+        /// Initial Sign angles
+        XCTAssertEqual(houseSystem.aries.degree, 293.725)
+        XCTAssertEqual(houseSystem.taurus.degree, 323.725)
+        XCTAssertEqual(houseSystem.gemini.degree, 353.725)
+        XCTAssertEqual(houseSystem.cancer.degree, 23.725)
+        XCTAssertEqual(houseSystem.leo.degree, 53.725)
+        XCTAssertEqual(houseSystem.virgo.degree, 83.725)
+        XCTAssertEqual(houseSystem.libra.degree, 113.725)
+        XCTAssertEqual(houseSystem.scorpio.degree, 143.725)
+        XCTAssertEqual(houseSystem.sagittarius.degree, 173.725)
+        XCTAssertEqual(houseSystem.capricorn.degree, 203.725)
+        XCTAssertEqual(houseSystem.aquarius.degree, 233.725)
+        XCTAssertEqual(houseSystem.pisces.degree, 263.725)
+    }
+
     let conjunctionOrb = 11.0
     let oppositionalOrb = 9.0
     let squareOrb = 9.0
@@ -368,6 +386,7 @@ final class LilaCelestialBodyTests: XCTestCase {
          "testLunarNodes", testLunarNodes,
          "testAscendent", testAscendent,
          "testHouses", testHouses,
+         "testSigns", testSigns,
          "testSolarAspects", testSolarAspects,
          "testAspects", testAspects,
          "testPlanetaryStation", testPlanetaryStation,
