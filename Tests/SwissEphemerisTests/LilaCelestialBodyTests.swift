@@ -196,7 +196,7 @@ final class LilaCelestialBodyTests: XCTestCase {
         XCTAssertEqual(aspect, .square(-2.73))
 
         aspect = Aspect(pair: Pair<Planet, LunarNode>(a: .sun, b: .trueNode), date: LilaMock.date, orb: squareOrb)
-        XCTAssertEqual(aspect?.remainder, 3.27, "remainder is \(aspect!.remainder)")
+        XCTAssertEqual(aspect?.remainder, 3.27)
         XCTAssertEqual(aspect, .square(3.27))
     }
 
