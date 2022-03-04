@@ -50,29 +50,29 @@ public struct HouseCusps {
     public let twelfth: Cusp
 
     /// Sign of Aries with starting degree
-    public let aries = Sign(value: 0.0)
+    public let aries: Sign // = Sign(value: 0.0)
     /// Sign of Taurus with starting degree
-    public let taurus = Sign(value: 30.0)
+    public let taurus: Sign // = Sign(value: 30.0)
     /// Sign of Gemini with starting degree
-    public let gemini = Sign(value: 60.0)
+    public let gemini: Sign // Sign(value: 60.0)
     /// Sign of Cancer with starting degree
-    public let cancer = Sign(value: 90.0)
+    public let cancer: Sign // Sign(value: 90.0)
     /// Sign of Leo with starting degree
-    public let leo = Sign(value: 120.0)
+    public let leo: Sign // Sign(value: 120.0)
     /// Sign of Virgo with starting degree
-    public let virgo = Sign(value: 150.0)
+    public let virgo: Sign // Sign(value: 150.0)
     /// Sign of Libra with starting degree
-    public let libra = Sign(value: 180.0)
+    public let libra: Sign // Sign(value: 180.0)
     /// Sign of Scorpio with starting degree
-    public let scorpio = Sign(value: 210.0)
+    public let scorpio: Sign // Sign(value: 210.0)
     /// Sign of Sagittarius with starting degree
-    public let sagittarius = Sign(value: 240.0)
+    public let sagittarius: Sign // Sign(value: 240.0)
     /// Sign of Capricorn with starting degree
-    public let capricorn = Sign(value: 270.0)
+    public let capricorn: Sign // Sign(value: 270.0)
     /// Sign of Aquarius with starting degree
-    public let aquarius = Sign(value: 300.0)
+    public let aquarius: Sign // Sign(value: 300.0)
     /// Sign of Pisces with starting degree
-    public let pisces = Sign(value: 310.0)
+    public let pisces: Sign // Sign(value: 310.0)
 
 	/// The preferred initializer
 	/// - Parameters:
@@ -104,5 +104,19 @@ public struct HouseCusps {
 		tenth = Cusp(value: cuspPointer[10])
 		eleventh = Cusp(value: cuspPointer[11])
 		twelfth =  Cusp(value: cuspPointer[12])
+
+        let origin = 360.0 - ascendent.value
+        aries = Sign(value: origin)
+        taurus = Sign(value: origin + 30.0)
+        gemini = Sign(value: origin + 60.0)
+        cancer = Sign(value: origin + 90.0)
+        leo = Sign(value: origin + 120.0)
+        virgo = Sign(value: origin + 150.0)
+        libra = Sign(value: origin + 180.0)
+        scorpio = Sign(value: origin + 210.0)
+        sagittarius = Sign(value: origin + 240.0)
+        capricorn = Sign(value: origin + 270.0)
+        aquarius = Sign(value: origin + 300.0)
+        pisces = Sign(value: origin + 330.0)
     }
 }
