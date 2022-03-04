@@ -151,11 +151,11 @@ final class LilaCelestialBodyTests: XCTestCase {
         let houseSystem = LilaMock.makeHouses()
         // Ascendent
         let ascCoordinate = houseSystem.ascendent
-        XCTAssertEqual(ascCoordinate.sign, Zodiac.sagittarius)
-        XCTAssertEqual(ascCoordinate.formatted, "2 Degrees Sagittarius ♐︎ 1' 49''")
+        XCTAssertEqual(ascCoordinate.sign, Zodiac.gemini)
+        XCTAssertEqual(ascCoordinate.formatted, "6 Degrees Gemini ♊︎ 16' 30''")
         // MC
         let mc = houseSystem.midHeaven
-        XCTAssertEqual(mc.sign, Zodiac.virgo)
+        XCTAssertEqual(mc.sign, Zodiac.aquarius)
     }
 
     func testHouses() {
