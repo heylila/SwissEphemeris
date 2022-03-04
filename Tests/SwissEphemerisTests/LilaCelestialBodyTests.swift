@@ -175,20 +175,26 @@ final class LilaCelestialBodyTests: XCTestCase {
         XCTAssertEqual(houseSystem.twelfth.sign, Zodiac.aries)
     }
 
+    let conjunctionOrb = 11.0
+    let oppositionalOrb = 9.0
+    let squareOrb = 9.0
+    let trineOrb = 7.0
+    let sextileOrb = 7.0
+
     func testSolarAspects() {
-        var aspect = Aspect(pair: Pair<Planet, Planet>(a: .sun, b: .mercury), date: LilaMock.date, orb: 9.0)
+        var aspect = Aspect(pair: Pair<Planet, Planet>(a: .sun, b: .mercury), date: LilaMock.date, orb: conjunctionOrb)
         XCTAssertEqual(aspect?.remainder, 8.29)
         XCTAssertEqual(aspect, .conjunction(8.29))
 
         // Just to prove that Sun-Mars have no usable aspect
-        aspect = Aspect(pair: Pair<Planet, Planet>(a: .sun, b: .mars), date: LilaMock.date, orb: 9.0)
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .sun, b: .mars), date: LilaMock.date, orb: conjunctionOrb)
         XCTAssertNil(aspect)
 
-        aspect = Aspect(pair: Pair<Planet, Planet>(a: .sun, b: .neptune), date: LilaMock.date, orb: 9.0)
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .sun, b: .neptune), date: LilaMock.date, orb: squareOrb)
         XCTAssertEqual(aspect?.remainder, -2.73)
         XCTAssertEqual(aspect, .square(-2.73))
 
-        aspect = Aspect(pair: Pair<Planet, LunarNode>(a: .sun, b: .trueNode), date: LilaMock.date, orb: 9.0)
+        aspect = Aspect(pair: Pair<Planet, LunarNode>(a: .sun, b: .trueNode), date: LilaMock.date, orb: squareOrb)
         XCTAssertEqual(aspect?.remainder, 3.27, "remainder is \(aspect!.remainder)")
         XCTAssertEqual(aspect, .square(3.27))
     }
