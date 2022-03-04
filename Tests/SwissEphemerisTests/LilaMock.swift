@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  LilaMock.swift
 //  
 //
 //  Created by Sam Krishna on 3/3/22.
@@ -10,7 +10,7 @@ import XCTest
 
 @testable import SwissEphemeris
 
-struct Mock2 {
+struct LilaMock {
 
     static var date: Date {
         let dob = "1983-03-17T09:45:00-0500"
