@@ -21,9 +21,9 @@ struct LilaMock {
 
     static func makeHouses() -> HouseCusps {
         /// Cleveland, Ohio, USA
-        let latitude: Double = 41.505550
-        let longitude: Double = -81.691498
-        return HouseCusps(date: Mock.date, latitude: latitude, longitude: longitude, houseSystem: .placidus)
+        let latitude: Double = 41.49932
+        let longitude: Double = -81.69436
+        return HouseCusps(date: LilaMock.date, latitude: latitude, longitude: longitude, houseSystem: .placidus)
     }
 
     static func date(year: Int,
