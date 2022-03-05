@@ -22,12 +22,12 @@ final class LilaCelestialBodyTests: XCTestCase {
     func testMoonSiderealCoordinate() {
         let moonCoordinate = SiderealCoordinate(coordinate: Coordinate<Planet>(body: .moon, date: LilaMock.date),
                                                 ayanamshaValue: Ayanamsha()(for: LilaMock.date))
-        XCTAssertEqual(Int(moonCoordinate.value), 295)
-        XCTAssertEqual(moonCoordinate.sign, .capricorn)
-        XCTAssertEqual(moonCoordinate.formatted, "25 Degrees Capricorn ♑︎ 3' 16''")
-        XCTAssertEqual(Int(moonCoordinate.degree), 25)
-        XCTAssertEqual(Int(moonCoordinate.minute), 3)
-        XCTAssertEqual(Int(moonCoordinate.second), 16)
+        XCTAssertEqual(Int(moonCoordinate.value), 5)
+        XCTAssertEqual(moonCoordinate.sign, .aries)
+        XCTAssertEqual(moonCoordinate.formatted, "5 Degrees Aries ♈︎ 51\' 45\'\'")
+        XCTAssertEqual(Int(moonCoordinate.degree), 5)
+        XCTAssertEqual(Int(moonCoordinate.minute), 51)
+        XCTAssertEqual(Int(moonCoordinate.second), 45)
     }
 
     func testAstroids() throws {
@@ -195,7 +195,7 @@ final class LilaCelestialBodyTests: XCTestCase {
     }
 
     let conjunctionOrb = 11.0
-    let oppositionalOrb = 9.0
+    let oppositionOrb = 9.0
     let squareOrb = 9.0
     let trineOrb = 7.0
     let sextileOrb = 7.0
@@ -218,38 +218,128 @@ final class LilaCelestialBodyTests: XCTestCase {
         XCTAssertEqual(aspect, .square(3.27))
     }
 
-    func testAspects() {
-        // Expect 64.0 relationship sextile
-        var aspect = Aspect(pair: Pair<Planet, Planet>(a: .jupiter, b: .moon), date: LilaMock.date, orb: 8.0)
-        XCTAssertEqual(aspect?.remainder, 3.45)
-        XCTAssertEqual(aspect, .sextile(3.45))
-        XCTAssertEqual(aspect?.symbol, "﹡")
-        // Expect reverse to be 64.0 sextile
-        aspect = Aspect(pair: Pair<Planet, Planet>(a: .moon, b: .jupiter), date: LilaMock.date, orb: 8.0)
-        XCTAssertEqual(aspect?.remainder, 3.45)
-        XCTAssertEqual(aspect, .sextile(3.45))
-        // Expect 3.0 relationship conjunction
-        aspect = Aspect(pair: Pair<Planet, Planet>(a: .sun, b: .pluto), date: LilaMock.date, orb: 8.0)
-        XCTAssertEqual(aspect?.remainder, 3.05)
-        XCTAssertEqual(aspect, .conjunction(3.05))
-        XCTAssertEqual(aspect?.symbol, "☌")
-        // Expect 171.0 relationship opposition
-        aspect = Aspect(pair: Pair<Planet, Planet>(a: .mars, b: .jupiter), date: LilaMock.date, orb: 10)
-        XCTAssertEqual(aspect?.remainder, -8.96)
-        XCTAssertEqual(aspect, .opposition(-8.96))
-        XCTAssertEqual(aspect?.symbol, "☍")
-        // Expect 124.0 relationship trine
-        aspect = Aspect(pair: Pair<Planet, Planet>(a: .saturn, b: .jupiter), date: LilaMock.date, orb: 10)
-        XCTAssertEqual(aspect?.remainder, 4.65)
-        XCTAssertEqual(aspect, .trine(4.65))
-        XCTAssertEqual(aspect?.symbol, "▵")
-        // Expect 84.0 relationship square
-        aspect = Aspect(pair: Pair<Planet, Planet>(a: .venus, b: .moon), date: LilaMock.date, orb: 10)
-        XCTAssertEqual(aspect?.remainder, -5.07)
-        XCTAssertEqual(aspect, .square(-5.07))
-        XCTAssertEqual(aspect?.symbol, "◾️")
-        // Expect no aspect
-        XCTAssertNil(Aspect(pair: Pair<Planet, Planet>(a: .venus, b: .mars), date: LilaMock.date, orb: 5))
+    func testLunarAspects() {
+        // Moon conjunction Venus
+        var aspect = Aspect(pair: Pair<Planet, Planet>(a: .moon, b: .venus), date: LilaMock.date, orb: conjunctionOrb)
+        XCTAssertEqual(aspect?.remainder, 2.55)
+        XCTAssertEqual(aspect, .conjunction(2.55))
+
+        // Failed Moon conjuction Mercury
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .moon, b: .mercury), date: LilaMock.date, orb: conjunctionOrb)
+        XCTAssertNil(aspect)
+
+        // Moon opposes Saturn
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .moon, b: .saturn), date: LilaMock.date, orb: oppositionOrb)
+        XCTAssertEqual(aspect?.remainder, -3.15)
+        XCTAssertEqual(aspect, .opposition(-3.15))
+
+        // Moon trine Neptune
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .moon, b: .neptune), date: LilaMock.date, orb: trineOrb)
+        XCTAssertEqual(aspect?.remainder, 1.19)
+        XCTAssertEqual(aspect, .trine(1.19))
+
+        // Moon oppoes Pluto
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .moon, b: .pluto), date: LilaMock.date, orb: oppositionOrb)
+        XCTAssertEqual(aspect?.remainder, -1.38)
+        XCTAssertEqual(aspect, .opposition(-1.38))
+
+        // Moon sextile North Node
+        aspect = Aspect(pair: Pair<Planet, LunarNode>(a: .moon, b: .trueNode), date: LilaMock.date, orb: sextileOrb)
+        XCTAssertEqual(aspect?.remainder, -0.66)
+        XCTAssertEqual(aspect, .sextile(-0.66))
+    }
+
+    func testMercuryAspects() {
+        // Mercury square Jupiter
+        var aspect = Aspect(pair: Pair<Planet, Planet>(a: .mercury, b: .jupiter), date: LilaMock.date, orb: squareOrb)
+        XCTAssertEqual(aspect?.remainder, 7.39)
+        XCTAssertEqual(aspect, .square(7.39))
+
+        // Mercury square Uranus
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .mercury, b: .uranus), date: LilaMock.date, orb: squareOrb)
+        XCTAssertNil(aspect)
+
+        // Mercury sextile Chiron
+        aspect = Aspect(pair: Pair<Planet, Astroid>(a: .mercury, b: .chiron), date: LilaMock.date, orb: sextileOrb)
+        XCTAssertEqual(aspect?.remainder, 5.59)
+        XCTAssertEqual(aspect, .sextile(5.59))
+    }
+
+    func testVenusAspects() {
+        // Venus opposes Saturn
+        var aspect = Aspect(pair: Pair<Planet, Planet>(a: .venus, b: .saturn), date: LilaMock.date, orb: oppositionOrb)
+        XCTAssertEqual(aspect?.remainder, -5.7)
+        XCTAssertEqual(aspect, .opposition(-5.7))
+
+        // Venus trine Neptune
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .venus, b: .neptune), date: LilaMock.date, orb: trineOrb)
+        XCTAssertEqual(aspect?.remainder, -1.35)
+        XCTAssertEqual(aspect, .trine(-1.35))
+
+        // Venus opposes Pluto
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .venus, b: .pluto), date: LilaMock.date, orb: oppositionOrb)
+        XCTAssertEqual(aspect?.remainder, -1.17)
+        XCTAssertEqual(aspect, .opposition(-1.17))
+
+        // Venus sextile True Node
+        aspect = Aspect(pair: Pair<Planet, LunarNode>(a: .venus, b: .trueNode), date: LilaMock.date, orb: sextileOrb)
+        XCTAssertEqual(aspect?.remainder, 1.89)
+        XCTAssertEqual(aspect, .sextile(1.89))
+    }
+
+    func testMarsAspects() {
+        // Mars trine Jupiter
+        var aspect = Aspect(pair: Pair<Planet, Planet>(a: .mars, b: .jupiter), date: LilaMock.date, orb: trineOrb)
+        XCTAssertEqual(aspect?.remainder, 5.0)
+        XCTAssertEqual(aspect, .trine(5.0))
+
+        // Mars trine Uranus
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .mars, b: .uranus), date: LilaMock.date, orb: trineOrb)
+        XCTAssertEqual(aspect?.remainder, 6.65)
+        XCTAssertEqual(aspect, .trine(6.65))
+    }
+
+    func testJupiterAspects() {
+        // Jupiter conjuncts Uranus
+        let aspect = Aspect(pair: Pair<Planet, Planet>(a: .jupiter, b: .jupiter), date: LilaMock.date, orb: conjunctionOrb)
+        XCTAssertEqual(aspect?.remainder, 0.0)
+        XCTAssertEqual(aspect, .conjunction(0.0))
+    }
+
+    func testSaturnAspects() {
+        // Saturn sextile Neptune
+        var aspect = Aspect(pair: Pair<Planet, Planet>(a: .saturn, b: .neptune), date: LilaMock.date, orb: sextileOrb)
+        XCTAssertEqual(aspect?.remainder, -4.35)
+        XCTAssertEqual(aspect, .sextile(-4.35))
+
+        // Saturn conjunction Pluto
+        aspect = Aspect(pair: Pair<Planet, Planet>(a: .saturn, b: .pluto), date: LilaMock.date, orb: conjunctionOrb)
+        XCTAssertEqual(aspect?.remainder, 4.53)
+        XCTAssertEqual(aspect, .conjunction(4.53))
+
+        // Saturn trine True Node
+        aspect = Aspect(pair: Pair<Planet, LunarNode>(a: .saturn, b: .trueNode), date: LilaMock.date, orb: trineOrb)
+        XCTAssertEqual(aspect?.remainder, 3.81)
+        XCTAssertEqual(aspect, .trine(3.81))
+    }
+
+    func testNeptuneAspects() {
+        // Neptune sextile Pluto
+        var aspect = Aspect(pair: Pair<Planet, Planet>(a: .neptune, b: .pluto), date: LilaMock.date, orb: sextileOrb)
+        XCTAssertEqual(aspect?.remainder, 0.18)
+        XCTAssertEqual(aspect, .sextile(0.18))
+
+        // Neptune opposes True Node
+        aspect = Aspect(pair: Pair<Planet, LunarNode>(a: .neptune, b: .trueNode), date: LilaMock.date, orb: oppositionOrb)
+        XCTAssertEqual(aspect?.remainder, -0.54)
+        XCTAssertEqual(aspect, .opposition(-0.54))
+    }
+
+    func testPlutoAspects() {
+        // Pluto trine True Node
+        let aspect = Aspect(pair: Pair<Planet, LunarNode>(a: .pluto, b: .trueNode), date: LilaMock.date, orb: trineOrb)
+        XCTAssertEqual(aspect?.remainder, -0.72)
+        XCTAssertEqual(aspect, .trine(-0.72))
     }
 
     func testAspectCount() {
@@ -275,14 +365,14 @@ final class LilaCelestialBodyTests: XCTestCase {
                    b: Coordinate<Planet>(body: $0, date: LilaMock.date).value,
                    orb: 10)
         }
-        XCTAssertEqual(aspects.compactMap { $0 }.count, 1)
+        XCTAssertEqual(aspects.compactMap { $0 }.count, 4)
     }
 
     func testPlanetaryStation() {
         XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .sun, date: LilaMock.date)), .direct)
         XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .mars, date: LilaMock.date)), .direct)
-        XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .mercury, date: LilaMock.date)), .retrograde)
-        XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .jupiter, date: LilaMock.date)), .retrograde)
+        XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .saturn, date: LilaMock.date)), .retrograde)
+        XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .pluto, date: LilaMock.date)), .retrograde)
     }
 
     func testAyanamsha() throws {
@@ -388,7 +478,14 @@ final class LilaCelestialBodyTests: XCTestCase {
          "testHouses", testHouses,
          "testSigns", testSigns,
          "testSolarAspects", testSolarAspects,
-         "testAspects", testAspects,
+         "testLunarAspects", testLunarAspects,
+         "testMercuryAspects", testMercuryAspects,
+         "testVenusAspects", testVenusAspects,
+         "testMarsAspects", testMarsAspects,
+         "testJupiterAspects", testJupiterAspects,
+         "testSaturnAspects", testSaturnAspects,
+         "testNeptuneAspects", testNeptuneAspects,
+         "testPlutoAspects", testPlutoAspects,
          "testPlanetaryStation", testPlanetaryStation,
          "testAyanamsha", testAyanamsha,
          "testPlanetRisingTime", testPlanetRisingTime,
