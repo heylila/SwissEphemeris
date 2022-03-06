@@ -27,6 +27,7 @@ public struct Sign {
     public init(value: Double, houseNumber: Int) {
         let preRoundedValue = (value >= 360.0) ? (value - 360.0) : value
         self.value = round(preRoundedValue * 1000) / 1000.0
+        assert(houseNumber >= 0 && houseNumber < 12)
         self.houseNumber = houseNumber
     }
 
