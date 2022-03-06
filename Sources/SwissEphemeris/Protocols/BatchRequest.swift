@@ -18,23 +18,13 @@ public protocol BatchRequest {
     /// The maximum amount of concurrent calculations. Exceed `478` at your own risk.
     var datesThreshold: Int { get }
 	
-	@available(macOS 12.0.0, *)
 	/// Fetches a collection of `EphemerisItem` for a time interval through a span of dates.
 	/// - Parameters:
 	///   - start: The beginning of the date range.
 	///   - end: The end of the date range.
 	///   - interval: The frequency in which an item is calculated.
 	/// - Returns: An array of `EphemerisItem`.
-	func fetch(start: Date, end: Date, interval: TimeInterval) async -> [EphemerisItem]
-    
-	@available(*, deprecated, renamed: "fetch(start:end:interval:_:)")
-    /// Fetches all of the `RequestType`s  between two dates.
-    /// - Parameters:
-    ///   - start: The starting date.
-    ///   - end: The ending date.
-    ///   - interval:The time interval in which the `RequestType` is created between the `start` and `end` dates.
-    ///   - closure: The asynchronous collection of `EphemerisItem`.
-    func fetch(start: Date, end: Date, interval: TimeInterval, _ closure: ([EphemerisItem]) -> Void)
+	func fetch(start: Date, end: Date, interval: TimeInterval) -> [EphemerisItem]
 }
 
 // MARK: - Helper Methods

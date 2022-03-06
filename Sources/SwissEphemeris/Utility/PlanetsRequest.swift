@@ -21,41 +21,9 @@ final public class PlanetsRequest: BatchRequest {
         self.body = body
     }
 	
-	@available(macOS 12.0.0, *)
-	public func fetch(start: Date, end: Date, interval: TimeInterval = 60.0) async -> [EphemerisItem] {
-		var coordinates = [EphemerisItem]()
-		var dates = dates(for: start, end: end, interval: interval)
-		let stream = AsyncStream<[EphemerisItem]> {
-			guard !dates.isEmpty else { return nil }
-			do {
-				try await Task.sleep(nanoseconds: 1)
-			} catch {
-				return nil
-			}
-			let batch = dates.removeFirst()
-			return batch.map { EphemerisItem(body: self.body, date: $0) }
-		}
-		for await items in stream {
-			coordinates.append(contentsOf: items)
-		}
-		return coordinates
-	}
-    
-	@available(*, deprecated, renamed: "fetch(start:end:interval:_:)")
-    public func fetch(start: Date, end: Date, interval: TimeInterval = 60.0, _ closure: ([EphemerisItem]) -> Void) {
-        var coordinates = [EphemerisItem]()
-        let group = DispatchGroup()
-        func execute(batches: [[Date]], _ closure: ([EphemerisItem]) -> Void) {
-            guard let batch = batches.first else {
-                closure(coordinates)
-                return
-            }
-            group.enter()
-            let c = batch.map { EphemerisItem(body: body, date: $0) }
-            coordinates.append(contentsOf: c)
-            group.leave()
-            execute(batches: Array(batches.dropFirst()), closure)
+	public func fetch(start: Date, end: Date, interval: TimeInterval = 60.0) -> [EphemerisItem] {
+        stride(from: start, to: end, by: interval).map {
+            EphemerisItem(body: body, date: $0)
         }
-        execute(batches: dates(for: start, end: end, interval: interval), closure)
-    }
+	}
 }
