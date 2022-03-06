@@ -387,18 +387,21 @@ final class LilaCelestialBodyTests: XCTestCase {
         dateFormatter.timeZone = TimeZone(identifier: "America/Los_Angeles")
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = try XCTUnwrap(dateFormatter.date(from: timestamp))
-        let sunriseSantaCruz = RiseTime<Planet>(date: date,
-                                                body: .sun,
-                                                longitude: -122.0297222,
-                                                latitude: 36.9741667,
-                                                altitude: 0)
+        let sunriseSantaCruz = RiseTime<Planet>(
+            date: date,
+            body: .sun,
+            longitude: -122.0297222,
+            latitude: 36.9741667,
+            altitude: 0)
         XCTAssertEqual(sunriseSantaCruz.date?.description, "2021-03-14 14:19:44 +0000")
         let dateB = try XCTUnwrap(dateFormatter.date(from: "2021-03-15"))
-        let moonRiseNYC = RiseTime<Planet>(date: dateB,
-                                           body: .moon,
-                                           longitude: -73.935242,
-                                           latitude: 40.730610,
-                                           altitude: 0)
+        let moonRiseNYC = RiseTime<Planet>(
+            date: dateB,
+            body: .moon,
+            longitude: -73.935242,
+            latitude: 40.730610,
+            altitude: 0
+        )
         XCTAssertEqual(moonRiseNYC.date?.description, "2021-03-15 12:25:55 +0000")
     }
 
@@ -407,16 +410,20 @@ final class LilaCelestialBodyTests: XCTestCase {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = try XCTUnwrap(dateFormatter.date(from: timestamp))
-        let moonSet = SetTime<Planet>(date: date,
-                                      body: .moon,
-                                      longitude: 13.41053,
-                                      latitude: 52.52437)
+        let moonSet = SetTime<Planet>(
+            date: date,
+            body: .moon,
+            longitude: 13.41053,
+            latitude: 52.52437
+        )
         XCTAssertEqual(moonSet.date?.description, "2021-03-15 19:25:58 +0000")
         let dateB = try XCTUnwrap(dateFormatter.date(from: "2021-03-16"))
-        let sunsetTokyo = SetTime<Planet>(date: dateB,
-                                          body: .sun,
-                                          longitude: 139.69171,
-                                          latitude: 35.6895)
+        let sunsetTokyo = SetTime<Planet>(
+            date: dateB,
+            body: .sun,
+            longitude: 139.69171,
+            latitude: 35.6895
+        )
         XCTAssertEqual(sunsetTokyo.date?.description, "2021-03-16 08:49:34 +0000")
     }
 
