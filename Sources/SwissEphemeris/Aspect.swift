@@ -7,9 +7,35 @@
 
 import Foundation
 
+public struct _Aspect<Body1, Body2>: Codable where Body1: CelestialBody, Body2: CelestialBody {
+    enum Kind: Codable {
+        /// A 0° alignment.
+        case conjunction
+        /// A 60° alignment.
+        case sextile
+        /// A 90° alignment.
+        case square
+        /// A 120° alignment.
+        case trine
+        /// An 180° alignment.
+        case opposition
+    }
+
+    let kind: Kind
+    let body1: Coordinate<Body1>
+    let body2: Coordinate<Body2>
+    let angle: Double
+}
+
 /// Models a geometric aspect between two bodies.
 public enum Aspect: Equatable, Hashable, Codable {
-    
+
+    // Possible name of struct:
+    // InterestingInterBodyAngle
+    //      - Angle
+    //      - Planet 1
+    //      - Planet 2
+
 	/// A 0° alignment.
     case conjunction(Double)
 	/// A 60° alignment.

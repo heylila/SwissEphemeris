@@ -310,7 +310,7 @@ final class CelestialBodyTests: XCTestCase {
 		// Count from full to new
 		XCTAssertEqual(count, 29)
 	}
-		
+
 	func testLunarMansion() throws {
 		var date = try Mock.date(from: "2021-04-12T01:11:00-0001")
 		let interval: TimeInterval = 60 * 60 * 12
