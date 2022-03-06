@@ -466,6 +466,44 @@ final class LilaCelestialBodyTests: XCTestCase {
         XCTAssertEqual(formatted.count, 28)
     }
 
+    func testLunarScratch() {
+        let natalSun = Coordinate(body: Planet.sun, date: LilaMock.date)
+
+        // Find the current moon that matches the natalSun.longitude
+        // Use two weeks in either direction of 2022-03-04 14:00:00 -0800 as a starting point
+        // Use a predicate to figure out the first match within +/- 1° of the natalSun's longitude
+
+        let date = Date(fromString: "2022-03-04 14:00:00 -0800", format: .cocoaDateTime)!
+
+        // Use the PlanetsRequest API to get this
+        // Do it on a per-hour basis first
+        // Then slice it to the per-minute basis next
+
+//        let date = Date(timeIntervalSince1970: 1646443560)
+        let moon = Coordinate(body: Planet.moon, date: date)
+        print("natalSun.long = \(natalSun.longitude)")
+        print("moon.long = \(moon.longitude)")
+        print("do we understand anything yet?")
+
+        guard let start = date.offset(.day, value: -14) else { return }
+        guard let end = date.offset(.day, value: 14) else { return }
+
+//        var items = [PlanetsRequest.EphemerisItem]()
+//
+//        PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60), {
+//            items = $0
+//        })
+
+        let nearestMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
+            .filter { abs($0.longitude - natalSun.longitude) < 1 }
+            .min { lhs, rhs in
+                return abs(lhs.longitude - natalSun.longitude) < abs(rhs.longitude - natalSun.longitude)
+            }
+
+        print("nearest coordinate = \(nearestMoonPosition!)")
+
+    }
+
     func testSiderealCoordinateEarlyAries() throws {
         let date = try LilaMock.date(from: "2021-03-25T01:11:00-0001")
         let sun = Coordinate<Planet>(body: .sun, date: date)
@@ -499,6 +537,7 @@ final class LilaCelestialBodyTests: XCTestCase {
          "testPlanetSettingTime", testPlanetSettingTime,
          "testLunarPhase", testLunarPhase,
          "testLunarMansion", testLunarMansion,
+         "testLunarScratch", testLunarScratch,
          "testSiderealCoordinateEarlyAries", testSiderealCoordinateEarlyAries)
     ]
 }
