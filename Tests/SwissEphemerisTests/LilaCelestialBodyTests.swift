@@ -392,7 +392,9 @@ final class LilaCelestialBodyTests: XCTestCase {
             body: .sun,
             longitude: -122.0297222,
             latitude: 36.9741667,
-            altitude: 0)
+            altitude: 0
+        )
+
         XCTAssertEqual(sunriseSantaCruz.date?.description, "2021-03-14 14:19:44 +0000")
         let dateB = try XCTUnwrap(dateFormatter.date(from: "2021-03-15"))
         let moonRiseNYC = RiseTime<Planet>(
