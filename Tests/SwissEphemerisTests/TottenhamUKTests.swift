@@ -21,6 +21,16 @@ import XCTest
 // +/-2 hours in either direction of the conjunction
 // Include the time of the precise (as close to 0° for the conjunction) to the minute
 
+// Ultimately what we want is a tool that takes the following arguments:
+//
+// -planet=moon (or whatever)
+// -transitType=conjunction (or trine/sextile/square/opposition)
+// -birthDate="<some UTC date>"
+// -lat=<some latitude>
+// -long=<some longitude>
+// -transitStartDate="<some UTC date AFTER the birth date>"
+// -daysLookahead=7
+
 class TottenhamUKTests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -32,6 +42,12 @@ class TottenhamUKTests: XCTestCase {
     // Lat: 51.6055748
     // Long: -0.0681665
 
+    let conjunction: Double = 1.0
+    let trine: Double = 120.0
+    let square: Double = 90.0
+    let opposition: Double = 180.0
+    let sextile: Double = 60.0
+
     static var birthDate: Date {
         return Date(fromString: "1988-05-05 02:02:00 +0000", format: .cocoaDateTime, timeZone: .utc)!
     }
@@ -42,7 +58,7 @@ class TottenhamUKTests: XCTestCase {
         return HouseCusps(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
     }
 
-    static var planets: [String : Coordinate<Planet>] {
+    static var planets: [String : Coordinate<Planet> ] {
         let dict = [
             Planet.sun.formatted : Coordinate(body: Planet.sun, date: birthDate),
             Planet.moon.formatted : Coordinate(body: .moon, date: birthDate),
