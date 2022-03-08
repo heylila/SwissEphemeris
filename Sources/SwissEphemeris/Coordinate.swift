@@ -51,31 +51,21 @@ public struct Coordinate<T: CelestialBody> {
 		switch body.value {
 		case let value as Int32:
             pointer.initialize(repeating: 0, count: 6)
-
-            if body is LunarNode {
-                if value == LunarNode.southNode.rawValue {
-                    swe_calc_ut(date.julianDate(), Int32(LunarNode.trueNode.rawValue), SEFLG_SPEED, pointer, nil)
-                    longitude = pointer[0] + 180.0
-                }
-                else {
-                    swe_calc_ut(date.julianDate(), value, SEFLG_SPEED, pointer, nil)
-                    longitude = pointer[0]
-                }
+            if (body is LunarNode && value == LunarNode.southNode.rawValue) {
+                swe_calc_ut(date.julianDate(), Int32(LunarNode.trueNode.rawValue), SEFLG_SPEED, pointer, nil)
             }
             else {
                 swe_calc_ut(date.julianDate(), value, SEFLG_SPEED, pointer, nil)
-                longitude = pointer[0]
             }
 		case let value as String:
 			charPointer.initialize(from: value, count: value.count)
 			charPointer = strdup(value)
 			swe_fixstar2(charPointer, date.julianDate(), SEFLG_SPEED, pointer, nil)
-            longitude = pointer[0]
 		default:
-            longitude = pointer[0]
 			break
 		}
 
+        longitude = (body is LunarNode && body as! LunarNode == LunarNode.southNode) ? (pointer[0] + 180.0) : pointer[0]
 		latitude = pointer[1]
 		distance = pointer[2]
 		speedLongitude = pointer[3]
