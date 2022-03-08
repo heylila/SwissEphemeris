@@ -499,7 +499,7 @@ final class LilaCelestialBodyTests: XCTestCase {
         let nearestMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
             .filter { abs($0.longitude - natalSun.longitude) < 1 }
             .min { lhs, rhs in
-                return abs(lhs.longitude - natalSun.longitude) < abs(rhs.longitude - natalSun.longitude)
+                return lhs.longitudeDelta(other: natalSun) < rhs.longitudeDelta(other: natalSun)
             }
 
         print("nearest coordinate = \(nearestMoonPosition!)")
