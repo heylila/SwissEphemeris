@@ -59,7 +59,7 @@ class TottenhamUKTests: XCTestCase {
     }
 
     static var planets: [String : Coordinate<Planet> ] {
-        let dict = [
+        return [
             Planet.sun.formatted : Coordinate(body: Planet.sun, date: birthDate),
             Planet.moon.formatted : Coordinate(body: .moon, date: birthDate),
             Planet.mercury.formatted : Coordinate(body: .mercury, date: birthDate),
@@ -71,8 +71,13 @@ class TottenhamUKTests: XCTestCase {
             Planet.neptune.formatted : Coordinate(body: .neptune, date: birthDate),
             Planet.pluto.formatted : Coordinate(body: .pluto, date: birthDate)
         ]
+    }
 
-        return dict
+    static var nodes: [String : Coordinate<LunarNode> ] {
+        return [
+            "North Node" : Coordinate(body: LunarNode.trueNode, date: birthDate),
+            "South Node" : Coordinate(body: LunarNode.southNode, date: birthDate)
+        ]
     }
 
     func testTottenhamUKConjunctions() throws {
