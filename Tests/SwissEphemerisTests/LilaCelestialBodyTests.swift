@@ -55,11 +55,13 @@ final class LilaCelestialBodyTests: XCTestCase {
     func testLunarNodes() throws {
         let date = LilaMock.date
         let trueNode = Coordinate<LunarNode>(body: .trueNode, date: date)
-        XCTAssertEqual(Int(trueNode.degree), 3)
-        XCTAssertEqual(trueNode.sign, .aquarius)
+        XCTAssertEqual(Int(trueNode.degree), 29)
+        XCTAssertEqual(Int(trueNode.longitude), 89)
+        XCTAssertEqual(trueNode.sign, .gemini)
+
         let meanNode = Coordinate<LunarNode>(body: .meanNode, date: date)
-        XCTAssertEqual(Int(meanNode.degree), 4)
-        XCTAssertEqual(meanNode.sign, .aquarius)
+        XCTAssertEqual(Int(meanNode.degree), 29)
+        XCTAssertEqual(meanNode.sign, .gemini)
     }
 
     func testPlanets() {
