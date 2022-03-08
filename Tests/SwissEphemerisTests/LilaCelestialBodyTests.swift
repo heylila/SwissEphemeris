@@ -53,7 +53,7 @@ final class LilaCelestialBodyTests: XCTestCase {
     }
 
     func testLunarNodes() throws {
-        let date = try XCTUnwrap(LilaMock.date(year: 2121, month: 1, day: 1, hour: 1, minute: 1, second: 1))
+        let date = LilaMock.date
         let trueNode = Coordinate<LunarNode>(body: .trueNode, date: date)
         XCTAssertEqual(Int(trueNode.degree), 3)
         XCTAssertEqual(trueNode.sign, .aquarius)
