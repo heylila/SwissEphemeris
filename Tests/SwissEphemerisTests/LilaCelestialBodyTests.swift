@@ -488,7 +488,7 @@ final class LilaCelestialBodyTests: XCTestCase {
         // Do it on a per-hour basis first
 
         let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
-            .filter { abs($0.longitude - natalSun.longitude) < 1 }
+            .filter { $0.longitudeDelta(other: natalSun) < 1 }
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: natalSun) < rhs.longitudeDelta(other: natalSun)
             }
