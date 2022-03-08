@@ -48,6 +48,7 @@ class TottenhamUKTests: XCTestCase {
     let opposition: Double = 180.0
     let sextile: Double = 60.0
 
+    /// Modify `startDate` to have a different testing start date window for lunar transits
     static var testStartDate: Date {
         return Date(fromString: "2022-03-06 13:00:00 -0800", format: .cocoaDateTime, timeZone: .utc)!
     }

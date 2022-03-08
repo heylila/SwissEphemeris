@@ -32,6 +32,7 @@ final class WhittierCATests: XCTestCase {
     // Lat: 33.9791793
     // Long: -118.032844
 
+    /// Modify `startDate` to have a different testing start date window for lunar transits
     static var testStartDate: Date {
         return Date(fromString: "2022-03-07 13:00:00 -0800", format: .cocoaDateTime, timeZone: .utc)!
     }
