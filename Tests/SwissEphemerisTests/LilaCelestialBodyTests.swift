@@ -493,7 +493,8 @@ final class LilaCelestialBodyTests: XCTestCase {
                 return lhs.longitudeDelta(other: natalSun) < rhs.longitudeDelta(other: natalSun)
             }
 
-        let detailDate = nearestHourMoonPosition!.date
+        guard let nearestHourMoonPosition = nearestHourMoonPosition else { return }
+        let detailDate = nearestHourMoonPosition.date
         let minStart = detailDate.offset(.minute, value: -30)!
         let minEnd = detailDate.offset(.minute, value: 30)!
 
