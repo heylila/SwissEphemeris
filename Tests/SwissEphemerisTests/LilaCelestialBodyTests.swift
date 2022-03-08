@@ -30,24 +30,24 @@ final class LilaCelestialBodyTests: XCTestCase {
         XCTAssertEqual(Int(moonCoordinate.second), 45)
     }
 
-    func testAstroids() throws {
+    func testAsteroids() throws {
         let date = try XCTUnwrap(LilaMock.date(from: "2021-03-01T12:31:00-0800"))
-        let chiron = Coordinate<Astroid>(body: .chiron, date: date)
+        let chiron = Coordinate<Asteroid>(body: .chiron, date: date)
         XCTAssertEqual(Int(chiron.degree), 7)
         XCTAssertEqual(chiron.sign, .aries)
-        let pholus = Coordinate<Astroid>(body: .pholus, date: date)
+        let pholus = Coordinate<Asteroid>(body: .pholus, date: date)
         XCTAssertEqual(Int(pholus.degree), 5)
         XCTAssertEqual(pholus.sign, .capricorn)
-        let ceres = Coordinate<Astroid>(body: .ceres, date: date)
+        let ceres = Coordinate<Asteroid>(body: .ceres, date: date)
         XCTAssertEqual(Int(ceres.degree), 3)
         XCTAssertEqual(ceres.sign, .aries)
-        let pallas = Coordinate<Astroid>(body: .pallas, date: date)
+        let pallas = Coordinate<Asteroid>(body: .pallas, date: date)
         XCTAssertEqual(Int(pallas.degree), 28)
         XCTAssertEqual(pallas.sign, .aquarius)
-        let juno = Coordinate<Astroid>(body: .juno, date: date)
+        let juno = Coordinate<Asteroid>(body: .juno, date: date)
         XCTAssertEqual(Int(juno.degree), 19)
         XCTAssertEqual(juno.sign, .sagittarius)
-        let vesta = Coordinate<Astroid>(body: .vesta, date: date)
+        let vesta = Coordinate<Asteroid>(body: .vesta, date: date)
         XCTAssertEqual(Int(vesta.degree), 15)
         XCTAssertEqual(vesta.sign, .virgo)
     }
@@ -260,7 +260,7 @@ final class LilaCelestialBodyTests: XCTestCase {
         XCTAssertNil(aspect)
 
         // Mercury sextile Chiron
-        aspect = Aspect(pair: Pair<Planet, Astroid>(a: .mercury, b: .chiron), date: LilaMock.date, orb: sextileOrb)
+        aspect = Aspect(pair: Pair<Planet, Asteroid>(a: .mercury, b: .chiron), date: LilaMock.date, orb: sextileOrb)
         XCTAssertEqual(aspect?.remainder, 5.59)
         XCTAssertEqual(aspect, .sextile(5.59))
     }
@@ -520,7 +520,7 @@ final class LilaCelestialBodyTests: XCTestCase {
         ("testSunZodiacCoordinate",testSunZodiacCoordinate,
          "testMoonSiderealCoordinate", testMoonSiderealCoordinate,
          "testPlanets", testPlanets,
-         "testAstroids", testAstroids,
+         "testAsteroids", testAsteroids,
          "testZodiac", testZodiac,
          "testLunarNodes", testLunarNodes,
          "testAscendent", testAscendent,
