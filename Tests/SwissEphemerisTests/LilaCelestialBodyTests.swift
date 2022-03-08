@@ -62,6 +62,11 @@ final class LilaCelestialBodyTests: XCTestCase {
         let meanNode = Coordinate<LunarNode>(body: .meanNode, date: date)
         XCTAssertEqual(Int(meanNode.degree), 29)
         XCTAssertEqual(meanNode.sign, .gemini)
+
+        let southNode = Coordinate<LunarNode>(body: .southNode, date: date)
+        XCTAssertEqual(Int(southNode.degree), 29)
+        XCTAssertEqual(Int(southNode.longitude), 269)
+        XCTAssertEqual(southNode.sign, .sagittarius)
     }
 
     func testPlanets() {
