@@ -12,6 +12,7 @@ import Foundation
 public enum LunarNode: Int32 {
 	case meanNode = 10
 	case trueNode
+    case southNode = 24
 }
 
 // MARK: - CelestialBody Conformance
