@@ -493,8 +493,18 @@ final class LilaCelestialBodyTests: XCTestCase {
                 return lhs.longitudeDelta(other: natalSun) < rhs.longitudeDelta(other: natalSun)
             }
 
-        print("nearest coordinate = \(nearestMoonPosition!)")
+        let detailDate = nearestHourMoonPosition!.date
+        let minStart = detailDate.offset(.minute, value: -30)!
+        let minEnd = detailDate.offset(.minute, value: 30)!
 
+        // Then slice it to the per-minute basis next
+        let nearestMinuteMoonPosition = PlanetsRequest(body: .moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+            .min { lhs, rhs in
+                return lhs.longitudeDelta(other: natalSun) < rhs.longitudeDelta(other: natalSun)
+            }
+
+        let testDate = Date(fromString: "2022-03-03 18:34:00 +0000", format: .cocoaDateTime, timeZone: .utc)
+        XCTAssertEqual(nearestMinuteMoonPosition?.date, testDate)
     }
 
     func testSiderealCoordinateEarlyAries() throws {
