@@ -112,5 +112,12 @@ final class WhittierCATests: XCTestCase {
         }
 
         XCTAssertTrue(moonConjunctions.count == 1)
+        var testDate = Date(fromString: "2022-03-08 03:07:00 -0800", format: .cocoaDateTime)
+        testDate = testDate?.offset(.minute, value: 1)!
+        guard let moonConjunctionMoment = moonConjunctions[Planet.jupiter.formatted] else {
+            return;
+        }
+
+        XCTAssertEqual(testDate, moonConjunctionMoment.date)
     }
 }
