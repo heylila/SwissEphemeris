@@ -44,16 +44,16 @@ final class WhittierCATests: XCTestCase {
 
     static var planets: [String : Coordinate<Planet>] {
         let dict = [
-            Planet.sun.symbol : Coordinate(body: Planet.sun, date: birthDate),
-            Planet.moon.symbol : Coordinate(body: .moon, date: birthDate),
-            Planet.mercury.symbol : Coordinate(body: .mercury, date: birthDate),
-            Planet.venus.symbol : Coordinate(body: .venus, date: birthDate),
-            Planet.mars.symbol : Coordinate(body: .mars, date: birthDate),
-            Planet.jupiter.symbol : Coordinate(body: .jupiter, date: birthDate),
-            Planet.saturn.symbol : Coordinate(body: .saturn, date: birthDate),
-            Planet.uranus.symbol : Coordinate(body: .uranus, date: birthDate),
-            Planet.neptune.symbol : Coordinate(body: .neptune, date: birthDate),
-            Planet.pluto.symbol : Coordinate(body: .pluto, date: birthDate)
+            Planet.sun.formatted : Coordinate(body: Planet.sun, date: birthDate),
+            Planet.moon.formatted : Coordinate(body: .moon, date: birthDate),
+            Planet.mercury.formatted : Coordinate(body: .mercury, date: birthDate),
+            Planet.venus.formatted : Coordinate(body: .venus, date: birthDate),
+            Planet.mars.formatted : Coordinate(body: .mars, date: birthDate),
+            Planet.jupiter.formatted : Coordinate(body: .jupiter, date: birthDate),
+            Planet.saturn.formatted : Coordinate(body: .saturn, date: birthDate),
+            Planet.uranus.formatted : Coordinate(body: .uranus, date: birthDate),
+            Planet.neptune.formatted : Coordinate(body: .neptune, date: birthDate),
+            Planet.pluto.formatted : Coordinate(body: .pluto, date: birthDate)
         ]
 
         return dict
@@ -63,7 +63,7 @@ final class WhittierCATests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func test7DaysFrom20220307() throws {
+    func testWhittierConjunctions() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         // Any test you write for XCTest can be annotated as throws and async.
@@ -71,20 +71,46 @@ final class WhittierCATests: XCTestCase {
         // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
 
 
-//        let start = Date(fromString: "2022-03-07 13:00:00 -0800", format: .cocoaDateTime)!
-//        let end = start.offset(.day, value: 7)
-//
-//        for (planetName, planet) in WhittierCATests.planets {
-//            
-//        }
+        let start = Date(fromString: "2022-03-07 13:00:00 -0800", format: .cocoaDateTime)!
+        let end = start.offset(.day, value: 7)!
+        var moonConjunctions = [String : Coordinate<Planet>]()
 
-    }
+        for (planetName, planet) in WhittierCATests.planets {
+            let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
+                .filter { $0.longitudeDelta(other: planet) < 1 }
+                .min { lhs, rhs in
+                    return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
+                }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+            guard let nearestHourMoonPosition = nearestHourMoonPosition else {
+                print("Skipping \(planetName)")
+                continue
+            }
+
+            let detailDate = nearestHourMoonPosition.date
+
+            let minStart = detailDate.offset(.minute, value: -30)!
+            let minEnd = detailDate.offset(.minute, value: 30)!
+
+            // Then slice it to the per-minute basis next
+            let nearestMinuteMoonPosition = PlanetsRequest(body: .moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+                .min { lhs, rhs in
+                    return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
+                }
+
+            guard let nearestMinuteMoonPosition = nearestMinuteMoonPosition else {
+                continue
+            }
+
+            moonConjunctions[planetName] = nearestMinuteMoonPosition
         }
-    }
 
+        print("From a birth chart of 1989-01-11 05:03:00 UTC at Whittier, CA, USA")
+        print("From a start time of " + start.toString(format: .cocoaDateTime, timeZone: .utc)! + " + 7 days...")
+        for (planetName, planet) in moonConjunctions {
+            print("\(planetName)\'s closest moon time is \(planet.date)")
+        }
+
+        XCTAssertTrue(moonConjunctions.count == 1)
+    }
 }
