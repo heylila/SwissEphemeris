@@ -48,6 +48,10 @@ class TottenhamUKTests: XCTestCase {
     let opposition: Double = 180.0
     let sextile: Double = 60.0
 
+    static var testStartDate: Date {
+        return Date(fromString: "2022-03-06 13:00:00 -0800", format: .cocoaDateTime, timeZone: .utc)!
+    }
+
     static var birthDate: Date {
         return Date(fromString: "1988-05-05 02:02:00 +0000", format: .cocoaDateTime, timeZone: .utc)!
     }
@@ -81,7 +85,7 @@ class TottenhamUKTests: XCTestCase {
     }
 
     func testTottenhamUKConjunctions() throws {
-        let start = Date(fromString: "2022-03-06 13:00:00 -0800", format: .cocoaDateTime)!
+        let start = TottenhamUKTests.testStartDate
         let end = start.offset(.day, value: 7)!
         var moonConjunctions = [String : Coordinate<Planet>]()
 

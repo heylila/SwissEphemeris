@@ -32,6 +32,10 @@ final class WhittierCATests: XCTestCase {
     // Lat: 33.9791793
     // Long: -118.032844
 
+    static var testStartDate: Date {
+        return Date(fromString: "2022-03-07 13:00:00 -0800", format: .cocoaDateTime, timeZone: .utc)!
+    }
+
     static var birthDate: Date {
         return Date(fromString: "1989-01-11 05:03:00 +0000", format: .cocoaDateTime, timeZone: .utc)!
     }
@@ -64,14 +68,7 @@ final class WhittierCATests: XCTestCase {
     }
 
     func testWhittierConjunctions() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-
-
-        let start = Date(fromString: "2022-03-07 13:00:00 -0800", format: .cocoaDateTime)!
+        let start = WhittierCATests.testStartDate
         let end = start.offset(.day, value: 7)!
         var moonConjunctions = [String : Coordinate<Planet>]()
 
