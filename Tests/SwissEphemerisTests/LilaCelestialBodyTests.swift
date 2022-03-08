@@ -476,12 +476,6 @@ final class LilaCelestialBodyTests: XCTestCase {
         // Use a predicate to figure out the first match within +/- 1° of the natalSun's longitude
 
         let date = Date(fromString: "2022-03-04 14:00:00 -0800", format: .cocoaDateTime)!
-
-        // Use the PlanetsRequest API to get this
-        // Do it on a per-hour basis first
-        // Then slice it to the per-minute basis next
-
-//        let date = Date(timeIntervalSince1970: 1646443560)
         let moon = Coordinate(body: Planet.moon, date: date)
         print("natalSun.long = \(natalSun.longitude)")
         print("moon.long = \(moon.longitude)")
@@ -490,13 +484,10 @@ final class LilaCelestialBodyTests: XCTestCase {
         guard let start = date.offset(.day, value: -14) else { return }
         guard let end = date.offset(.day, value: 14) else { return }
 
-//        var items = [PlanetsRequest.EphemerisItem]()
-//
-//        PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60), {
-//            items = $0
-//        })
+        // Use the PlanetsRequest API to get this
+        // Do it on a per-hour basis first
 
-        let nearestMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
+        let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
             .filter { abs($0.longitude - natalSun.longitude) < 1 }
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: natalSun) < rhs.longitudeDelta(other: natalSun)
