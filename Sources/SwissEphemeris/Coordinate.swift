@@ -62,7 +62,13 @@ public struct Coordinate<T: CelestialBody> {
 			break
 		}
 
-        longitude = isSouthNode ? (pointer[0] + 180.0) : pointer[0]
+        var longDegrees = 0.0
+        if isSouthNode {
+            let adjDegrees = pointer[0] + 180.0
+            longDegrees = (pointer[0] + 180.0) >= 360.0 ? (pointer[0] - 180.0) : adjDegrees
+        }
+
+        longitude = isSouthNode ? longDegrees : pointer[0]
 		latitude = pointer[1]
 		distance = pointer[2]
 		speedLongitude = pointer[3]
