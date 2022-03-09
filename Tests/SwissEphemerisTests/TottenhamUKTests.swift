@@ -108,7 +108,6 @@ class TottenhamUKTests: XCTestCase {
             }
 
             let detailDate = nearestHourMoonPosition.date
-
             let minStart = detailDate.offset(.minute, value: -30)!
             let minEnd = detailDate.offset(.minute, value: 30)!
 
@@ -123,6 +122,35 @@ class TottenhamUKTests: XCTestCase {
             }
 
             moonConjunctions[planetName] = nearestMinuteMoonPosition
+        }
+
+        for (nodeName, node) in TottenhamUKTests.nodes {
+            let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
+                .filter { $0.longitudeDelta(other: node.longitude) < 1 }
+                .min { lhs, rhs in
+                    return lhs.longitudeDelta(other: node.longitude) < rhs.longitudeDelta(other: node.longitude)
+                }
+
+            guard let nearestHourMoonPosition = nearestHourMoonPosition else {
+                print("Skipping \(nodeName)")
+                continue
+            }
+
+            let detailDate = nearestHourMoonPosition.date
+            let minStart = detailDate.offset(.minute, value: -30)!
+            let minEnd = detailDate.offset(.minute, value: 30)!
+
+            // Then slice it to the per-minute basis next
+            let nearestMinuteMoonPosition = PlanetsRequest(body: .moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+                .min { lhs, rhs in
+                    return lhs.longitudeDelta(other: node.longitude) < rhs.longitudeDelta(other: node.longitude)
+                }
+
+            guard let nearestMinuteMoonPosition = nearestMinuteMoonPosition else {
+                continue
+            }
+
+            moonConjunctions[nodeName] = nearestMinuteMoonPosition
         }
 
         // Birthdate: 1988-05-05 02:02:00 UTC
