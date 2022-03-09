@@ -90,8 +90,9 @@ class TottenhamUKTests: XCTestCase {
     }
 
     func testTottenhamUKConjunctions() throws {
+        let daysOut = 14
         let start = TottenhamUKTests.testStartDate
-        let end = start.offset(.day, value: 7)!
+        let end = start.offset(.day, value: daysOut)!
         var moonConjunctions = [String : Coordinate<Planet>]()
 
         for (planetName, planet) in TottenhamUKTests.planets {
