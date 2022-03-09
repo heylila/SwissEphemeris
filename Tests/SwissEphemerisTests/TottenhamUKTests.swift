@@ -181,11 +181,11 @@ class TottenhamUKTests: XCTestCase {
         // Birthdate: 1988-05-05 02:02:00 UTC
         // Tottenham, England, UK
         print("With a birth chart of 1988-05-05 02:02:00 UTC at Tottenham, England, UK")
-        print("From a start time of " + start.toString(format: .cocoaDateTime, timeZone: .utc)! + " + 7 days...")
-        for (planetName, planet) in moonConjunctions {
-            print("\(planetName)\'s closest moon time is \(planet.date)")
+        print("From a start time of " + start.toString(format: .cocoaDateTime, timeZone: .utc)! + " + \(daysOut) days...")
+        for (bodyName, body) in moonConjunctions {
+            print("\(bodyName)\'s closest moon time is \(body.date)")
         }
 
-        XCTAssertTrue(moonConjunctions.count == 4)
+        XCTAssertTrue(moonConjunctions.count == 6)
     }
 }
