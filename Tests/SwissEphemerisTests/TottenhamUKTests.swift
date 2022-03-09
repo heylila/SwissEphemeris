@@ -85,6 +85,10 @@ class TottenhamUKTests: XCTestCase {
         ]
     }
 
+    static var chiron: Coordinate<Asteroid> {
+        return Coordinate(body: Asteroid.chiron, date: birthDate)
+    }
+
     func testTottenhamUKConjunctions() throws {
         let start = TottenhamUKTests.testStartDate
         let end = start.offset(.day, value: 7)!
