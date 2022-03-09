@@ -153,6 +153,31 @@ class TottenhamUKTests: XCTestCase {
             moonConjunctions[nodeName] = nearestMinuteMoonPosition
         }
 
+        let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
+            .filter { $0.longitudeDelta(other: TottenhamUKTests.chiron.longitude) < 1 }
+            .min { lhs, rhs in
+                return lhs.longitudeDelta(other: TottenhamUKTests.chiron.longitude) < rhs.longitudeDelta(other: TottenhamUKTests.chiron.longitude)
+            }
+
+        if let nearestHourMoonPosition = nearestHourMoonPosition {
+            let detailDate = nearestHourMoonPosition.date
+            let minStart = detailDate.offset(.minute, value: -30)!
+            let minEnd = detailDate.offset(.minute, value: 30)!
+
+            // Then slice it to the per-minute basis next
+            let nearestMinuteMoonPosition = PlanetsRequest(body: .moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+                .min { lhs, rhs in
+                    return lhs.longitudeDelta(other: TottenhamUKTests.chiron.longitude) < rhs.longitudeDelta(other: TottenhamUKTests.chiron.longitude)
+                }
+
+            if let nearestMinuteMoonPosition = nearestMinuteMoonPosition {
+                moonConjunctions["Chiron"] = nearestMinuteMoonPosition
+            }
+        }
+        else {
+            print("Skipping Chiron")
+        }
+
         // Birthdate: 1988-05-05 02:02:00 UTC
         // Tottenham, England, UK
         print("With a birth chart of 1988-05-05 02:02:00 UTC at Tottenham, England, UK")
