@@ -104,9 +104,17 @@ class TottenhamUKTests: XCTestCase {
         // 90° for squares
         // 120° for trines
         // 180° for oppositions
+
+        func filterPredicate<First, Second>(other: Coordinate<Second>, degree: Double, orb: Double) -> (Coordinate<First>) -> Bool {
+            return { (first) in
+                let degreeRange = (degree - orb / 2) ... (degree + orb / 2)
+                return degreeRange.contains(first.longitudeDelta(other: other))
+            }
+        }
+
         for (planetName, planet) in TottenhamUKTests.planets {
             let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
-                .filter { $0.longitudeDelta(other: planet) < 1 }
+                .filter(filterPredicate(other: planet, degree: 0.0, orb: 10.0))
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
                 }
@@ -135,7 +143,7 @@ class TottenhamUKTests: XCTestCase {
 
         for (nodeName, node) in TottenhamUKTests.nodes {
             let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
-                .filter { $0.longitudeDelta(other: node.longitude) < 1 }
+                .filter(filterPredicate(other: node, degree: 0.0, orb: 10.0))
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: node.longitude) < rhs.longitudeDelta(other: node.longitude)
                 }
@@ -163,7 +171,7 @@ class TottenhamUKTests: XCTestCase {
         }
 
         let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
-            .filter { $0.longitudeDelta(other: TottenhamUKTests.chiron.longitude) < 1 }
+            .filter(filterPredicate(other: TottenhamUKTests.chiron, degree: 0.0, orb: 10.0))
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: TottenhamUKTests.chiron.longitude) < rhs.longitudeDelta(other: TottenhamUKTests.chiron.longitude)
             }
