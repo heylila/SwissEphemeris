@@ -95,6 +95,15 @@ class TottenhamUKTests: XCTestCase {
         let end = start.offset(.day, value: daysOut)!
         var moonConjunctions = [String : Coordinate<Planet>]()
 
+        // 10° orb for conjunctions
+        // 8° orb for oppositions and squares
+        // 6° orb for trines and sextiles
+
+        // 0° for conjunctions
+        // 60° for sextiles
+        // 90° for squares
+        // 120° for trines
+        // 180° for oppositions
         for (planetName, planet) in TottenhamUKTests.planets {
             let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
                 .filter { $0.longitudeDelta(other: planet) < 1 }
