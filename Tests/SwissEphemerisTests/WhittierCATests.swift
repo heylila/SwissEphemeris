@@ -38,7 +38,7 @@ final class WhittierCATests: XCTestCase {
     }
 
     static var birthDate: Date {
-        return Date(fromString: "1989-01-11 05:03:00 +0000", format: .cocoaDateTime, timeZone: .utc)!
+        return Date(fromString: "1989-01-10 09:03:00 -0800", format: .cocoaDateTime, timeZone: .utc)!
     }
 
     static var houseSystem: HouseCusps {
