@@ -615,7 +615,7 @@ public extension Date {
             case .isoDate: return "yyyy-MM-dd"
             case .isoDateTime: return "yyyy-MM-dd'T'HH:mm:ssZ"
             case .isoDateTimeFull: return "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-            case .cocoaDateTime: return "yyyy-MM-dd HH:mm:ss ZZ"
+            case .cocoaDateTime: return "yyyy-MM-dd HH:mm:ss Z"
             case .dotNet: return "/Date(%d%f)/"
             case .rss: return "EEE, d MMM yyyy HH:mm:ss ZZZ"
             case .altRSS: return "d MMM yyyy HH:mm:ss ZZZ"
