@@ -205,5 +205,11 @@ class TottenhamUKTests: XCTestCase {
         }
 
         XCTAssertTrue(moonConjunctions.count == 6)
+        XCTAssertNotNil(moonConjunctions["Chiron"])
+        XCTAssertNotNil(moonConjunctions["South Node"])
+        XCTAssertNotNil(moonConjunctions[Planet.jupiter.formatted])
+        XCTAssertNotNil(moonConjunctions[Planet.mercury.formatted])
+        XCTAssertNotNil(moonConjunctions[Planet.venus.formatted])
+        XCTAssertNotNil(moonConjunctions[Planet.sun.formatted])
     }
 }
