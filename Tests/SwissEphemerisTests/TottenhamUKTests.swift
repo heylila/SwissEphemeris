@@ -173,7 +173,8 @@ class TottenhamUKTests: XCTestCase {
         let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
             .filter(filterPredicate(other: TottenhamUKTests.chiron, degree: 0.0, orb: 10.0))
             .min { lhs, rhs in
-                return lhs.longitudeDelta(other: TottenhamUKTests.chiron.longitude) < rhs.longitudeDelta(other: TottenhamUKTests.chiron.longitude)
+                let chironLongitude = TottenhamUKTests.chiron.longitude
+                return lhs.longitudeDelta(other: chironLongitude) < rhs.longitudeDelta(other: chironLongitude)
             }
 
         if let nearestHourMoonPosition = nearestHourMoonPosition {
