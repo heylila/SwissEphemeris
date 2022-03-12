@@ -170,7 +170,7 @@ class TottenhamUKTests: XCTestCase {
             moonConjunctions[nodeName] = nearestMinuteMoonPosition
         }
 
-        let chiron = TottenhamUKTests.chiron
+        let chiron = Coordinate(body: Asteroid.chiron, date: TottenhamUKTests.birthDate)
         let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
             .filter(filterPredicate(other: chiron, degree: 0.0, orb: 10.0))
             .min { lhs, rhs in
