@@ -125,8 +125,4 @@ extension Coordinate: Codable {
     public func longitudeDelta<Body>(other: Coordinate<Body>) -> Double {
         return abs(longitude - other.longitude)
     }
-
-    public func longitudeDelta(other: Double) -> Double {
-        return abs(longitude - other)
-    }
 }
