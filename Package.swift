@@ -25,7 +25,7 @@ let package = Package(
             name: "SwissEphemeris",
             dependencies: ["CSwissEphemeris"],
 			resources: [
-				.process("JPL")
+				.copy("JPL")
 			]),
         .target(
             name: "CSwissEphemeris",
