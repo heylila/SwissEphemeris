@@ -15,7 +15,7 @@ final public class BodiesRequest<BodyType>: BatchRequest where BodyType: Celesti
     public typealias EphemerisItem = Coordinate<BodyType>
     public let datesThreshold = 478
 
-    /// Creates an instance of `<BodyType>Request`.
+    /// Creates an instance of `BodiesRequest of type <BodyType>`.
     /// - Parameter body: The planet to request.
     public init(body: BodyType) {
         self.body = body
