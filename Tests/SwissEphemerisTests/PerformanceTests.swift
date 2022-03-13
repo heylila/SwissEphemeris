@@ -124,13 +124,13 @@ final class PerformanceTests: XCTestCase {
     
 	func testBatchRequestPlanetCoordinatesDeprecated() {
 		measure {
-            let requests = PlanetsRequest(body: .moon).fetch(start: date, end: date.addingTimeInterval(60 * 60 * 24 * 30))
+            let requests = BodiesRequest(body: Planet.moon).fetch(start: date, end: date.addingTimeInterval(60 * 60 * 24 * 30))
             XCTAssertEqual(requests.count, 43200)
 		}
 	}
 	
 	func testBatchRequestPlanetCoordinates() async {
-		let batch = PlanetsRequest(body: .moon).fetch(start: date, end: date.addingTimeInterval(60 * 60 * 24 * 30))
+		let batch = BodiesRequest(body: Planet.moon).fetch(start: date, end: date.addingTimeInterval(60 * 60 * 24 * 30))
 		XCTAssertEqual(batch.count, 43200)
 	}
 

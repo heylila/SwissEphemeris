@@ -113,7 +113,7 @@ class TottenhamUKTests: XCTestCase {
         }
 
         for (planetName, planet) in TottenhamUKTests.planets {
-            let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
+            let nearestHourMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: start, end: end, interval: Double(60 * 60))
                 .filter(filterPredicate(other: planet, degree: 0.0, orb: 10.0))
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
@@ -129,7 +129,7 @@ class TottenhamUKTests: XCTestCase {
             let minEnd = detailDate.offset(.minute, value: 30)!
 
             // Then slice it to the per-minute basis next
-            let nearestMinuteMoonPosition = PlanetsRequest(body: .moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+            let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: 60.0)
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
                 }
@@ -142,7 +142,7 @@ class TottenhamUKTests: XCTestCase {
         }
 
         for (nodeName, node) in TottenhamUKTests.nodes {
-            let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
+            let nearestHourMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: start, end: end, interval: Double(60 * 60))
                 .filter(filterPredicate(other: node, degree: 0.0, orb: 10.0))
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: node) < rhs.longitudeDelta(other: node)
@@ -158,7 +158,7 @@ class TottenhamUKTests: XCTestCase {
             let minEnd = detailDate.offset(.minute, value: 30)!
 
             // Then slice it to the per-minute basis next
-            let nearestMinuteMoonPosition = PlanetsRequest(body: .moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+            let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: 60.0)
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: node) < rhs.longitudeDelta(other: node)
                 }
@@ -171,7 +171,7 @@ class TottenhamUKTests: XCTestCase {
         }
 
         let chiron = Coordinate(body: Asteroid.chiron, date: TottenhamUKTests.birthDate)
-        let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
+        let nearestHourMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: start, end: end, interval: Double(60 * 60))
             .filter(filterPredicate(other: chiron, degree: 0.0, orb: 10.0))
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: chiron) < rhs.longitudeDelta(other: chiron)
@@ -183,7 +183,7 @@ class TottenhamUKTests: XCTestCase {
             let minEnd = detailDate.offset(.minute, value: 30)!
 
             // Then slice it to the per-minute basis next
-            let nearestMinuteMoonPosition = PlanetsRequest(body: .moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+            let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: 60.0)
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: chiron) < rhs.longitudeDelta(other: chiron)
                 }

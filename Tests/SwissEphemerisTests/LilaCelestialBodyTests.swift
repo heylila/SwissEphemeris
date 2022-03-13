@@ -491,10 +491,10 @@ final class LilaCelestialBodyTests: XCTestCase {
         guard let start = date.offset(.day, value: -14) else { return }
         guard let end = date.offset(.day, value: 14) else { return }
 
-        // Use the PlanetsRequest API to get this
+        // Use the BodiesRequest API to get this
         // Do it on a per-hour basis first
 
-        let nearestHourMoonPosition = PlanetsRequest(body: .moon).fetch(start: start, end: end, interval: Double(60 * 60))
+        let nearestHourMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: start, end: end, interval: Double(60 * 60))
             .filter { $0.longitudeDelta(other: natalSun) < 1 }
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: natalSun) < rhs.longitudeDelta(other: natalSun)
@@ -506,7 +506,7 @@ final class LilaCelestialBodyTests: XCTestCase {
         let minEnd = detailDate.offset(.minute, value: 30)!
 
         // Then slice it to the per-minute basis next
-        let nearestMinuteMoonPosition = PlanetsRequest(body: .moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+        let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: 60.0)
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: natalSun) < rhs.longitudeDelta(other: natalSun)
             }
