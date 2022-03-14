@@ -49,7 +49,9 @@ class ClevelandOHTests: XCTestCase {
     }
 
     static var birthDate: Date {
-        return LilaMock.date
+        let dob = "1983-03-17 09:45:00 -0500"
+        let dobDate = Date(fromString: dob, format: .cocoaDateTime)!
+        return dobDate
     }
 
     static var houseSystem: HouseCusps {
