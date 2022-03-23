@@ -101,6 +101,9 @@ public extension Date {
         case .isoDateTimeFull, .isoDateTime, .isoYear, .isoDate, .isoYearMonth:
             let formatter = Date.cachedDateFormatters.cachedISOFormatter(format, timeZone: timeZone, locale: locale)
             return formatter?.string(from: self)
+        case .cocoaDateTime:
+            let formatter = Date.cachedDateFormatters.cachedFormatter(format.stringFormat, timeZone: timeZone.timeZone ?? NSTimeZone.local, locale: locale)
+            return formatter?.string(from: self)
         default:
             break
         }
