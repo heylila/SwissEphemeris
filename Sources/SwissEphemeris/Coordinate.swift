@@ -20,7 +20,9 @@ public struct Coordinate<T: CelestialBody> {
 	public let longitude: Double
 	/// The coordinate's latitude.
 	public let latitude: Double
-	/// The distance in AU.
+    /// The computed angle between the celestial body and the heavenly equator.
+    public let declination: Double
+    /// The distance in AU.
 	public let distance: Double
 	/// The speed in longitude (deg/day).
 	public let speedLongitude: Double
@@ -32,7 +34,7 @@ public struct Coordinate<T: CelestialBody> {
 	private var pointer = UnsafeMutablePointer<Double>.allocate(capacity: 6)
 	/// The pointer for the fixed star name.
 	private var charPointer = UnsafeMutablePointer<CChar>.allocate(capacity: 1)
-	
+
 	/// Creates a `Coordinate`.
 	/// - Parameters:
 	///   - body: The `CelestialBody` for the placement.
@@ -69,12 +71,34 @@ public struct Coordinate<T: CelestialBody> {
         }
 
         longitude = isSouthNode ? longDegrees : pointer[0]
-		latitude = pointer[1]
+        latitude = pointer[1]
+        declination = Coordinate.calculateDeclination(latitude, longitude)
 		distance = pointer[2]
 		speedLongitude = pointer[3]
 		speedLatitude = pointer[4]
 		speedDistance = pointer[5]
 	}
+
+    private static func calculateDeclination(_ lat: Double, _ lng: Double) -> Double {
+        // Formula: sin D = (cos B x sin L x sin E) + (sin B x cos E)
+        // Where:
+        // D = Declination (what we are solving for)
+        // E = The oblique angle of the ecliptic (Epsilon or ~23.447 degrees)
+        // L = Longitude measured from 0 degrees Aries
+        // B = Latitude
+
+        let epsilon = 23.437101628
+        func deg2rad(_ number: Double) -> Double { return number * .pi / 180 }
+        func rad2deg(_ number: Double) -> Double { return number * 180 / .pi }
+        let B = deg2rad(lat)
+        let L = deg2rad(lng)
+        let E = deg2rad(epsilon)
+        let lhs = cos(B) * sin(L) * sin(E)
+        let rhs = sin(B) * cos(E)
+        let sum = lhs + rhs
+        let dec = rad2deg(asin(sum))
+        return dec
+    }
 }
 
 // MARK: - ZodiacCoordinate Conformance
@@ -92,6 +116,7 @@ extension Coordinate: Codable {
         case date
         case longitude
         case latitude
+        case declination
         case distance
         case speedLongitude
         case speedLatitude
@@ -104,6 +129,7 @@ extension Coordinate: Codable {
         date = try container.decode(Date.self, forKey: .date)
         longitude = try container.decode(Double.self, forKey: .longitude)
         latitude = try container.decode(Double.self, forKey: .latitude)
+        declination = try container.decode(Double.self, forKey: .declination)
         distance = try container.decode(Double.self, forKey: .distance)
         speedLongitude = try container.decode(Double.self, forKey: .speedLongitude)
         speedLatitude = try container.decode(Double.self, forKey: .speedLatitude)
