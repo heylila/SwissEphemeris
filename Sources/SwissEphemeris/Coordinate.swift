@@ -99,6 +99,13 @@ public struct Coordinate<T: CelestialBody> {
         let dec = rad2deg(asin(sum))
         return dec
     }
+
+    public func declinationString() -> String {
+        let degree = Int(declination)
+        let arcminute = Int((declination - Double(degree)) * 60)
+        let arcsecond = Int(declination - Double(degree) - Double(arcminute / 60) * 3600)
+        return "\(degree)°\(arcminute)\'\(arcsecond)\""
+    }
 }
 
 // MARK: - ZodiacCoordinate Conformance
