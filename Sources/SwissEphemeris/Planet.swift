@@ -59,7 +59,7 @@ public enum Planet: Int32 {
         case .venus:
             return "♀ Venus"
         case .mars:
-            return "♂️Mars"
+            return "♂️ Mars"
         case .jupiter:
             return "♃ Jupiter"
         case .saturn:
