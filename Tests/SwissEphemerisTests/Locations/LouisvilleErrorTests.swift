@@ -40,29 +40,4 @@ class LouisvilleErrorTests: XCTestCase {
         let cusps = HouseCusps(date: jdate, latitude: lat, longitude: lng, houseSystem: .placidus)
         print("cusps = \(cusps)")
     }
-
-    func testTimeZone() throws {
-        let birthDate = LouisvilleErrorTests.birthDate
-        let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: birthDate)
-        guard let year = comps.year,
-              let month = comps.month,
-              let day = comps.day,
-              let hour = comps.hour,
-              let minute = comps.minute else { throw DateError.componentsError("Couldn't get all the date components") }
-
-        var pointer = UnsafeMutablePointer<Int32>.allocate(capacity: 5)
-        let tzoffset = swe_utc_time_zone(Int32(year),
-                                         Int32(month),
-                                         Int32(day),
-                                         Int32(hour),
-                                         Int32(minute),
-                                         0.0,
-                                         -5.0,
-                                         &pointer[0],
-                                         &pointer[1],
-                                         &pointer[2],
-                                         &pointer[3],
-                                         &pointer[4],
-                                         nil)
-    }
 }

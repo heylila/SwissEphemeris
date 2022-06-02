@@ -66,6 +66,29 @@
                BlueprintName = "SwissEphemerisTests"
                ReferencedContainer = "container:">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "CelestialBodyTests">
+               </Test>
+               <Test
+                  Identifier = "ClevelandDiscovery/testClevelandDiscoverySquares()">
+               </Test>
+               <Test
+                  Identifier = "FixedStarsTests">
+               </Test>
+               <Test
+                  Identifier = "LilaCelestialBodyTests">
+               </Test>
+               <Test
+                  Identifier = "PerformanceTests">
+               </Test>
+               <Test
+                  Identifier = "PlutoSquares2022">
+               </Test>
+               <Test
+                  Identifier = "ProgressionTest">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
