@@ -29,21 +29,6 @@ class ChalonsTests: XCTestCase {
         return HouseCusps(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
     }
 
-    static var planets: [String : Coordinate<Planet> ] {
-        return [
-            Planet.sun.formatted : Coordinate(body: Planet.sun, date: birthDate),
-            Planet.moon.formatted : Coordinate(body: .moon, date: birthDate),
-            Planet.mercury.formatted : Coordinate(body: .mercury, date: birthDate),
-            Planet.venus.formatted : Coordinate(body: .venus, date: birthDate),
-            Planet.mars.formatted : Coordinate(body: .mars, date: birthDate),
-            Planet.jupiter.formatted : Coordinate(body: .jupiter, date: birthDate),
-            Planet.saturn.formatted : Coordinate(body: .saturn, date: birthDate),
-            Planet.uranus.formatted : Coordinate(body: .uranus, date: birthDate),
-            Planet.neptune.formatted : Coordinate(body: .neptune, date: birthDate),
-            Planet.pluto.formatted : Coordinate(body: .pluto, date: birthDate)
-        ]
-    }
-
     func testSun() throws {
         let sun = Coordinate(body: Planet.sun, date: ChalonsTests.birthDate)
         XCTAssert(sun.sign == Zodiac.taurus)
