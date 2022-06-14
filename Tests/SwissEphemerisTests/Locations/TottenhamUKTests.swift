@@ -80,8 +80,8 @@ class TottenhamUKTests: XCTestCase {
 
     static var nodes: [String : Coordinate<LunarNode> ] {
         return [
-            "North Node" : Coordinate(body: LunarNode.trueNode, date: birthDate),
-            "South Node" : Coordinate(body: LunarNode.southNode, date: birthDate)
+            "North Node" : Coordinate(body: LunarNode.meanNode, date: birthDate),
+            "South Node" : Coordinate(body: LunarNode.meanSouthNode, date: birthDate)
         ]
     }
 
