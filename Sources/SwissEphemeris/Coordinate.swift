@@ -50,11 +50,22 @@ public struct Coordinate<T: CelestialBody> {
         }
 		self.body = body
 		self.date = date
-        let isSouthNode = (body is LunarNode && body as! LunarNode == .southNode)
+        let isMeanSouthNode = (body is LunarNode && body as! LunarNode == .meanSouthNode)
+        let isTrueSouthNode = (body is LunarNode && body as! LunarNode == .trueSouthNode)
 		switch body.value {
 		case let value as Int32:
             pointer.initialize(repeating: 0, count: 6)
-            let calcValue = isSouthNode ? Int32(LunarNode.meanNode.rawValue) : value
+            let calcValue: Int32
+            if isMeanSouthNode {
+                calcValue = Int32(LunarNode.meanNode.rawValue)
+            }
+            else if isTrueSouthNode {
+                calcValue = Int32(LunarNode.trueNode.rawValue)
+            }
+            else {
+                calcValue = value
+            }
+
             swe_calc_ut(date.julianDate(), calcValue, SEFLG_SPEED, pointer, nil)
 		case let value as String:
 			charPointer.initialize(from: value, count: value.count)
@@ -65,12 +76,13 @@ public struct Coordinate<T: CelestialBody> {
 		}
 
         var longDegrees = 0.0
-        if isSouthNode {
+
+        if isMeanSouthNode || isTrueSouthNode {
             let adjDegrees = pointer[0] + 180.0
             longDegrees = adjDegrees >= 360.0 ? (pointer[0] - 180.0) : adjDegrees
         }
 
-        longitude = isSouthNode ? longDegrees : pointer[0]
+        longitude = (isMeanSouthNode || isTrueSouthNode) ? longDegrees : pointer[0]
         latitude = pointer[1]
         declination = Coordinate.calculateDeclination(latitude, longitude)
 		distance = pointer[2]
