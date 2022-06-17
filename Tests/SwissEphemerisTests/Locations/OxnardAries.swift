@@ -14,6 +14,7 @@ class OxnardAries: XCTestCase {
     // Lat: 34.1975048
     // Lng: -119.1770516
     // Birthdate: 1981-09-18 19:47:00 -0700
+    // DIEAPIDIE
 
     override func setUpWithError() throws {
         JPLFileManager.setEphemerisPath()

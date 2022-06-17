@@ -14,6 +14,7 @@ class FresnoCapricorn: XCTestCase {
     // Lat: 36.7377981
     // Lng: -119.7871247
     // Birthdate: 1977-07-13 18:51:00 -0700
+    // DIEAPIDIE
 
     override func setUpWithError() throws {
         JPLFileManager.setEphemerisPath()
