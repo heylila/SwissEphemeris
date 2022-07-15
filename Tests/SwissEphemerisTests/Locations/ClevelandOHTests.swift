@@ -86,6 +86,38 @@ class ClevelandOHTests: XCTestCase {
         return Coordinate(body: Asteroid.chiron, date: birthDate)
     }
 
+    func testNatalPlanetsAstroLongitude() throws {
+        guard let sun = ClevelandOHTests.planets[Planet.sun.formatted] else { return }
+        XCTAssertNotNil(sun.formatted.range(of: #"26 Degrees Pisces"#, options: .regularExpression))
+
+        guard let moon = ClevelandOHTests.planets[Planet.moon.formatted] else { return }
+        XCTAssertNotNil(moon.formatted.range(of: #"0 Degrees Taurus"#, options: .regularExpression))
+
+        guard let mercury = ClevelandOHTests.planets[Planet.mercury.formatted] else { return }
+        XCTAssertNotNil(mercury.formatted.range(of: #"18 Degrees Pisces"#, options: .regularExpression))
+
+        guard let venus = ClevelandOHTests.planets[Planet.venus.formatted] else { return }
+        XCTAssertNotNil(venus.formatted.range(of: #"27 Degrees Aries"#, options: .regularExpression))
+
+        guard let mars = ClevelandOHTests.planets[Planet.mars.formatted] else { return }
+        XCTAssertNotNil(mars.formatted.range(of: #"15 Degrees Aries"#, options: .regularExpression))
+
+        guard let jupiter = ClevelandOHTests.planets[Planet.jupiter.formatted] else { return }
+        XCTAssertNotNil(jupiter.formatted.range(of: #"10 Degrees Sagittarius"#, options: .regularExpression))
+
+        guard let saturn = ClevelandOHTests.planets[Planet.saturn.formatted] else { return }
+        XCTAssertNotNil(saturn.formatted.range(of: #"3 Degrees Scorpio"#, options: .regularExpression))
+
+        guard let uranus = ClevelandOHTests.planets[Planet.uranus.formatted] else { return }
+        XCTAssertNotNil(uranus.formatted.range(of: #"9 Degrees Sagittarius"#, options: .regularExpression))
+
+        guard let neptune = ClevelandOHTests.planets[Planet.neptune.formatted] else { return }
+        XCTAssertNotNil(neptune.formatted.range(of: #"29 Degrees Sagittarius"#, options: .regularExpression))
+
+        guard let pluto = ClevelandOHTests.planets[Planet.pluto.formatted] else { return }
+        XCTAssertNotNil(pluto.formatted.range(of: #"28 Degrees Libra"#, options: .regularExpression))
+    }
+
     func testClevelandOHConjunctions() throws {
         let daysOut = 7
         let start = ClevelandOHTests.testStartDate
