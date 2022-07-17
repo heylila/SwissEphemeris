@@ -62,7 +62,7 @@ class ClevelandOHTests: XCTestCase {
 
     static var planets: [String : Coordinate<Planet> ] {
         return [
-            Planet.sun.formatted : Coordinate(body: Planet.sun, date: birthDate),
+            Planet.sun.formatted : Coordinate(body: .sun, date: birthDate),
             Planet.moon.formatted : Coordinate(body: .moon, date: birthDate),
             Planet.mercury.formatted : Coordinate(body: .mercury, date: birthDate),
             Planet.venus.formatted : Coordinate(body: .venus, date: birthDate),
