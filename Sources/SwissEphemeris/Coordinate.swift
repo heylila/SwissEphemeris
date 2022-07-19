@@ -36,33 +36,25 @@ public struct Coordinate<T: CelestialBody>: Equatable {
 	private var charPointer = UnsafeMutablePointer<CChar>.allocate(capacity: 1)
 
     public static func ==(lhs: Coordinate, rhs: Coordinate) -> Bool {
-        if (lhs.body == rhs.body &&
-            lhs.date == rhs.date &&
-            lhs.longitude == rhs.longitude &&
-            lhs.latitude == rhs.latitude &&
-            lhs.declination == rhs.declination &&
-            lhs.distance == rhs.distance &&
-            lhs.speedLongitude == rhs.speedLongitude &&
-            lhs.speedDistance == rhs.speedDistance) {
-            return true
-        }
-
-        return false
+        return (lhs.body == rhs.body &&
+                lhs.date == rhs.date &&
+                lhs.longitude == rhs.longitude &&
+                lhs.latitude == rhs.latitude &&
+                lhs.declination == rhs.declination &&
+                lhs.distance == rhs.distance &&
+                lhs.speedLongitude == rhs.speedLongitude &&
+                lhs.speedDistance == rhs.speedDistance)
     }
 
     public static func !=(lhs: Coordinate<T>, rhs: Coordinate<T>) -> Bool {
-        if (lhs.body != rhs.body ||
-            lhs.date != rhs.date ||
-            lhs.longitude != rhs.longitude ||
-            lhs.latitude != rhs.latitude ||
-            lhs.declination != rhs.declination ||
-            lhs.distance != rhs.distance ||
-            lhs.speedLongitude != rhs.speedLongitude ||
-            lhs.speedDistance != rhs.speedDistance) {
-            return true
-        }
-
-        return false
+        return (lhs.body != rhs.body ||
+                lhs.date != rhs.date ||
+                lhs.longitude != rhs.longitude ||
+                lhs.latitude != rhs.latitude ||
+                lhs.declination != rhs.declination ||
+                lhs.distance != rhs.distance ||
+                lhs.speedLongitude != rhs.speedLongitude ||
+                lhs.speedDistance != rhs.speedDistance)
     }
 
 	/// Creates a `Coordinate`.
