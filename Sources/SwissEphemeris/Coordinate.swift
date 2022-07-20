@@ -46,7 +46,7 @@ public struct Coordinate<T: CelestialBody>: Equatable {
                 lhs.speedDistance == rhs.speedDistance)
     }
 
-    public static func !=(lhs: Coordinate<T>, rhs: Coordinate<T>) -> Bool {
+    public static func !=(lhs: Coordinate, rhs: Coordinate) -> Bool {
         return (lhs.body != rhs.body ||
                 lhs.date != rhs.date ||
                 lhs.longitude != rhs.longitude ||
