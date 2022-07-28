@@ -93,6 +93,47 @@ class ClevelandIngress: XCTestCase {
         return nil
     }
 
+    func returnSignForRange(_ houses: HouseCusps, _ range: ClosedRange<Double>) -> Sign? {
+        if range.contains(houses.aries.value + houses.ascendent.value) {
+            return houses.aries
+        }
+        if range.contains(houses.taurus.value + houses.ascendent.value) {
+            return houses.taurus
+        }
+        if range.contains(houses.gemini.value + houses.ascendent.value) {
+            return houses.gemini
+        }
+        if range.contains(houses.cancer.value + houses.ascendent.value) {
+            return houses.cancer
+        }
+        if range.contains(houses.leo.value + houses.ascendent.value) {
+            return houses.leo
+        }
+        if range.contains(houses.virgo.value + houses.ascendent.value) {
+            return houses.virgo
+        }
+        if range.contains(houses.libra.value + houses.ascendent.value) {
+            return houses.libra
+        }
+        if range.contains(houses.scorpio.value + houses.ascendent.value) {
+            return houses.scorpio
+        }
+        if range.contains(houses.sagittarius.value + houses.ascendent.value) {
+            return houses.sagittarius
+        }
+        if range.contains(houses.capricorn.value + houses.ascendent.value) {
+            return houses.capricorn
+        }
+        if range.contains(houses.aquarius.value + houses.ascendent.value) {
+            return houses.aquarius
+        }
+        if range.contains(houses.pisces.value + houses.ascendent.value) {
+            return houses.pisces
+        }
+
+        return nil
+    }
+
     func testPrototypeHouseIngresses() throws {
         let houses = ClevelandIngress.houseCusps
         let startDate = Date(fromString: "2022-07-18 07:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
@@ -134,47 +175,6 @@ class ClevelandIngress: XCTestCase {
                 }
             }
         }
-    }
-
-    func returnSignForRange(_ houses: HouseCusps, _ range: ClosedRange<Double>) -> Sign? {
-        if range.contains(houses.aries.value + houses.ascendent.value) {
-            return houses.aries
-        }
-        if range.contains(houses.taurus.value + houses.ascendent.value) {
-            return houses.taurus
-        }
-        if range.contains(houses.gemini.value + houses.ascendent.value) {
-            return houses.gemini
-        }
-        if range.contains(houses.cancer.value + houses.ascendent.value) {
-            return houses.cancer
-        }
-        if range.contains(houses.leo.value + houses.ascendent.value) {
-            return houses.leo
-        }
-        if range.contains(houses.virgo.value + houses.ascendent.value) {
-            return houses.virgo
-        }
-        if range.contains(houses.libra.value + houses.ascendent.value) {
-            return houses.libra
-        }
-        if range.contains(houses.scorpio.value + houses.ascendent.value) {
-            return houses.scorpio
-        }
-        if range.contains(houses.sagittarius.value + houses.ascendent.value) {
-            return houses.sagittarius
-        }
-        if range.contains(houses.capricorn.value + houses.ascendent.value) {
-            return houses.capricorn
-        }
-        if range.contains(houses.aquarius.value + houses.ascendent.value) {
-            return houses.aquarius
-        }
-        if range.contains(houses.pisces.value + houses.ascendent.value) {
-            return houses.pisces
-        }
-
-        return nil
     }
 
     func testPrototypeSignIngresses() throws {
