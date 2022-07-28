@@ -220,4 +220,58 @@ class ClevelandIngress: XCTestCase {
             }
         }
     }
+
+    func testPrototypeHouseIngressesForYear() throws {
+        let houses = ClevelandIngress.houseCusps
+        let originDate = Date(fromString: "2022-07-17 14:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
+        let hourSlice = Double(60 * 60)
+        let minuteSlice = 60.0
+        let planetCases = Planet.allCases.filter { planet in
+            return planet != .moon
+        }
+
+        for i in stride(from: 0, to: 52, by: 1) {
+            let startDate = originDate.offset(.week, value: i)!
+            let endDate = startDate.offset(.week, value: 1)!
+
+            for planet in planetCases {
+                let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
+                let hourFirst = hourPositions.first!
+                let hourLast = hourPositions.last!
+
+                if hourFirst.longitude > hourLast.longitude {
+                    print("No retrograde ingresses for \(planet) at this time")
+                    continue
+                }
+
+                var range = hourFirst.longitude ... hourLast.longitude
+                let startString = hourFirst.date.toString(format: .cocoaDateTime)!
+                let endString = hourLast.date.toString(format: .cocoaDateTime)!
+                guard let (house, key) = returnHouseForRange(houses, range) else {
+                    print("No house ingresses found for \(planet) during date range: \(startString) to \(endString)")
+                    continue
+                }
+
+                let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+
+                for i in stride(from: 0, to: minPositions.endIndex, by: 1) {
+                    let minFirst = minPositions[i]
+                    let minLast = minPositions[i + 1]
+                    if minLast.longitude <= minFirst.longitude {
+                        let minFirstString = minFirst.date.toString(format: .cocoaDateTime)!
+                        let minLastString = minLast.date.toString(format: .cocoaDateTime)!
+                        print("Punting on \(planet) retrograde starting during this potential period: \(minFirstString) to \(minLastString)")
+                        break
+                    }
+
+                    range = minFirst.longitude ... minLast.longitude
+
+                    if range.contains(house.value) {
+                        print("\(planet) makes ingress with \(key) house at \(minLast.date.toString(format: .cocoaDateTime)!)")
+                        break
+                    }
+                }
+            }
+        }
+    }
 }
