@@ -78,43 +78,6 @@ class ClevelandIngress: XCTestCase {
             print("\(planet) makes ingress with house = \(key)")
         }
 
-        func returnHouseForRange(_ range: ClosedRange<Double>) -> (Cusp, String)? {
-            if range.contains(houses.first.value) {
-                return (houses.first, "first")
-            }
-            if range.contains(houses.second.value) {
-                return (houses.second, "second")
-            }
-            if range.contains(houses.third.value) {
-                return (houses.third, "third")
-            }
-            if range.contains(houses.fourth.value) {
-                return (houses.fourth, "fourth")
-            }
-            if range.contains(houses.fifth.value) {
-                return (houses.fifth, "fifth")
-            }
-            if range.contains(houses.sixth.value) {
-                return (houses.sixth, "sixth")
-            }
-            if range.contains(houses.seventh.value) {
-                return (houses.seventh, "seventh")
-            }
-            if range.contains(houses.eighth.value) {
-                return (houses.eighth, "eighth")
-            }
-            if range.contains(houses.ninth.value) {
-                return (houses.ninth, "ninth")
-            }
-            if range.contains(houses.tenth.value) {
-                return (houses.tenth, "tenth")
-            }
-            if range.contains(houses.eleventh.value) {
-                return (houses.eleventh, "eleventh")
-            }
-            if range.contains(houses.twelfth.value) {
-                return (houses.twelfth, "twelfth")
-            }
 
             return nil
         }
