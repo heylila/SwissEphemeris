@@ -121,9 +121,9 @@ class ClevelandIngress: XCTestCase {
             let minuteSlice = 60.0
             let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
 
-            for i in stride(from: 0, to: minPositions.endIndex, by: 4) {
+            for i in stride(from: 0, to: minPositions.endIndex, by: 1) {
                 let minFirst = minPositions[i]
-                let minLast = minPositions[i + 3]
+                let minLast = minPositions[i + 1]
                 range = minFirst.longitude ... minLast.longitude
 
                 if range.contains(house.value) {
