@@ -113,8 +113,10 @@ class ClevelandIngress: XCTestCase {
             }
 
             var range = hourFirst.longitude ... hourLast.longitude
+            let startString = hourFirst.date.toString(format: .cocoaDateTime)!
+            let endString = hourLast.date.toString(format: .cocoaDateTime)!
             guard let (house, key) = returnHouseForRange(houses, range) else {
-                print("No house ingress found for \(planet)")
+                print("No house ingresses found for \(planet) during date range: \(startString) to \(endString)")
                 continue
             }
 
