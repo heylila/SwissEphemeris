@@ -135,4 +135,89 @@ class ClevelandIngress: XCTestCase {
             }
         }
     }
+
+    func returnSignForRange(_ houses: HouseCusps, _ range: ClosedRange<Double>) -> Sign? {
+        if range.contains(houses.aries.value + houses.ascendent.value) {
+            return houses.aries
+        }
+        if range.contains(houses.taurus.value + houses.ascendent.value) {
+            return houses.taurus
+        }
+        if range.contains(houses.gemini.value + houses.ascendent.value) {
+            return houses.gemini
+        }
+        if range.contains(houses.cancer.value + houses.ascendent.value) {
+            return houses.cancer
+        }
+        if range.contains(houses.leo.value + houses.ascendent.value) {
+            return houses.leo
+        }
+        if range.contains(houses.virgo.value + houses.ascendent.value) {
+            return houses.virgo
+        }
+        if range.contains(houses.libra.value + houses.ascendent.value) {
+            return houses.libra
+        }
+        if range.contains(houses.scorpio.value + houses.ascendent.value) {
+            return houses.scorpio
+        }
+        if range.contains(houses.sagittarius.value + houses.ascendent.value) {
+            return houses.sagittarius
+        }
+        if range.contains(houses.capricorn.value + houses.ascendent.value) {
+            return houses.capricorn
+        }
+        if range.contains(houses.aquarius.value + houses.ascendent.value) {
+            return houses.aquarius
+        }
+        if range.contains(houses.pisces.value + houses.ascendent.value) {
+            return houses.pisces
+        }
+
+        return nil
+    }
+
+    func testPrototypeSignIngresses() throws {
+        let houses = ClevelandIngress.houseCusps
+        let startDate = Date(fromString: "2022-07-18 07:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
+        let endDate = startDate.offset(.week, value: 1)!
+        let hourSlice = Double(60 * 60)
+        let planetCases = Planet.allCases.filter { planet in
+            return planet != .moon
+        }
+
+        for planet in planetCases {
+            let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
+            let hourFirst = hourPositions.first!
+            let hourLast = hourPositions.last!
+
+            if hourFirst.longitude > hourLast.longitude {
+                print("No retrograde ingresses for \(planet) at this time")
+                continue
+            }
+
+            var range = hourFirst.longitude ... hourLast.longitude
+            let startString = hourFirst.date.toString(format: .cocoaDateTime)!
+            let endString = hourLast.date.toString(format: .cocoaDateTime)!
+            guard let sign = returnSignForRange(houses, range) else {
+                print("No sign ingress found for \(planet) during date range: \(startString) to \(endString)")
+                continue
+            }
+
+            let minuteSlice = 60.0
+            let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+            let usableSignLongitude = sign.value + houses.ascendent.value
+
+            for i in stride(from: 0, to: minPositions.endIndex, by: 1) {
+                let minFirst = minPositions[i]
+                let minLast = minPositions[i + 1]
+                range = minFirst.longitude ... minLast.longitude
+
+                if range.contains(usableSignLongitude) {
+                    print("\(planet) makes ingress with \(sign.sign) at \(minLast.date.toString(format: .cocoaDateTime)!)")
+                    break
+                }
+            }
+        }
+    }
 }
