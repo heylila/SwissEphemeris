@@ -92,43 +92,45 @@ class ClevelandIngress: XCTestCase {
 
         return nil
     }
+
+    func testPrototypeHouseIngresses() throws {
         let houses = ClevelandIngress.houseCusps
         let startDate = Date(fromString: "2022-07-18 07:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
-        let endDate = startDate.offset(.day, value: 7)!
+        let endDate = startDate.offset(.week, value: 1)!
         let hourSlice = Double(60 * 60)
+        let planetCases = Planet.allCases.filter { planet in
+            return planet != .moon
+        }
 
-        for planet in Planet.allCases {
-            let positions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
-            let posFirst = positions.first!
-            let posLast = positions.last!
+        for planet in planetCases {
+            let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
+            let hourFirst = hourPositions.first!
+            let hourLast = hourPositions.last!
 
-            if posFirst.longitude > posLast.longitude {
+            if hourFirst.longitude > hourLast.longitude {
                 print("No retrograde ingresses for \(planet) at this time")
                 continue
             }
 
-            let range = posFirst.longitude ... posLast.longitude
-            guard let (_, key) = returnHouseForRange(range) else {
+            var range = hourFirst.longitude ... hourLast.longitude
+            guard let (house, key) = returnHouseForRange(houses, range) else {
                 print("No house ingress found for \(planet)")
                 continue
             }
 
-            print("\(planet) makes ingress with house = \(key)")
-        }
+            let minuteSlice = 60.0
+            let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
 
+            for i in stride(from: 0, to: minPositions.endIndex, by: 4) {
+                let minFirst = minPositions[i]
+                let minLast = minPositions[i + 3]
+                range = minFirst.longitude ... minLast.longitude
 
-            return nil
-        }
-
-        func filterPredicate<First, Second>(other: Coordinate<Second>, degree: Double, orb: Double) -> (Coordinate<First>) -> Bool {
-            return { (first) in
-                let degreeRange = (degree - orb) ... (degree + orb)
-                if degreeRange.contains(first.longitudeDelta(other: other)) { return true }
-                let degreeRange2 = (degree + 360.0 - orb) ... (degree + 360.0 + orb)
-                return degreeRange2.contains(first.longitudeDelta(other: other))
+                if range.contains(house.value) {
+                    print("\(planet) makes ingress with \(key) house at \(minLast.date.toString(format: .cocoaDateTime)!)")
+                    break
+                }
             }
         }
-
     }
-
 }
