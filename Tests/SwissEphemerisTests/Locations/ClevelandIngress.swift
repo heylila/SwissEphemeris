@@ -52,8 +52,46 @@ class ClevelandIngress: XCTestCase {
         return Coordinate(body: Asteroid.chiron, date: birthDate)
     }
 
-    // Ed: do NOT clone this method
-    func testPrototypeHouseIngresses() throws {
+    func returnHouseForRange(_ houses: HouseCusps, _ range: ClosedRange<Double>) -> (Cusp, String)? {
+        if range.contains(houses.first.value) {
+            return (houses.first, "1st")
+        }
+        if range.contains(houses.second.value) {
+            return (houses.second, "2nd")
+        }
+        if range.contains(houses.third.value) {
+            return (houses.third, "3rd")
+        }
+        if range.contains(houses.fourth.value) {
+            return (houses.fourth, "4th")
+        }
+        if range.contains(houses.fifth.value) {
+            return (houses.fifth, "5th")
+        }
+        if range.contains(houses.sixth.value) {
+            return (houses.sixth, "6th")
+        }
+        if range.contains(houses.seventh.value) {
+            return (houses.seventh, "7th")
+        }
+        if range.contains(houses.eighth.value) {
+            return (houses.eighth, "eighth")
+        }
+        if range.contains(houses.ninth.value) {
+            return (houses.ninth, "ninth")
+        }
+        if range.contains(houses.tenth.value) {
+            return (houses.tenth, "tenth")
+        }
+        if range.contains(houses.eleventh.value) {
+            return (houses.eleventh, "eleventh")
+        }
+        if range.contains(houses.twelfth.value) {
+            return (houses.twelfth, "twelfth")
+        }
+
+        return nil
+    }
         let houses = ClevelandIngress.houseCusps
         let startDate = Date(fromString: "2022-07-18 07:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
         let endDate = startDate.offset(.day, value: 7)!
