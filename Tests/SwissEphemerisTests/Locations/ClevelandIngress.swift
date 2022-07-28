@@ -232,7 +232,7 @@ class ClevelandIngress: XCTestCase {
 
         for i in stride(from: 0, to: 52, by: 1) {
             let startDate = originDate.offset(.week, value: i)!
-            let endDate = startDate.offset(.week, value: 1)!
+            let endDate = startDate.offset(.week, value: 1)!.offset(.hour, value: 1)!
 
             for planet in planetCases {
                 let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
@@ -286,7 +286,7 @@ class ClevelandIngress: XCTestCase {
 
         for i in stride(from: 0, to: 52, by: 1) {
             let startDate = originDate.offset(.week, value: i)!
-            let endDate = startDate.offset(.week, value: 1)!
+            let endDate = startDate.offset(.week, value: 1)!.offset(.hour, value: 1)!
 
             for planet in planetCases {
                 let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
