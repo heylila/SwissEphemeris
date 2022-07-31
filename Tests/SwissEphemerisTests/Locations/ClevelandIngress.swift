@@ -139,6 +139,7 @@ class ClevelandIngress: XCTestCase {
         let startDate = Date(fromString: "2022-07-18 07:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
         let endDate = startDate.offset(.week, value: 1)!
         let hourSlice = Double(60 * 60)
+        let minuteSlice = 60.0
         let planetCases = Planet.allCases.filter { planet in
             return planet != .moon
         }
@@ -147,21 +148,37 @@ class ClevelandIngress: XCTestCase {
             let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
             let hourFirst = hourPositions.first!
             let hourLast = hourPositions.last!
+            let startString = hourFirst.date.toString(format: .cocoaDateTime)!
+            let endString = hourLast.date.toString(format: .cocoaDateTime)!
 
             if hourFirst.longitude > hourLast.longitude {
-                print("No retrograde ingresses for \(planet) at this time")
+                let retroHourRange = hourLast.longitude ... hourFirst.longitude
+                guard let (house, key) = returnHouseForRange(houses, retroHourRange) else {
+                    print("No house ingresses found for \(planet) retrograde during date range: \(startString) to \(endString)")
+                    continue
+                }
+
+                let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+                for i in stride(from: minPositions.endIndex - 1, to: 0, by: -1) {
+                    let minFirst = minPositions[i]
+                    let minLast = minPositions[i - 1]
+                    let retroMinRange = minFirst.longitude < minLast.longitude ? minFirst.longitude ... minLast.longitude : minLast.longitude ... minFirst.longitude
+
+                    if retroMinRange.contains(house.value) {
+                        print("\(planet) retrograde makes ingress with \(key) house at \(minLast.date.toString(format: .cocoaDateTime)!)")
+                        break
+                    }
+                }
+
                 continue
             }
 
             var range = hourFirst.longitude ... hourLast.longitude
-            let startString = hourFirst.date.toString(format: .cocoaDateTime)!
-            let endString = hourLast.date.toString(format: .cocoaDateTime)!
             guard let (house, key) = returnHouseForRange(houses, range) else {
                 print("No house ingresses found for \(planet) during date range: \(startString) to \(endString)")
                 continue
             }
 
-            let minuteSlice = 60.0
             let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
 
             for i in stride(from: 0, to: minPositions.endIndex, by: 1) {
@@ -223,6 +240,9 @@ class ClevelandIngress: XCTestCase {
 
     func testPrototypeHouseIngressesForYear() throws {
         let houses = ClevelandIngress.houseCusps
+        let bdString = houses.date.toString(format: .cocoaDateTime)!
+        print("House birthdate: \(bdString) at lat: \(houses.latitude) long: \(houses.longitude)\n")
+
         let originDate = Date(fromString: "2022-07-17 14:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
         let hourSlice = Double(60 * 60)
         let minuteSlice = 60.0
@@ -233,22 +253,40 @@ class ClevelandIngress: XCTestCase {
         for i in stride(from: 0, to: 52, by: 1) {
             let startDate = originDate.offset(.week, value: i)!
             let endDate = startDate.offset(.week, value: 1)!.offset(.hour, value: 1)!
+            let sdString = startDate.toString(format: .cocoaDateTime)!
+            let edString = endDate.offset(.hour, value: -1)!.toString(format: .cocoaDateTime)!
+            print("House ingresses for week between \(sdString) and \(edString)")
 
             for planet in planetCases {
                 let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
                 let hourFirst = hourPositions.first!
                 let hourLast = hourPositions.last!
-                let startString = hourFirst.date.toString(format: .cocoaDateTime)!
-                let endString = hourLast.date.toString(format: .cocoaDateTime)!
 
                 if hourFirst.longitude > hourLast.longitude {
-                    print("No \(planet) retrograde house ingresses during this week: \(startString) to \(endString)")
+                    let retroHourRange = hourLast.longitude ... hourFirst.longitude
+                    guard let (house, key) = returnHouseForRange(houses, retroHourRange) else {
+                        print("No house ingresses found for \(planet) ~~retrograde~~")
+                        continue
+                    }
+
+                    let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+                    for i in stride(from: minPositions.endIndex - 1, to: 0, by: -1) {
+                        let minLast = minPositions[i]
+                        let minFirst = minPositions[i - 1]
+                        let retroMinRange = minLast.longitude < minFirst.longitude ? minLast.longitude ... minFirst.longitude : minFirst.longitude ... minLast.longitude
+
+                        if retroMinRange.contains(house.value) {
+                            print("\(planet) ~~retrograde~~ makes ingress with \(key) house at \(minFirst.date.toString(format: .cocoaDateTime)!)")
+                            break
+                        }
+                    }
+
                     continue
                 }
 
                 var range = hourFirst.longitude ... hourLast.longitude
                 guard let (house, houseKey) = returnHouseForRange(houses, range) else {
-                    print("No house ingresses found for \(planet) during date range: \(startString) to \(endString)")
+                    print("No house ingresses found for \(planet)") //" during date range: \(startString) to \(endString)")
                     continue
                 }
 
@@ -266,11 +304,15 @@ class ClevelandIngress: XCTestCase {
                     }
                 }
             }
+            print("")
         }
     }
 
     func testPrototypeSignIngressesForYear() throws {
         let houses = ClevelandIngress.houseCusps
+        let bdString = houses.date.toString(format: .cocoaDateTime)!
+        print("House birthdate: \(bdString) at lat: \(houses.latitude) long: \(houses.longitude)\n")
+
         let originDate = Date(fromString: "2022-07-17 14:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
         let hourSlice = Double(60 * 60)
         let minuteSlice = 60.0
@@ -281,22 +323,41 @@ class ClevelandIngress: XCTestCase {
         for i in stride(from: 0, to: 52, by: 1) {
             let startDate = originDate.offset(.week, value: i)!
             let endDate = startDate.offset(.week, value: 1)!.offset(.hour, value: 1)!
+            let sdString = startDate.toString(format: .cocoaDateTime)!
+            let edString = endDate.offset(.hour, value: -1)!.toString(format: .cocoaDateTime)!
+            print("Sign ingresses for week between \(sdString) and \(edString)")
 
             for planet in planetCases {
                 let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
                 let hourFirst = hourPositions.first!
                 let hourLast = hourPositions.last!
-                let startString = hourFirst.date.toString(format: .cocoaDateTime)!
-                let endString = hourLast.date.toString(format: .cocoaDateTime)!
 
                 if hourFirst.longitude > hourLast.longitude {
-                    print("No \(planet) retrograde sign ingresses during this week: \(startString) to \(endString)")
+                    let retroHourRange = hourLast.longitude ... hourFirst.longitude
+                    guard let sign = returnSignForRange(houses, retroHourRange) else {
+                        print("No \(planet) ~~retrograde~~ sign ingresses")
+                        continue
+                    }
+
+                    let usableSignLongitude = sign.value + houses.ascendent.value
+                    let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+                    for i in stride(from: minPositions.endIndex - 1, to: 0, by: -1) {
+                        let minLast = minPositions[i]
+                        let minFirst = minPositions[i - 1]
+                        let retroMinRange = minLast.longitude < minFirst.longitude ? minLast.longitude ... minFirst.longitude : minFirst.longitude ... minLast.longitude
+
+                        if retroMinRange.contains(usableSignLongitude) {
+                            print("\(planet) ~~retrograde~~ makes ingress with \(sign.sign) at \(minFirst.date.toString(format: .cocoaDateTime)!)")
+                            break
+                        }
+                    }
+
                     continue
                 }
 
                 var range = hourFirst.longitude ... hourLast.longitude
                 guard let sign = returnSignForRange(houses, range) else {
-                    print("No sign ingress found for \(planet) during date range: \(startString) to \(endString)")
+                    print("No sign ingress found for \(planet)") // during date range: \(startString) to \(endString)")
                     continue
                 }
 
@@ -315,6 +376,7 @@ class ClevelandIngress: XCTestCase {
                     }
                 }
             }
+            print("")
         }
     }
 }
