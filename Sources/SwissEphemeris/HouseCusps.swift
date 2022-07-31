@@ -13,6 +13,10 @@ public struct HouseCusps {
 
     /// The time at which the house system is valid
     public let date: Date
+    /// The latitude of the house system
+    public let latitude: Double
+    /// The longitude of the house system
+    public let longitude: Double
     /// The pointer passed into `set_house_system(julianDate, latitude, longitude, ascendentPointer, cuspPointer)`
     /// `ascPointer` argument
     private let ascendentPointer = UnsafeMutablePointer<Double>.allocate(capacity: 10)
@@ -89,6 +93,8 @@ public struct HouseCusps {
 			ascendentPointer.deallocate()
 		}
         self.date = date
+        self.latitude = latitude
+        self.longitude = longitude
 		swe_houses(date.julianDate(), latitude, longitude, houseSystem.rawValue, cuspPointer, ascendentPointer);
 		ascendent = Cusp(value: ascendentPointer[0])
 		midHeaven = Cusp(value: ascendentPointer[1])
