@@ -379,4 +379,31 @@ class ClevelandIngress: XCTestCase {
             print("")
         }
     }
+
+    func testSignIngressForWeekEnding20220724() throws {
+        let houses = ClevelandIngress.houseCusps
+        let leoValue = houses.ascendent.value + houses.leo.value
+        var preIngress = Date(fromString: "2022-07-22 13:07:00 -0700", format: .cocoaDateTime)!
+        var postIngress = preIngress.offset(.minute, value: 1)!
+
+        let preIngressSun = Coordinate(body: Planet.sun, date: preIngress)
+        let postIngressSun = Coordinate(body: Planet.sun, date: postIngress)
+        XCTAssert(preIngressSun.longitude < leoValue)
+        XCTAssert(postIngressSun.longitude > leoValue)
+
+        preIngress = Date(fromString: "2022-07-19 05:35:00 -0700", format: .cocoaDateTime)!
+        postIngress = preIngress.offset(.minute, value: 1)!
+        let preIngressMercury = Coordinate(body: Planet.mercury, date: preIngress)
+        let postIngressMercury = Coordinate(body: Planet.mercury, date: postIngress)
+        XCTAssert(preIngressMercury.longitude < leoValue)
+        XCTAssert(postIngressMercury.longitude > leoValue)
+
+        let cancerValue = houses.ascendent.value + houses.cancer.value
+        preIngress = Date(fromString: "2022-07-17 18:32:00 -0700", format: .cocoaDateTime)!
+        postIngress = preIngress.offset(.minute, value: 1)!
+        let preIngressVenus = Coordinate(body: Planet.venus, date: preIngress)
+        let postIngressVenus = Coordinate(body: Planet.venus, date: postIngress)
+        XCTAssert(preIngressVenus.longitude < cancerValue)
+        XCTAssert(postIngressVenus.longitude > cancerValue)
+    }
 }
