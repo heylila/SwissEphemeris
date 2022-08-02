@@ -406,4 +406,15 @@ class ClevelandIngress: XCTestCase {
         XCTAssert(preIngressVenus.longitude < cancerValue)
         XCTAssert(postIngressVenus.longitude > cancerValue)
     }
+
+    func testLibraIngressWithMercuryRetrograde() throws {
+        let houses = ClevelandIngress.houseCusps
+        let libraValue = houses.ascendent.value + houses.libra.value
+        let preIngress = Date(fromString: "2022-09-23 05:04:00 -0700", format: .cocoaDateTime)!
+        let postIngress = preIngress.offset(.minute, value: 1)!
+        let preIngressMercuryRetro = Coordinate(body: Planet.mercury, date: preIngress)
+        let postIngressMercuryRetro = Coordinate(body: Planet.mercury, date: postIngress)
+        XCTAssert(preIngressMercuryRetro.longitude > libraValue)
+        XCTAssert(postIngressMercuryRetro.longitude < libraValue)
+    }
 }
