@@ -437,4 +437,30 @@ class ClevelandIngress: XCTestCase {
         XCTAssert(preIngressVenus.longitude < third)
         XCTAssert(postIngressVenus.longitude > third)
     }
+
+    // ED: This is inaccurate for now.
+    func testHouseIngressForVenusRetrograde() throws {
+        let houses = ClevelandIngress.houseCusps
+        let first = houses.first.value
+        let preIngress = Date(fromString: "2023-02-19 23:55:00 -0800", format: .cocoaDateTime)!
+        let postIngress = preIngress.offset(.minute, value: 1)!
+        let preIngressVenusRetrograde = Coordinate(body: Planet.venus, date: preIngress)
+        let postIngressVenusRetrograde = Coordinate(body: Planet.venus, date: postIngress)
+
+        // The Venus Retrograde SHOULD be going clockwise from 1H to 12H,
+        // but instead is going from 12H to 1H, so ignore this test for now
+        // until I figure out what's going on here.
+
+        // NOTE: the pre-ingress longitude is something like 359.9995 degrees
+        // (just before rolling from 12th house into 1st house)
+        // and the post-ingress longitude is approx. 0.00037-ish degrees after the ingress
+        // Haven't yet come up with a good math-y way to capture this yet
+        XCTAssert(preIngressVenusRetrograde.longitude > first)
+        XCTAssert(postIngressVenusRetrograde.longitude < first)
+
+        let _12thHouseRange = houses.twelfth.value ... houses.first.value
+        let _1stHouseRange = houses.first.value ... houses.second.value
+        XCTAssert(_12thHouseRange.contains(preIngressVenusRetrograde.longitude))
+        XCTAssert(_1stHouseRange.contains(postIngressVenusRetrograde.longitude))
+    }
 }
