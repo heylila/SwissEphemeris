@@ -319,15 +319,10 @@ class ClevelandIngress: XCTestCase {
             let prevCoordinate = coordinates[i - 1]
             let thisCoordinate = coordinates[i]
             let nextCoordinate = coordinates[i + 1]
-            let roundedPrev = preciseRound(prevCoordinate.longitude, precision: .thousandths)
-            let roundedThis = preciseRound(thisCoordinate.longitude, precision: .thousandths)
-            let roundedNext = preciseRound(nextCoordinate.longitude, precision: .thousandths)
-            let dateString = thisCoordinate.date.toString(format: .cocoaDateTime, timeZone: .local)!
             let preCrossPrimeRange = 359.0 ... 360.0
             let postCrossPrimeRange = 0.0 ... 1.0
 
             if thisCoordinate.longitude < prevCoordinate.longitude {
-                print("\(dateString) retrograde motion: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
                 dates.append(prevCoordinate.date)
 
                 if i == coordinates.endIndex - 2 {
@@ -339,15 +334,24 @@ class ClevelandIngress: XCTestCase {
             }
 
             if preCrossPrimeRange.contains(thisCoordinate.longitude) && postCrossPrimeRange.contains(prevCoordinate.longitude) {
-                print("\(dateString) retrograde motion crosses Prime Meridian: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
                 dates.append(prevCoordinate.date)
-                continue
-            }
 
-            if thisCoordinate.longitude >= 0.0 && prevCoordinate.longitude < 360.0 {
-                print("\(dateString) normal motion across the prime meridian")
+                if i == coordinates.endIndex - 2 {
+                    dates.append(thisCoordinate.date)
+                    dates.append(nextCoordinate.date)
+                }
+
                 continue
             }
+        }
+
+        if dates.count >= 2 {
+            let tuple = (dates.first!, dates.last!)
+            return tuple
+        }
+
+        return nil
+    }
 
             if thisCoordinate.longitude < 360.0 && nextCoordinate.longitude >= 0.0 {
                 print("\(dateString) normal motion across the prime meridian")
