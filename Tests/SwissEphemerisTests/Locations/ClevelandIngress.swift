@@ -379,7 +379,7 @@ class ClevelandIngress: XCTestCase {
         let hourPositions = BodiesRequest(body: Planet.jupiter).fetch(start: start, end: end, interval: hourSlice)
 
         guard let retroTuple = findRetrogradeTimeRangeForCoordinates(hourPositions) else {
-            print("nothing")
+            XCTFail("No retrograde tuple found when one was expected")
             return
         }
 
@@ -392,6 +392,38 @@ class ClevelandIngress: XCTestCase {
         let startString = retroTuple.start.toString(format: .cocoaDateTime, timeZone: .local)!
         let endString = retroTuple.end.toString(format: .cocoaDateTime, timeZone: .local)!
         print("retrograde start: \(startString) and end: \(endString)")
+
+        // Find Jupiter retrograde ingress for Pisces
+        let houses = ClevelandIngress.houseCusps
+        let minSlice = 60.0
+        let minPositions = BodiesRequest(body: Planet.jupiter).fetch(start: retroTuple.start, end: retroTuple.end, interval: minSlice)
+        let pisces = houses.pisces.value + houses.ascendent.value + 30.0
+        let roundedPisces = preciseRound(pisces, precision: .ones)
+        let prePMRetroCrossRange = 0.0 ... 1.0
+        let postPMRetroCrossRange = 359.0 ... 360.0
+
+        for i in stride(from: 0, to: minPositions.endIndex - 1, by: 1) {
+            let thisMin = minPositions[i]
+            let nextMin = minPositions[i + 1]
+            let nextMinString = nextMin.date.toString(format: .cocoaDateTime, timeZone: .local)!
+
+            if prePMRetroCrossRange.contains(thisMin.longitude) && postPMRetroCrossRange.contains(nextMin.longitude) {
+                if postPMRetroCrossRange.contains(roundedPisces) {
+                    print("Discovered pisces ingress at \(nextMinString)")
+                    break
+                }
+                else {
+                    continue
+                }
+            }
+
+            let retroMinRange = nextMin.longitude ... thisMin.longitude
+
+            if retroMinRange.contains(pisces) {
+                print("Discovered pisces ingress at \(nextMinString)")
+                break
+            }
+        }
     }
 
     func testPrototypeSignIngressesForYear() throws {
