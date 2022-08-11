@@ -48,8 +48,8 @@ class PlutoSquares2022: XCTestCase {
 
         print("date,natal longitude,live longitude")
         for position in plutoPositions {
-            let liveLongitude = round(position.longitude * 100) / 100.0
-            let natalLongitude = round(natalPluto.longitude * 100) / 100.0
+            let liveLongitude = preciseRound(position.longitude, precision: .hundredths)
+            let natalLongitude = preciseRound(natalPluto.longitude, precision: .hundredths)
             let dateString = position.date.toString(format: .cocoaDateTime)!
             print("\(dateString),\(natalLongitude),\(liveLongitude)")
         }
