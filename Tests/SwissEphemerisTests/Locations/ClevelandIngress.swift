@@ -308,6 +308,88 @@ class ClevelandIngress: XCTestCase {
         }
     }
 
+    func findRetrogradeTimeRangeForCoordinates<BodyType>(_ coordinates: [Coordinate<BodyType>]) -> (start: Date, end: Date)? where BodyType: CelestialBody {
+        if coordinates.count < 3 {
+            return nil;
+        }
+
+        var dates = [Date]()
+
+        for i in stride(from: 1, to: coordinates.endIndex - 1, by: 1) {
+            let prevCoordinate = coordinates[i - 1]
+            let thisCoordinate = coordinates[i]
+            let nextCoordinate = coordinates[i + 1]
+            let roundedPrev = preciseRound(prevCoordinate.longitude, precision: .thousandths)
+            let roundedThis = preciseRound(thisCoordinate.longitude, precision: .thousandths)
+            let roundedNext = preciseRound(nextCoordinate.longitude, precision: .thousandths)
+            let dateString = thisCoordinate.date.toString(format: .cocoaDateTime, timeZone: .local)!
+            let preCrossPrimeRange = 359.0 ... 360.0
+            let postCrossPrimeRange = 0.0 ... 1.0
+
+            if thisCoordinate.longitude < prevCoordinate.longitude {
+                print("\(dateString) retrograde motion: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
+                dates.append(prevCoordinate.date)
+
+                if i == coordinates.endIndex - 2 {
+                    dates.append(thisCoordinate.date)
+                    dates.append(nextCoordinate.date)
+                }
+
+                continue
+            }
+
+            if preCrossPrimeRange.contains(thisCoordinate.longitude) && postCrossPrimeRange.contains(prevCoordinate.longitude) {
+                print("\(dateString) retrograde motion crosses Prime Meridian: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
+                dates.append(prevCoordinate.date)
+                continue
+            }
+
+            if thisCoordinate.longitude >= 0.0 && prevCoordinate.longitude < 360.0 {
+                print("\(dateString) normal motion across the prime meridian")
+                continue
+            }
+
+            if thisCoordinate.longitude < 360.0 && nextCoordinate.longitude >= 0.0 {
+                print("\(dateString) normal motion across the prime meridian")
+                continue
+            }
+
+            if thisCoordinate.longitude >= 0.0 && nextCoordinate.longitude < 360.0 {
+                print("\(dateString) retrograde motion across the prime meridian")
+                continue
+            }
+        }
+
+        if dates.count >= 2 {
+            let tuple = (dates.first!, dates.last!)
+            return tuple
+        }
+
+        return nil
+    }
+
+    func testPrototypeRetrogradeRangeDiscovery() throws {
+        let start = Date(fromString: "2022-10-23 14:00:00 -0700", format: .cocoaDateTime)!
+        let end = start.offset(.week, value: 1)!
+        let hourSlice = Double(60 * 60)
+        let hourPositions = BodiesRequest(body: Planet.jupiter).fetch(start: start, end: end, interval: hourSlice)
+
+        guard let retroTuple = findRetrogradeTimeRangeForCoordinates(hourPositions) else {
+            print("nothing")
+            return
+        }
+
+        let startTest = Date(fromString: "2022-10-23 14:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
+        let endTest = Date(fromString: "2022-10-30 13:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
+
+        XCTAssert(retroTuple.start == startTest)
+        XCTAssert(retroTuple.end == endTest)
+
+        let startString = retroTuple.start.toString(format: .cocoaDateTime, timeZone: .local)!
+        let endString = retroTuple.end.toString(format: .cocoaDateTime, timeZone: .local)!
+        print("retrograde start: \(startString) and end: \(endString)")
+    }
+
     func testPrototypeSignIngressesForYear() throws {
         let houses = ClevelandIngress.houseCusps
         let bdString = houses.date.toString(format: .cocoaDateTime)!
