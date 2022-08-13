@@ -353,13 +353,38 @@ class ClevelandIngress: XCTestCase {
         return nil
     }
 
-            if thisCoordinate.longitude < 360.0 && nextCoordinate.longitude >= 0.0 {
-                print("\(dateString) normal motion across the prime meridian")
+    func findNormalTimeRangeForCoordinates<BodyType>(_ coordinates: [Coordinate<BodyType>]) -> (start: Date, end: Date)? where BodyType: CelestialBody {
+        if coordinates.count < 3 {
+            return nil;
+        }
+
+        var dates = [Date]()
+
+        for i in stride(from: 1, to: coordinates.endIndex - 1, by: 1) {
+            let prevCoordinate = coordinates[i - 1]
+            let thisCoordinate = coordinates[i]
+            let nextCoordinate = coordinates[i + 1]
+            let roundedPrev = preciseRound(prevCoordinate.longitude, precision: .thousandths)
+            let roundedThis = preciseRound(thisCoordinate.longitude, precision: .thousandths)
+            let dateString = thisCoordinate.date.toString(format: .cocoaDateTime, timeZone: .local)!
+            let preCrossPrimeRange = 359.0 ... 360.0
+            let postCrossPrimeRange = 0.0 ... 1.0
+
+            if thisCoordinate.longitude > prevCoordinate.longitude {
+                print("\(dateString) normal motion: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
+                dates.append(prevCoordinate.date)
+
+                if i == coordinates.endIndex - 2 {
+                    dates.append(thisCoordinate.date)
+                    dates.append(nextCoordinate.date)
+                }
+
                 continue
             }
 
-            if thisCoordinate.longitude >= 0.0 && nextCoordinate.longitude < 360.0 {
-                print("\(dateString) retrograde motion across the prime meridian")
+            if postCrossPrimeRange.contains(thisCoordinate.longitude) && preCrossPrimeRange.contains(prevCoordinate.longitude) {
+                print("\(dateString) normal motion crosses Prime Meridian: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
+                dates.append(prevCoordinate.date)
                 continue
             }
         }
