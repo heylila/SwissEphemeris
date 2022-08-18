@@ -308,6 +308,16 @@ class ClevelandIngress: XCTestCase {
         }
     }
 
+    // Zodiac sign transits
+    // Pluto takes between 12-31 years to transit a sign
+    // Neptune: 14 years
+    // Uranus: 7 years
+    // Saturn: 2 1/2 years
+    // Jupiter: 1 year
+    // Mars: 2-7 months
+    // Venus: 23 days to 2 months
+    // Mercury: 15-60 days
+
     func findRetrogradeTimeRangeForCoordinates<BodyType>(_ coordinates: [Coordinate<BodyType>]) -> (start: Date, end: Date)? where BodyType: CelestialBody {
         if coordinates.count < 3 {
             return nil;
@@ -458,7 +468,7 @@ class ClevelandIngress: XCTestCase {
 
         let originDate = Date(fromString: "2022-07-17 14:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
         let hourSlice = Double(60 * 60)
-        let minuteSlice = 60.0
+        let minuteSlice = Double(60)
         let planetCases = Planet.allCases.filter { planet in
             return planet != .moon
         }
@@ -475,49 +485,24 @@ class ClevelandIngress: XCTestCase {
                 let hourFirst = hourPositions.first!
                 let hourLast = hourPositions.last!
 
-                if hourFirst.longitude > hourLast.longitude {
-                    let retroHourRange = hourLast.longitude ... hourFirst.longitude
-                    guard let sign = returnSignForRange(houses, retroHourRange) else {
-                        print("No \(planet) ~~retrograde~~ sign ingresses")
+                guard let protoTuple = findNormalTimeRangeForCoordinates(hourPositions) else {
+                    guard let retroTuple = findRetrogradeTimeRangeForCoordinates(hourPositions) else {
                         continue
                     }
 
-                    let usableSignLongitude = sign.value + houses.ascendent.value
-                    let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
-                    for i in stride(from: minPositions.endIndex - 1, to: 0, by: -1) {
-                        let minLast = minPositions[i]
-                        let minFirst = minPositions[i - 1]
-                        let retroMinRange = minLast.longitude < minFirst.longitude ? minLast.longitude ... minFirst.longitude : minFirst.longitude ... minLast.longitude
-
-                        if retroMinRange.contains(usableSignLongitude) {
-                            print("\(planet) ~~retrograde~~ makes ingress with \(sign.sign) at \(minFirst.date.toString(format: .cocoaDateTime)!)")
-                            break
-                        }
-                    }
+                    // Find the CURRENT SIGN of the hourLast.longitude
+                    // Find the CURRENT SIGN of the hourFirst.longitude
+                    // if the two "CURRENT SIGNS" are different, than look for the minute
+                    // of the retrograde planetary motion crossing the sign boundary
 
                     continue
                 }
 
-                var range = hourFirst.longitude ... hourLast.longitude
-                guard let sign = returnSignForRange(houses, range) else {
-                    print("No sign ingress found for \(planet)") // during date range: \(startString) to \(endString)")
-                    continue
-                }
+                // Find the CURRENT SIGN of the hourLast.longitude
+                // Find the CURRENT SIGN of the hourFirst.longitude
+                // if the two "CURRENT SIGNS" are different, than look for the minute
+                // of the normal planetary motion crossing the sign boundary
 
-                let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
-                let usableSignLongitude = sign.value + houses.ascendent.value
-
-                for i in stride(from: 0, to: minPositions.endIndex, by: 1) {
-                    let minFirst = minPositions[i]
-                    let minLast = minPositions[i + 1]
-                    if minLast.longitude < minFirst.longitude { continue }
-                    range = minFirst.longitude ... minLast.longitude
-
-                    if range.contains(usableSignLongitude) {
-                        print("\(planet) makes ingress with \(sign.sign) at \(minLast.date.toString(format: .cocoaDateTime)!)")
-                        break
-                    }
-                }
             }
             print("")
         }
