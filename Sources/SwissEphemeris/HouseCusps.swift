@@ -53,6 +53,9 @@ public struct HouseCusps {
     /// Cusp between the eleventh and twelfth house
     public let twelfth: Cusp
 
+    /// Array of House Cusps, by numerical order
+    public let houses: [Cusp]
+
     /// Sign of Aries with starting degree
     public let aries: Sign
     /// Sign of Taurus with starting degree
@@ -77,6 +80,9 @@ public struct HouseCusps {
     public let aquarius: Sign
     /// Sign of Pisces with starting degree
     public let pisces: Sign
+
+    /// Array of House Signs, by Zodiac order
+    public let signs: [Sign]
 
 	/// The preferred initializer
 	/// - Parameters:
@@ -111,6 +117,11 @@ public struct HouseCusps {
 		eleventh = Cusp(value: cuspPointer[11])
 		twelfth =  Cusp(value: cuspPointer[12])
 
+        houses = [
+            first, second, third, fourth, fifth, sixth,
+            seventh, eighth, ninth, tenth, eleventh, twelfth
+        ]
+
         let origin = 360.0 - ascendent.value
         aries = Sign(value: origin, houseNumber: 0)
         taurus = Sign(value: origin + 30.0, houseNumber: 1)
@@ -124,5 +135,10 @@ public struct HouseCusps {
         capricorn = Sign(value: origin + 270.0, houseNumber: 9)
         aquarius = Sign(value: origin + 300.0, houseNumber: 10)
         pisces = Sign(value: origin + 330.0, houseNumber: 11)
+
+        signs = [
+            aries, taurus, gemini, cancer, leo, virgo,
+            libra, scorpio, sagittarius, capricorn, aquarius, pisces
+        ]
     }
 }
