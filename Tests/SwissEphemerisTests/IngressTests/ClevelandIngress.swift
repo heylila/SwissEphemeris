@@ -308,16 +308,6 @@ class ClevelandIngress: XCTestCase {
         }
     }
 
-    // Zodiac sign transits
-    // Pluto takes between 12-31 years to transit a sign
-    // Neptune: 14 years
-    // Uranus: 7 years
-    // Saturn: 2 1/2 years
-    // Jupiter: 1 year
-    // Mars: 2-7 months
-    // Venus: 23 days to 2 months
-    // Mercury: 15-60 days
-
     func findRetrogradeTimeRangeForCoordinates<BodyType>(_ coordinates: [Coordinate<BodyType>]) -> (start: Date, end: Date)? where BodyType: CelestialBody {
         if coordinates.count < 3 {
             return nil;
