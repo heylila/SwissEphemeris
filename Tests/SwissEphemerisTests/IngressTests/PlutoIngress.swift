@@ -227,4 +227,82 @@ class PlutoIngress: XCTestCase {
         print("Pluto ingresses \(minuteFuture.sign) at \(afterString)")
     }
 
+    func testPlutoIngressCapricorn() throws {
+        let pluto = Planet.pluto
+        guard let plutoTuple = PlutoIngress.signTransits[pluto] else { return }
+        let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
+        let priorDate = originDate.offset(plutoTuple.dateType, value: (-1 * plutoTuple.amount))!
+        let monthSlice = Double(28 * 24 * 3600)
+        let hourSlice = Double(3600)
+        let minuteSlice = Double(60)
+        let timeSlice = plutoTuple.dateType == .month ? monthSlice : hourSlice
+        var positions = BodiesRequest(body: pluto).fetch(start: priorDate, end: originDate, interval: timeSlice)
+        var plutoPast: Coordinate<Planet>?
+        var plutoFuture: Coordinate<Planet>?
+
+        for i in stride(from: positions.endIndex - 1, to: 1, by: -1) {
+            let plutoNow = positions[i]
+            let plutoBefore = positions[i - 1]
+
+            if plutoNow.sign != plutoBefore.sign {
+                plutoFuture = plutoNow
+                plutoPast = plutoBefore
+                break
+            }
+        }
+
+        guard let plutoPast = plutoPast else { return }
+        guard let plutoFuture = plutoFuture else { return }
+
+        positions = BodiesRequest(body: pluto).fetch(start: plutoPast.date, end: plutoFuture.date, interval: hourSlice)
+
+        var hourPast: Coordinate<Planet>?
+        var hourFuture: Coordinate<Planet>?
+
+        for i in stride(from: positions.endIndex - 1, to: 1, by: -1) {
+            let hourNow = positions[i]
+            let hourBefore = positions[i - 1]
+            if hourNow.sign != hourBefore.sign {
+                hourFuture = hourNow
+                hourPast = hourBefore
+                break
+            }
+        }
+
+        guard let hourPast = hourPast else { return }
+        guard let hourFuture = hourFuture else { return }
+
+        positions = BodiesRequest(body: pluto).fetch(start: hourPast.date, end: hourFuture.date, interval: minuteSlice)
+        var minutePast: Coordinate<Planet>?
+        var minuteFuture: Coordinate<Planet>?
+
+        for i in stride(from: positions.endIndex - 1, to: 1, by: -1) {
+            let minuteNow = positions[i]
+            let minuteBefore = positions[i - 1]
+            if minuteNow.sign != minuteBefore.sign {
+                minuteFuture = minuteNow
+                minutePast = minuteBefore
+                break
+            }
+        }
+
+        guard let minutePast = minutePast else { return }
+        guard let minuteFuture = minuteFuture else { return }
+
+        // Pluto egresses sagittarius at 2008-11-26 17:03:00 -0800
+        // Pluto ingresses capricorn at 2008-11-26 17:04:00 -0800
+        let egressDate = Date(fromString: "2008-11-26 17:03:00 -0800", format: .cocoaDateTime)!
+        let ingressDate = Date(fromString: "2008-11-26 17:04:00 -0800", format: .cocoaDateTime)!
+        XCTAssert(egressDate == minutePast.date)
+        XCTAssert(ingressDate == minuteFuture.date)
+
+        XCTAssert(minutePast.sign == Zodiac.sagittarius)
+        XCTAssert(minuteFuture.sign == Zodiac.capricorn)
+
+        let beforeString = minutePast.date.toString(format: .cocoaDateTime, timeZone: .local)!
+        let afterString = minuteFuture.date.toString(format: .cocoaDateTime, timeZone: .local)!
+
+        print("Pluto egresses \(minutePast.sign) at \(beforeString)")
+        print("Pluto ingresses \(minuteFuture.sign) at \(afterString)")
+    }
 }
