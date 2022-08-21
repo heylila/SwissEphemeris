@@ -115,6 +115,7 @@ class PlutoIngress: XCTestCase {
 
     static var signTransits: [Planet : (dateType: Date.DateComponentType, amount: Int)] {
         let d: [Planet : (dateType: Date.DateComponentType, amount: Int)] = [
+            .sun : (.day, 35),
             .mercury : (.day, 60),
             .venus : (.day, 60),
             .mars : (.month, 7),
