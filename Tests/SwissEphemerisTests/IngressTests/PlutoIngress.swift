@@ -147,7 +147,7 @@ class PlutoIngress: XCTestCase {
     // March 24th 2023 Pluto enters Aquarius.
 
 
-    func testPlutoInCapricorn() throws {
+    func testPlutoEgressCapricorn() throws {
         let houses = ClevelandIngress.houseCusps
         let pluto = Planet.pluto
         guard let plutoTuple = PlutoIngress.signTransits[pluto] else { return }
