@@ -150,33 +150,33 @@ class PlutoIngress: XCTestCase {
 
     func testPlutoEgressCapricorn() throws {
         let houses = ClevelandIngress.houseCusps
-        let pluto = Planet.pluto
-        guard let plutoTuple = PlutoIngress.signTransits[pluto] else { return }
+        let planetBody = Planet.pluto
+        guard let tuple = PlutoIngress.signTransits[planetBody] else { return }
         let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
-        let endDate = originDate.offset(plutoTuple.dateType, value: plutoTuple.amount)!
+        let endDate = originDate.offset(tuple.dateType, value: tuple.amount)!
         let monthSlice = Double(28 * 24 * 3600)
         let hourSlice = Double(3600)
         let minuteSlice = Double(60)
-        let timeSlice = plutoTuple.dateType == .month ? monthSlice : hourSlice
-        var positions = BodiesRequest(body: pluto).fetch(start: originDate, end: endDate, interval: timeSlice)
-        var plutoPast: Coordinate<Planet>?
-        var plutoFuture: Coordinate<Planet>?
+        let timeSlice = tuple.dateType == .month ? monthSlice : hourSlice
+        var positions = BodiesRequest(body: planetBody).fetch(start: originDate, end: endDate, interval: timeSlice)
+        var monthPast: Coordinate<Planet>?
+        var monthFuture: Coordinate<Planet>?
 
         for i in stride(from: 0, to: positions.endIndex - 1, by: 1) {
-            let plutoNow = positions[i]
-            let plutoLater = positions[i + 1]
+            let monthNow = positions[i]
+            let monthLater = positions[i + 1]
 
-            if plutoNow.sign != plutoLater.sign {
-                plutoFuture = plutoLater
-                plutoPast = plutoNow
+            if monthNow.sign != monthLater.sign {
+                monthFuture = monthLater
+                monthPast = monthNow
                 break
             }
         }
 
-        guard let plutoPast = plutoPast else { return }
-        guard let plutoFuture = plutoFuture else { return }
+        guard let monthPast = monthPast else { return }
+        guard let monthFuture = monthFuture else { return }
 
-        positions = BodiesRequest(body: pluto).fetch(start: plutoPast.date, end: plutoFuture.date, interval: hourSlice)
+        positions = BodiesRequest(body: planetBody).fetch(start: monthPast.date, end: monthFuture.date, interval: hourSlice)
 
         var hourPast: Coordinate<Planet>?
         var hourFuture: Coordinate<Planet>?
@@ -194,7 +194,7 @@ class PlutoIngress: XCTestCase {
         guard let hourPast = hourPast else { return }
         guard let hourFuture = hourFuture else { return }
 
-        positions = BodiesRequest(body: pluto).fetch(start: hourPast.date, end: hourFuture.date, interval: minuteSlice)
+        positions = BodiesRequest(body: planetBody).fetch(start: hourPast.date, end: hourFuture.date, interval: minuteSlice)
         var minutePast: Coordinate<Planet>?
         var minuteFuture: Coordinate<Planet>?
 
@@ -229,33 +229,33 @@ class PlutoIngress: XCTestCase {
     }
 
     func testPlutoIngressCapricorn() throws {
-        let pluto = Planet.pluto
-        guard let plutoTuple = PlutoIngress.signTransits[pluto] else { return }
+        let planetBody = Planet.pluto
+        guard let tuple = PlutoIngress.signTransits[planetBody] else { return }
         let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
-        let priorDate = originDate.offset(plutoTuple.dateType, value: (-1 * plutoTuple.amount))!
+        let priorDate = originDate.offset(tuple.dateType, value: (-1 * tuple.amount))!
         let monthSlice = Double(28 * 24 * 3600)
         let hourSlice = Double(3600)
         let minuteSlice = Double(60)
-        let timeSlice = plutoTuple.dateType == .month ? monthSlice : hourSlice
-        var positions = BodiesRequest(body: pluto).fetch(start: priorDate, end: originDate, interval: timeSlice)
-        var plutoPast: Coordinate<Planet>?
-        var plutoFuture: Coordinate<Planet>?
+        let timeSlice = tuple.dateType == .month ? monthSlice : hourSlice
+        var positions = BodiesRequest(body: planetBody).fetch(start: priorDate, end: originDate, interval: timeSlice)
+        var monthPast: Coordinate<Planet>?
+        var monthFuture: Coordinate<Planet>?
 
         for i in stride(from: positions.endIndex - 1, to: 1, by: -1) {
-            let plutoNow = positions[i]
-            let plutoBefore = positions[i - 1]
+            let monthNow = positions[i]
+            let monthBefore = positions[i - 1]
 
-            if plutoNow.sign != plutoBefore.sign {
-                plutoFuture = plutoNow
-                plutoPast = plutoBefore
+            if monthNow.sign != monthBefore.sign {
+                monthFuture = monthNow
+                monthPast = monthBefore
                 break
             }
         }
 
-        guard let plutoPast = plutoPast else { return }
-        guard let plutoFuture = plutoFuture else { return }
+        guard let monthPast = monthPast else { return }
+        guard let monthFuture = monthFuture else { return }
 
-        positions = BodiesRequest(body: pluto).fetch(start: plutoPast.date, end: plutoFuture.date, interval: hourSlice)
+        positions = BodiesRequest(body: planetBody).fetch(start: monthPast.date, end: monthFuture.date, interval: hourSlice)
 
         var hourPast: Coordinate<Planet>?
         var hourFuture: Coordinate<Planet>?
@@ -273,7 +273,7 @@ class PlutoIngress: XCTestCase {
         guard let hourPast = hourPast else { return }
         guard let hourFuture = hourFuture else { return }
 
-        positions = BodiesRequest(body: pluto).fetch(start: hourPast.date, end: hourFuture.date, interval: minuteSlice)
+        positions = BodiesRequest(body: planetBody).fetch(start: hourPast.date, end: hourFuture.date, interval: minuteSlice)
         var minutePast: Coordinate<Planet>?
         var minuteFuture: Coordinate<Planet>?
 
