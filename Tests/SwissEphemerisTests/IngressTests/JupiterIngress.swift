@@ -113,22 +113,6 @@ class JupiterIngress: XCTestCase {
     // Venus: 23 days to 2 months
     // Mercury: 15-60 days
 
-    static var signTransits: [Planet : (dateType: Date.DateComponentType, amount: Int)] {
-        let d: [Planet : (dateType: Date.DateComponentType, amount: Int)] = [
-            .sun : (.day, 35),
-            .mercury : (.day, 65),
-            .venus : (.day, 70),
-            .mars : (.month, 8),
-            .jupiter : (.month, 13),
-            .saturn : (.month, Int(2.6 * 12)),
-            .uranus : (.month, Int(8 * 12)),
-            .neptune : (.month, Int(15 * 12)),
-            .pluto : (.month, Int(32 * 12))
-        ]
-
-        return d
-    }
-
     // Crazy example of Pluto-in-Capricorn ingress
     // The Pluto in Capricorn-Aquarius Transition
     // January 27th 2008 Pluto enters Capricorn for the first time in 248 years.
@@ -151,7 +135,7 @@ class JupiterIngress: XCTestCase {
     func testJupiterEgressTaurus() throws {
         let houses = ClevelandIngress.houseCusps
         let planet = Planet.jupiter
-        guard let tuple = JupiterIngress.signTransits[planet] else { return }
+        guard let tuple = PlutoIngress.signTransits[planet] else { return }
         let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
         let endDate = originDate.offset(tuple.dateType, value: tuple.amount)!
         let monthSlice = Double(28 * 24 * 3600)
@@ -231,7 +215,7 @@ class JupiterIngress: XCTestCase {
 
     func testJupiterIngressPisces() throws {
         let planet = Planet.jupiter
-        guard let tuple = JupiterIngress.signTransits[planet] else { return }
+        guard let tuple = PlutoIngress.signTransits[planet] else { return }
         let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
         let priorDate = originDate.offset(tuple.dateType, value: (-1 * tuple.amount))!
         let monthSlice = Double(28 * 24 * 3600)
