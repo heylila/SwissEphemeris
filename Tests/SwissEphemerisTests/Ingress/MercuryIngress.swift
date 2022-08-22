@@ -216,4 +216,30 @@ class MercuryIngress: XCTestCase {
         print("\(planet) egresses \(tuple.egress.sign) at \(beforeString)")
         print("\(planet) ingresses \(tuple.ingress.sign) at \(afterString)")
     }
+
+    func testMercuryIngressHouses() throws {
+        let chart = ClevelandIngress.houseCusps
+        let planet = Planet.mercury
+        guard let signTuple = PlutoIngress.signTransits[planet] else { return }
+        let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
+        let endDate = originDate.offset(signTuple.dateType, value: signTuple.amount)!
+        let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
+        let sliceIndex = signTuple.dateType == .month ? 0 : 1
+        let time = slices[sliceIndex]
+        let positions = BodiesRequest(body: planet).fetch(start: originDate, end: endDate, interval: time.slice)
+
+        // Find house of Mercury at start date:
+        let pos0 = positions.first!
+        let offsetHouses = Array(chart.houses.dropFirst()) + [chart.first]
+        let pair: (ingress: Cusp, egress: Cusp)
+
+        for (current, next) in zip(chart.houses, offsetHouses) {
+            if current.value <= pos0.longitude && pos0.longitude < next.value {
+                pair = (current, next)
+                break
+            }
+        }
+
+        
+    }
 }
