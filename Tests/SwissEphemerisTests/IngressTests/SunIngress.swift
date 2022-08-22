@@ -14,95 +14,6 @@ class SunIngress: XCTestCase {
         JPLFileManager.setEphemerisPath()
     }
 
-    func findRetrogradeTimeRangeForCoordinates<BodyType>(_ coordinates: [Coordinate<BodyType>]) -> (start: Date, end: Date)? where BodyType: CelestialBody {
-        if coordinates.count < 3 {
-            return nil;
-        }
-
-        var dates = [Date]()
-
-        for i in stride(from: 1, to: coordinates.endIndex - 1, by: 1) {
-            let prevCoordinate = coordinates[i - 1]
-            let thisCoordinate = coordinates[i]
-            let nextCoordinate = coordinates[i + 1]
-            let preCrossPrimeRange = 359.0 ... 360.0
-            let postCrossPrimeRange = 0.0 ... 1.0
-
-            if thisCoordinate.longitude < prevCoordinate.longitude {
-                dates.append(prevCoordinate.date)
-
-                if i == coordinates.endIndex - 2 {
-                    dates.append(thisCoordinate.date)
-                    dates.append(nextCoordinate.date)
-                }
-
-                continue
-            }
-
-            if preCrossPrimeRange.contains(thisCoordinate.longitude) && postCrossPrimeRange.contains(prevCoordinate.longitude) {
-                dates.append(prevCoordinate.date)
-
-                if i == coordinates.endIndex - 2 {
-                    dates.append(thisCoordinate.date)
-                    dates.append(nextCoordinate.date)
-                }
-
-                continue
-            }
-        }
-
-        if dates.count >= 2 {
-            let tuple = (dates.first!, dates.last!)
-            return tuple
-        }
-
-        return nil
-    }
-
-    func findNormalTimeRangeForCoordinates<BodyType>(_ coordinates: [Coordinate<BodyType>]) -> (start: Date, end: Date)? where BodyType: CelestialBody {
-        if coordinates.count < 3 {
-            return nil;
-        }
-
-        var dates = [Date]()
-
-        for i in stride(from: 1, to: coordinates.endIndex - 1, by: 1) {
-            let prevCoordinate = coordinates[i - 1]
-            let thisCoordinate = coordinates[i]
-            let nextCoordinate = coordinates[i + 1]
-            let roundedPrev = preciseRound(prevCoordinate.longitude, precision: .thousandths)
-            let roundedThis = preciseRound(thisCoordinate.longitude, precision: .thousandths)
-            let dateString = thisCoordinate.date.toString(format: .cocoaDateTime, timeZone: .local)!
-            let preCrossPrimeRange = 359.0 ... 360.0
-            let postCrossPrimeRange = 0.0 ... 1.0
-
-            if thisCoordinate.longitude > prevCoordinate.longitude {
-                print("\(dateString) normal motion: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
-                dates.append(prevCoordinate.date)
-
-                if i == coordinates.endIndex - 2 {
-                    dates.append(thisCoordinate.date)
-                    dates.append(nextCoordinate.date)
-                }
-
-                continue
-            }
-
-            if postCrossPrimeRange.contains(thisCoordinate.longitude) && preCrossPrimeRange.contains(prevCoordinate.longitude) {
-                print("\(dateString) normal motion crosses Prime Meridian: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
-                dates.append(prevCoordinate.date)
-                continue
-            }
-        }
-
-        if dates.count >= 2 {
-            let tuple = (dates.first!, dates.last!)
-            return tuple
-        }
-
-        return nil
-    }
-
     // Zodiac sign transits
     // Pluto takes between 12-31 years to transit a sign
     // Neptune: 14 years
@@ -166,15 +77,15 @@ class SunIngress: XCTestCase {
 
         guard let tuple = ingressTuple else { return }
 
-        // mercury egresses virgo at 2022-08-25 18:02:00 -0700
-        // mercury ingresses libra at 2022-08-25 18:03:00 -0700
-        let egressDate = Date(fromString: "2022-08-25 18:02:00 -0700", format: .cocoaDateTime)!
-        let ingressDate = Date(fromString: "2022-08-25 18:03:00 -0700", format: .cocoaDateTime)!
+        // sun egresses leo at 2022-08-22 20:16:00 -0700
+        // sun ingresses virgo at 2022-08-22 20:17:00 -0700
+        let egressDate = Date(fromString: "2022-08-22 20:16:00 -0700", format: .cocoaDateTime)!
+        let ingressDate = Date(fromString: "2022-08-22 20:17:00 -0700", format: .cocoaDateTime)!
         XCTAssert(egressDate == tuple.egress.date)
         XCTAssert(ingressDate == tuple.ingress.date)
 
-        XCTAssert(tuple.egress.sign == Zodiac.virgo)
-        XCTAssert(tuple.ingress.sign == Zodiac.libra)
+        XCTAssert(tuple.egress.sign == Zodiac.leo)
+        XCTAssert(tuple.ingress.sign == Zodiac.virgo)
 
         let beforeString = tuple.egress.date.toString(format: .cocoaDateTime, timeZone: .local)!
         let afterString = tuple.ingress.date.toString(format: .cocoaDateTime, timeZone: .local)!
