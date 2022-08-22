@@ -166,13 +166,13 @@ class PlutoIngress: XCTestCase {
         let sliceIndex = signTuple.dateType == .month ? 0 : 1
         var start = originDate
         var end = endDate
-        var ingressuple: (egress: Coordinate<Planet>, ingress: Coordinate<Planet>)?
+        var ingressTuple: (egress: Coordinate<Planet>, ingress: Coordinate<Planet>)?
 
         for i in stride(from: sliceIndex, to: slices.endIndex, by: 1) {
             let time = slices[i]
-            ingressuple = sliceTimeForIngress(start, end, time.slice)
+            ingressTuple = sliceTimeForEgress(start, end, time.slice)
 
-            guard let ingressTuple = ingressuple else {
+            guard let ingressTuple = ingressTuple else {
                 XCTFail("We have a failure for a given time slice: \(time)")
                 return
             }
@@ -181,7 +181,7 @@ class PlutoIngress: XCTestCase {
             end = ingressTuple.ingress.date
         }
 
-        guard let tuple = ingressuple else { return }
+        guard let tuple = ingressTuple else { return }
 
         // Pluto egresses capricorn at 2023-03-23 05:23:00 -0700
         // Pluto ingresses aquarius at 2023-03-23 05:24:00 -0700
