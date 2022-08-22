@@ -13,10 +13,14 @@ public struct Cusp {
 	/// The degree of the coordinate
 	public let value: Double
 
+    /// The name of the Cusp
+    public let name: String
+
 	/// Creates a `Cusp`.
 	/// - Parameter value: The latitudinal degree to set.
-	public init(value: Double) {
+    public init(value: Double, name: String) {
 		self.value = value
+        self.name = name
 	}
 }
 
