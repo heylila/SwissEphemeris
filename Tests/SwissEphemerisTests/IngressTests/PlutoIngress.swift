@@ -154,7 +154,7 @@ class PlutoIngress: XCTestCase {
         let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
         let endDate = originDate.offset(signTuple.dateType, value: signTuple.amount)!
 
-        func sliceTimeForIngress(_ start: Date, _ stop: Date, _ timeSlice: Double) -> (egress: Coordinate<Planet>, ingress: Coordinate<Planet>)? {
+        func sliceTimeForEgress(_ start: Date, _ stop: Date, _ timeSlice: Double) -> (egress: Coordinate<Planet>, ingress: Coordinate<Planet>)? {
             let positions = BodiesRequest(body: planet).fetch(start: start, end: stop, interval: timeSlice)
 
             return zip(positions, positions.dropFirst())
