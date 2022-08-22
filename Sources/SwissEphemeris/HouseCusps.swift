@@ -102,20 +102,20 @@ public struct HouseCusps {
         self.latitude = latitude
         self.longitude = longitude
 		swe_houses(date.julianDate(), latitude, longitude, houseSystem.rawValue, cuspPointer, ascendentPointer);
-		ascendent = Cusp(value: ascendentPointer[0])
-		midHeaven = Cusp(value: ascendentPointer[1])
-		first = Cusp(value: cuspPointer[1])
-		second = Cusp(value: cuspPointer[2])
-		third = Cusp(value: cuspPointer[3])
-		fourth =  Cusp(value: cuspPointer[4])
-		fifth = Cusp(value: cuspPointer[5])
-		sixth = Cusp(value: cuspPointer[6])
-		seventh = Cusp(value: cuspPointer[7])
-		eighth =  Cusp(value: cuspPointer[8])
-		ninth =  Cusp(value: cuspPointer[9])
-		tenth = Cusp(value: cuspPointer[10])
-		eleventh = Cusp(value: cuspPointer[11])
-		twelfth =  Cusp(value: cuspPointer[12])
+        ascendent = Cusp(value: ascendentPointer[0], name: "ascendant")
+        midHeaven = Cusp(value: ascendentPointer[1], name: "midHeaven")
+        first = Cusp(value: cuspPointer[1], name: "first")
+        second = Cusp(value: cuspPointer[2], name: "second")
+        third = Cusp(value: cuspPointer[3], name: "third")
+        fourth =  Cusp(value: cuspPointer[4], name: "fourth")
+        fifth = Cusp(value: cuspPointer[5], name: "fifth")
+        sixth = Cusp(value: cuspPointer[6], name: "sixth")
+        seventh = Cusp(value: cuspPointer[7], name: "seventh")
+        eighth =  Cusp(value: cuspPointer[8], name: "eighth")
+        ninth =  Cusp(value: cuspPointer[9], name: "ninth")
+        tenth = Cusp(value: cuspPointer[10], name: "tenth")
+        eleventh = Cusp(value: cuspPointer[11], name: "eleventh")
+        twelfth =  Cusp(value: cuspPointer[12], name: "twelfth")
 
         houses = [
             first, second, third, fourth, fifth, sixth,
