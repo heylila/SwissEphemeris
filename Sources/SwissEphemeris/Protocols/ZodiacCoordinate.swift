@@ -22,6 +22,9 @@ public protocol ZodiacCoordinate {
 	var minute: Double { get}
 	/// The second value for the degree.
 	var second: Double { get }
+
+    /// The rounded decimal for the degree, to the thousandths position
+    var roundedValue: Double { get }
 }
 
 public extension ZodiacCoordinate {
@@ -35,6 +38,8 @@ public extension ZodiacCoordinate {
 	var minute: Double { value.truncatingRemainder(dividingBy: 1) * 60 }
 	
 	var second: Double { minute.truncatingRemainder(dividingBy: 1) * 60 }
+
+    var roundedValue: Double { preciseRound(value, precision: .thousandths) }
 }
 
 public extension ZodiacCoordinate {
