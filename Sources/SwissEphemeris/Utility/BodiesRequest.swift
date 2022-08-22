@@ -7,6 +7,26 @@
 
 import Foundation
 
+public enum TimeSlice: Double, CaseIterable {
+    case minute
+    case hour
+    case day
+    case month
+
+    public var slice: Double {
+        switch self {
+        case .minute:
+            return Double(60)
+        case .hour:
+            return Double(60 * 60)
+        case .day:
+            return Double(24 * 60 * 60)
+        case .month:
+            return Double(28 * 24 * 60 * 60)
+        }
+    }
+}
+
 /// A generic `BatchRequest` for a collection of `<BodyType>` `Coordinates`.
 final public class BodiesRequest<BodyType>: BatchRequest where BodyType: CelestialBody {
 
