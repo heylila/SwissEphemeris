@@ -149,83 +149,55 @@ class PlutoIngress: XCTestCase {
 
 
     func testPlutoEgressCapricorn() throws {
-        let houses = ClevelandIngress.houseCusps
-        let planetBody = Planet.pluto
-        guard let tuple = PlutoIngress.signTransits[planetBody] else { return }
+        let planet = Planet.pluto
+        guard let signTuple = PlutoIngress.signTransits[planet] else { return }
         let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
-        let endDate = originDate.offset(tuple.dateType, value: tuple.amount)!
-        let monthSlice = Double(28 * 24 * 3600)
-        let hourSlice = Double(3600)
-        let minuteSlice = Double(60)
-        let timeSlice = tuple.dateType == .month ? monthSlice : hourSlice
-        var positions = BodiesRequest(body: planetBody).fetch(start: originDate, end: endDate, interval: timeSlice)
-        var monthPast: Coordinate<Planet>?
-        var monthFuture: Coordinate<Planet>?
+        let endDate = originDate.offset(signTuple.dateType, value: signTuple.amount)!
 
-        for i in stride(from: 0, to: positions.endIndex - 1, by: 1) {
-            let monthNow = positions[i]
-            let monthLater = positions[i + 1]
+        func sliceTimeForIngress(_ start: Date, _ stop: Date, _ timeSlice: Double) -> (egress: Coordinate<Planet>, ingress: Coordinate<Planet>)? {
+            let positions = BodiesRequest(body: planet).fetch(start: start, end: stop, interval: timeSlice)
 
-            if monthNow.sign != monthLater.sign {
-                monthFuture = monthLater
-                monthPast = monthNow
-                break
-            }
+            return zip(positions, positions.dropFirst())
+                .first { (now, later) in now.sign != later.sign }
+                .map { (now, later) in (now, later) }
         }
 
-        guard let monthPast = monthPast else { return }
-        guard let monthFuture = monthFuture else { return }
+        let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
+        let sliceIndex = signTuple.dateType == .month ? 0 : 1
+        var start = originDate
+        var end = endDate
+        var ingressuple: (egress: Coordinate<Planet>, ingress: Coordinate<Planet>)?
 
-        positions = BodiesRequest(body: planetBody).fetch(start: monthPast.date, end: monthFuture.date, interval: hourSlice)
+        for i in stride(from: sliceIndex, to: slices.endIndex, by: 1) {
+            let time = slices[i]
+            ingressuple = sliceTimeForIngress(start, end, time.slice)
 
-        var hourPast: Coordinate<Planet>?
-        var hourFuture: Coordinate<Planet>?
-
-        for i in stride(from: 0, to: positions.endIndex - 1, by: 1) {
-            let hourNow = positions[i]
-            let hourLater = positions[i + 1]
-            if hourNow.sign != hourLater.sign {
-                hourFuture = hourLater
-                hourPast = hourNow
-                break
+            guard let ingressTuple = ingressuple else {
+                XCTFail("We have a failure for a given time slice: \(time)")
+                return
             }
+
+            start = ingressTuple.egress.date
+            end = ingressTuple.ingress.date
         }
 
-        guard let hourPast = hourPast else { return }
-        guard let hourFuture = hourFuture else { return }
-
-        positions = BodiesRequest(body: planetBody).fetch(start: hourPast.date, end: hourFuture.date, interval: minuteSlice)
-        var minutePast: Coordinate<Planet>?
-        var minuteFuture: Coordinate<Planet>?
-
-        for i in stride(from: 0, to: positions.endIndex - 1, by: 1) {
-            let minuteNow = positions[i]
-            let minuteLater = positions[i + 1]
-            if minuteNow.sign != minuteLater.sign {
-                minuteFuture = minuteLater
-                minutePast = minuteNow
-                break
-            }
-        }
-
-        guard let minutePast = minutePast else { return }
-        guard let minuteFuture = minuteFuture else { return }
+        guard let tuple = ingressuple else { return }
 
         // Pluto egresses capricorn at 2023-03-23 05:23:00 -0700
         // Pluto ingresses aquarius at 2023-03-23 05:24:00 -0700
         let egressDate = Date(fromString: "2023-03-23 05:23:00 -0700", format: .cocoaDateTime)!
         let ingressDate = Date(fromString: "2023-03-23 05:24:00 -0700", format: .cocoaDateTime)!
-        XCTAssert(egressDate == minutePast.date)
-        XCTAssert(ingressDate == minuteFuture.date)
+        XCTAssert(egressDate == tuple.egress.date)
+        XCTAssert(ingressDate == tuple.ingress.date)
 
-        XCTAssert(minutePast.sign == Zodiac.capricorn)
-        XCTAssert(minuteFuture.sign == Zodiac.aquarius)
+        XCTAssert(tuple.egress.sign == Zodiac.capricorn)
+        XCTAssert(tuple.ingress.sign == Zodiac.aquarius)
 
-        let beforeString = minutePast.date.toString(format: .cocoaDateTime, timeZone: .local)!
-        let afterString = minuteFuture.date.toString(format: .cocoaDateTime, timeZone: .local)!
+        let beforeString = tuple.egress.date.toString(format: .cocoaDateTime, timeZone: .local)!
+        let afterString = tuple.ingress.date.toString(format: .cocoaDateTime, timeZone: .local)!
 
-        print("Pluto egresses \(minutePast.sign) at \(beforeString)")
-        print("Pluto ingresses \(minuteFuture.sign) at \(afterString)")
+        print("Pluto egresses \(tuple.egress.sign) at \(beforeString)")
+        print("Pluto ingresses \(tuple.ingress.sign) at \(afterString)")
     }
 
     func testPlutoIngressCapricorn() throws {
