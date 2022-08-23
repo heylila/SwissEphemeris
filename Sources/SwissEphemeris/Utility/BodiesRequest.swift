@@ -42,7 +42,7 @@ final public class BodiesRequest<BodyType>: BatchRequest where BodyType: Celesti
     }
 
     public func fetch(start: Date, end: Date, interval: TimeInterval = 60.0) -> [EphemerisItem] {
-        stride(from: start, to: end, by: interval).map {
+        stride(from: start, through: end, by: interval).map {
             EphemerisItem(body: body, date: $0)
         }
     }
