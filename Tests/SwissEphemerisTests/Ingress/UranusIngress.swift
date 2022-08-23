@@ -228,10 +228,17 @@ class UranusIngress: XCTestCase {
         XCTAssert(tuple.egress.date == egressDate, "actual egress date: \(tuple.egress.date.toString(format: .cocoaDateTime)!)")
         XCTAssert(tuple.ingress.date == ingressDate, "actual ingress date: \(tuple.ingress.date.toString(format: .cocoaDateTime)!)")
 
-        guard let egressCusp = chart.cuspForLongitude(tuple.egress.longitude) else { return }
-        guard let ingressCusp = chart.cuspForLongitude(tuple.ingress.longitude) else { return }
-        XCTAssert(egressCusp.name == "eighth", "egressCusp name = \(egressCusp.name)")
-        XCTAssert(ingressCusp.name == "ninth", "ingressCusp name = \(ingressCusp.name)")
+        guard let egressCusp = chart.cuspForLongitude(tuple.egress.longitude) else {
+            XCTFail("We don't have an egress cusp!")
+            return
+        }
+        guard let ingressCusp = chart.cuspForLongitude(tuple.ingress.longitude) else {
+            XCTFail("We don't have an ingress cusp!")
+            return
+        }
+
+        XCTAssert(egressCusp.name == "eleventh", "egressCusp name = \(egressCusp.name)")
+        XCTAssert(ingressCusp.name == "twelfth", "ingressCusp name = \(ingressCusp.name)")
         print("egress date: \(tuple.egress.date.toString(format: .cocoaDateTime)!)")
         print("ingress date: \(tuple.ingress.date.toString(format: .cocoaDateTime)!)")
     }
