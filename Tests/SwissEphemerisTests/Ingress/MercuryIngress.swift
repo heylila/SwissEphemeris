@@ -217,7 +217,7 @@ class MercuryIngress: XCTestCase {
         print("\(planet) ingresses \(tuple.ingress.sign) at \(afterString)")
     }
 
-    func testMercuryIngressesNext() throws {
+    func testMercuryNextIngress() throws {
         let chart = ClevelandIngress.houseCusps
         let planet = Planet.mercury
         guard let signTuple = PlutoIngress.signTransits[planet] else { return }
@@ -277,10 +277,10 @@ class MercuryIngress: XCTestCase {
         XCTAssert(tuple.egress.date == egressDate)
         XCTAssert(tuple.ingress.date == ingressDate)
 
-        XCTAssert(tuple.egress.longitude > pair.current.value)
-        XCTAssert(tuple.egress.longitude < pair.next.value)
-        XCTAssert(tuple.ingress.longitude > pair.next.value)
-        XCTAssert(pair.next.name == "sixth")
+        guard let egressCusp = chart.cuspForLongitude(tuple.egress.longitude) else { return }
+        guard let ingressCusp = chart.cuspForLongitude(tuple.ingress.longitude) else { return }
+        XCTAssert(egressCusp.name == "fifth", "egressCusp name = \(egressCusp.name)")
+        XCTAssert(ingressCusp.name == "sixth", "ingressCusp name = \(ingressCusp.name)")
         print("egress date: \(tuple.egress.date.toString(format: .cocoaDateTime)!)")
         print("ingress date: \(tuple.ingress.date.toString(format: .cocoaDateTime)!)")
     }
