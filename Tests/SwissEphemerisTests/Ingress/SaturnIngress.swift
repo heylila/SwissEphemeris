@@ -14,35 +14,6 @@ class SaturnIngress: XCTestCase {
         JPLFileManager.setEphemerisPath()
     }
 
-    // Zodiac sign transits
-    // Pluto takes between 12-31 years to transit a sign
-    // Neptune: 14 years
-    // Uranus: 7 years
-    // Saturn: 2 1/2 years
-    // Jupiter: 1 year
-    // Mars: 2-7 months
-    // Venus: 23 days to 2 months
-    // Mercury: 15-60 days
-
-    // Crazy example of Pluto-in-Capricorn ingress
-    // The Pluto in Capricorn-Aquarius Transition
-    // January 27th 2008 Pluto enters Capricorn for the first time in 248 years.
-    // June 15th 2008 Pluto goes back into Sagittarius.
-    // November 27th 2008 Pluto re-enters Capricorn.
-    // March 24th 2023 Pluto enters Aquarius.
-    // June 12th 2023 Pluto re-enters Capricorn.
-    // January 22nd 2024 Pluto enters Aquarius
-    // September 3rd 2024 Pluto re-enters Capricorn.
-    // November 20th 2024 Pluto enters Aquarius.
-    // March 10th 2043 Pluto enters Pisces.
-    // September 2nd 2043 Pluto re-enters Aquarius
-    // January 20th 2044 Pluto re-enters Pisces.
-
-    // Focus on THIS particular Ingress:
-    // November 27th 2008 Pluto re-enters Capricorn.
-    // March 24th 2023 Pluto enters Aquarius.
-
-
     func testSaturnEgressTaurus() throws {
         let planet = Planet.saturn
         guard let signTuple = PlutoIngress.signTransits[planet] else { return }
