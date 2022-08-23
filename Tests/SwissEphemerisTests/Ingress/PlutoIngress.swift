@@ -199,7 +199,7 @@ class PlutoIngress: XCTestCase {
             }
 
             start = ingressTuple.egress.date
-            end = ingressTuple.ingress.date // (time.rawValue == TimeSlice.day.rawValue) ? ingressTuple.ingress.date.offset(.hour, value: 1)! : ingressTuple.ingress.date
+            end = ingressTuple.ingress.date
             assert(start < end)
         }
 
