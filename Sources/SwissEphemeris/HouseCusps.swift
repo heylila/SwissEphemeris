@@ -141,4 +141,20 @@ public struct HouseCusps {
             libra, scorpio, sagittarius, capricorn, aquarius, pisces
         ]
     }
+
+    public func cuspForLongitude(_ lng: Double) -> Cusp? {
+        if lng >= 360.0 { return nil }
+        let offsetHouses = Array(houses.dropFirst()) + [first]
+        var pair: (current: Cusp, next: Cusp)?
+
+        for (current, next) in zip(houses, offsetHouses) {
+            if current.value <= lng && lng < next.value {
+                pair = (current, next)
+                break
+            }
+        }
+
+        guard let pair = pair else { return nil }
+        return pair.current
+    }
 }
