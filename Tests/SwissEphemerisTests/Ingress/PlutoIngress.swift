@@ -30,8 +30,8 @@ class PlutoIngress: XCTestCase {
             .mercury : (.day, 70),
             .venus : (.day, 75),
             .mars : (.month, 8),
-            .jupiter : (.month, 13),
-            .saturn : (.month, Int(2.6 * 12)),
+            .jupiter : (.month, 24),
+            .saturn : (.month, Int(2.8 * 12)),
             .uranus : (.month, Int(8 * 12)),
             .neptune : (.month, Int(15 * 12)),
             .pluto : (.month, Int(32 * 12))
