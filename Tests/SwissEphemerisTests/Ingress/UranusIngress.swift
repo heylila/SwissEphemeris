@@ -54,8 +54,8 @@ class UranusIngress: XCTestCase {
         // uranus ingresses gemini at 2025-07-07 00:48:00 -0700
         let egressDate = Date(fromString: "2025-07-07 00:47:00 -0700", format: .cocoaDateTime)!
         let ingressDate = Date(fromString: "2025-07-07 00:48:00 -0700", format: .cocoaDateTime)!
-        XCTAssert(egressDate == tuple.egress.date)
-        XCTAssert(ingressDate == tuple.ingress.date)
+        XCTAssert(tuple.egress.date == egressDate, "actual egress is: \(tuple.egress.date.toString(format: .cocoaDateTime)!)")
+        XCTAssert(tuple.ingress.date == ingressDate, "actual ingress is: \(tuple.ingress.date.toString(format: .cocoaDateTime)!)")
 
         XCTAssert(tuple.egress.sign == Zodiac.taurus)
         XCTAssert(tuple.ingress.sign == Zodiac.gemini)
@@ -105,8 +105,8 @@ class UranusIngress: XCTestCase {
         // uranus ingresses taurus at 2019-03-06 00:29:00 -0800
         let egressDate = Date(fromString: "2019-03-06 00:28:00 -0800", format: .cocoaDateTime)!
         let ingressDate = Date(fromString: "2019-03-06 00:29:00 -0800", format: .cocoaDateTime)!
-        XCTAssert(egressDate == tuple.egress.date)
-        XCTAssert(ingressDate == tuple.ingress.date)
+        XCTAssert(tuple.egress.date == egressDate, "actual egress is: \(tuple.egress.date.toString(format: .cocoaDateTime)!)")
+        XCTAssert(tuple.ingress.date == ingressDate, "actual ingress is: \(tuple.ingress.date.toString(format: .cocoaDateTime)!)")
 
         XCTAssert(tuple.egress.sign == Zodiac.aries)
         XCTAssert(tuple.ingress.sign == Zodiac.taurus)
