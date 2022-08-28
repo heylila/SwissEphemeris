@@ -12,7 +12,7 @@ public extension Date {
     // MARK: - Date from String
 
     /// Creates a new Date from on a string with predefined or custom string format. Supports optional timezone and locale.
-    init?(fromString string: String, format: DateFormatType, timeZone: TimeZoneType = .local, locale: Locale = Foundation.Locale.current, isLenient: Bool = true) {
+    init?(fromString string: String, format: DateFormatType = .cocoaDateTime, timeZone: TimeZoneType = .local, locale: Locale = Foundation.Locale.current, isLenient: Bool = true) {
 
         guard !string.isEmpty else { return nil }
 
@@ -618,7 +618,7 @@ public extension Date {
             case .isoDate: return "yyyy-MM-dd"
             case .isoDateTime: return "yyyy-MM-dd'T'HH:mm:ssZ"
             case .isoDateTimeFull: return "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-            case .cocoaDateTime: return "yyyy-MM-dd HH:mm:ss Z"
+            case .cocoaDateTime: return "yyyy-MM-dd HH:mm:ss ZZ"
             case .dotNet: return "/Date(%d%f)/"
             case .rss: return "EEE, d MMM yyyy HH:mm:ss ZZZ"
             case .altRSS: return "d MMM yyyy HH:mm:ss ZZZ"
