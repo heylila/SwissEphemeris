@@ -112,8 +112,8 @@ class ClevelandDiscovery: XCTestCase {
     }
 
     func testNeptuneAndJupiterConjunction() throws {
-        var start = Date(fromString: "2022-04-01 00:00:00 -0700", format: .cocoaDateTime)!
-        var end = Date(fromString: "2022-04-30 23:59:59 -0700", format: .cocoaDateTime)!
+        let start = Date(fromString: "2022-04-01 00:00:00 -0700", format: .cocoaDateTime)!
+        let end = Date(fromString: "2022-04-30 23:59:59 -0700", format: .cocoaDateTime)!
         let daySlice = Double(24 * 60 * 60)
 
         func filterPredicate<First, Second>(other: Coordinate<Second>, degree: Double, orb: Double) -> (Coordinate<First>) -> Bool {
@@ -123,8 +123,8 @@ class ClevelandDiscovery: XCTestCase {
             }
         }
 
-        var jupiterCoords = BodiesRequest(body: Planet.jupiter).fetch(start: start, end: end, interval: daySlice)
-        var neptuneCoords = BodiesRequest(body: Planet.neptune).fetch(start: start, end: end, interval: daySlice)
+        let jupiterCoords = BodiesRequest(body: Planet.jupiter).fetch(start: start, end: end, interval: daySlice)
+        let neptuneCoords = BodiesRequest(body: Planet.neptune).fetch(start: start, end: end, interval: daySlice)
 
         let jupiterRange = jupiterCoords.first!.longitude ... jupiterCoords.last!.longitude
         let neptuneRange = neptuneCoords.first!.longitude ... neptuneCoords.last!.longitude
@@ -196,7 +196,7 @@ class ClevelandDiscovery: XCTestCase {
         let daysOut = 15
         let start = ClevelandDiscovery.testStartDate
         let end = start.offset(.day, value: daysOut)!
-        var moonConjunctions = [String : Coordinate<Planet>]()
+        let moonConjunctions = [String : Coordinate<Planet>]()
 
         // 10° orb for conjunctions
         // 8° orb for oppositions and squares
@@ -279,7 +279,7 @@ class ClevelandDiscovery: XCTestCase {
         let minEnd = detailDate.offset(.minute, value: 30)!
 
         // Then slice it to the per-minute basis next
-        let nearestMinutePosition = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: minuteSlice)
+        let _ = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: minuteSlice)
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
             }
