@@ -16,11 +16,15 @@ public struct Cusp: Equatable {
     /// The name of the Cusp
     public let name: String
 
+    /// The number of the Cusp (1 = "first", 2 = "second", etc up to 12)
+    public let number: Int
+
 	/// Creates a `Cusp`.
 	/// - Parameter value: The latitudinal degree to set.
-    public init(value: Double, name: String) {
+    public init(value: Double, name: String, number: Int) {
 		self.value = value
         self.name = name
+        self.number = number
 	}
 }
 
