@@ -31,6 +31,12 @@ public enum TimeSlice: Double, CaseIterable {
 }
 
 /// A generic `BatchRequest` for a collection of `<BodyType>` `Coordinates`.
+///
+/// A useful way of thinking about `BodiesRequest` is to consider that it's outputting a sequence
+/// of positions that show the celestial body moving through the sky. Consider that the positions are animated
+/// like an old-school film strip or flip book. To see whet I'm talking about, watch this video:
+///
+/// https://youtu.be/ntD2qiGx-DY
 final public class BodiesRequest<BodyType>: BatchRequest where BodyType: CelestialBody {
 
     /// The `BodyType` to request (usually `Planet` or `LunarNode` or `Asteroid`)
