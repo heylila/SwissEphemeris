@@ -6,30 +6,39 @@
 //
 
 import XCTest
+@testable import SwissEphemeris
 
 class Sept9MercuryRetrograde: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        JPLFileManager.setEphemerisPath()
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+    // Sept 9 to Oct 1
+    // Find the Oct 1 end of Mercury Retrograde
+    // Start was at 2022-09-09 23:38:00 EDT (-0400)
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+    func testMercuryRetrograde() throws {
+        // Slice by the hour
+        let start = Date(fromString: "2022-09-09 00:00:00 -0700")!
+        let end = Date(fromString: "2022-10-02 23:59:00 -0700")!
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+        let positions: [Coordinate] = BodiesRequest(body: Planet.mercury).fetch(start: start, end: end)
+        let offsetPositions = Array(positions.dropFirst()) + [positions.first!]
 
+        let startRx: Coordinate<Planet>? = zip(positions, offsetPositions)
+            .first { (now, next) in next.longitude < now.longitude }
+            .map { $0.0 }
+
+        let endRx: Coordinate<Planet>? = Array(zip(positions, offsetPositions))
+            .last { (past, now) in past.longitude > now.longitude }
+            .map { $0.1 }
+
+        let startRxDate = Date(fromString: "2022-09-09 20:38:00 -0700")!
+        let endRxDate = Date(fromString: "2022-10-02 02:07:00 -0700")!
+        guard let startRx = startRx else { return }
+        guard let endRx = endRx else { return }
+        XCTAssert(startRx.date == startRxDate)
+        XCTAssert(endRx.date == endRxDate)
+    }
 }
