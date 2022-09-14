@@ -8,7 +8,7 @@
 import Foundation
 
 /// Models the point between two houses
-public struct Cusp: Equatable {
+public struct Cusp: Equatable, Comparable {
 
 	/// The degree of the coordinate
 	public let value: Double
@@ -26,6 +26,14 @@ public struct Cusp: Equatable {
         self.name = name
         self.number = number
 	}
+
+    static public func < (lhs: Cusp, rhs: Cusp) -> Bool {
+        return lhs.value < rhs.value
+    }
+
+    static public func == (lhs: Cusp, rhs: Cusp) -> Bool {
+        return lhs.value == rhs.value
+    }
 }
 
 // MARK: - ZodiacCoordinate Conformance
