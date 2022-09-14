@@ -145,23 +145,18 @@ public struct HouseCusps {
     public func cuspForLongitude(_ coordinate: Double) -> Cusp? {
         if coordinate >= 360.0 || coordinate < 0.0 { return nil }
         let offsetHouses = Array(houses.dropFirst()) + [first]
-        var pair: (current: Cusp, next: Cusp)?
 
-        for (current, next) in zip(houses, offsetHouses) {
-            // Marking things VERY explicitly with parentheses in order to preserve intended computational expression units
-            let sector = (current.value < next.value) ? current.value..<next.value : (current.value - 360.0)..<next.value
+        let cusp: Cusp? = zip(houses, offsetHouses)
+            .first { (current, next) in
+                let sector = (current < next) ? current.value..<next.value : (current.value - 360.0)..<next.value
 
-            // This is a nested tertiary operation (essentially, a tertiary operator inside a tertiary operator)
-            // Being SUPER-explicit because of the rollover logic required to handle a house that crosses 0 degrees
-            let newLongitude = (current.value < next.value) ? coordinate : ((coordinate > current.value) ? (coordinate - 360.0) : coordinate)
-
-            if sector.contains(newLongitude) {
-                pair = (current, next)
-                break
+                // This is a nested tertiary operation (essentially, a tertiary operator inside a tertiary operator)
+                // Being SUPER-explicit because of the rollover logic required to handle a house that crosses 0 degrees
+                let newLongitude = (current < next) ? coordinate : ((coordinate > current.value) ? (coordinate - 360.0) : coordinate)
+                return sector.contains(newLongitude)
             }
-        }
+            .map { $0.0 }
 
-        guard let pair = pair else { return nil }
-        return pair.current
+        return cusp
     }
 }
