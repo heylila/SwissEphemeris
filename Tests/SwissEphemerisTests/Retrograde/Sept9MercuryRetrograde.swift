@@ -19,7 +19,6 @@ class Sept9MercuryRetrograde: XCTestCase {
     // Start was at 2022-09-09 23:38:00 EDT (-0400)
 
     func testMercuryRetrograde() throws {
-        // Slice by the hour
         let start = Date(fromString: "2022-09-09 00:00:00 -0700")!
         let end = Date(fromString: "2022-10-02 23:59:00 -0700")!
 
