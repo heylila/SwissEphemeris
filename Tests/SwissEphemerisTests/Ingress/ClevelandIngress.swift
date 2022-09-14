@@ -409,7 +409,7 @@ class ClevelandIngress: XCTestCase {
         }
 
         let startTest = Date(fromString: "2022-10-23 14:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
-        let endTest = Date(fromString: "2022-10-30 13:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
+        let endTest = Date(fromString: "2022-10-30 14:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
 
         XCTAssert(retroTuple.start == startTest)
         XCTAssert(retroTuple.end == endTest)
