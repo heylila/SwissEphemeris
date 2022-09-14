@@ -143,7 +143,7 @@ public struct HouseCusps {
     }
 
     public func cuspForLongitude(_ coordinate: Double) -> Cusp? {
-        if coordinate >= 360.0 || coordinate < 0.0 { return nil }
+        guard (0.0..<360.0).contains(coordinate) else { return nil }
         let offsetHouses = Array(houses.dropFirst()) + [first]
 
         let cusp: Cusp? = zip(houses, offsetHouses)
