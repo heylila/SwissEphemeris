@@ -24,15 +24,24 @@ final class PlutoRetrograde: XCTestCase {
         let months = BodiesRequest(body: body).fetch(start: past, end: future, interval: TimeSlice.month.slice)
         let monthOffsets = Array(months.dropFirst()) + [months.first!]
 
+        func testNextTuple<T>(_ now: Coordinate<T>, _ next: Coordinate<T>) -> Bool {
+            if now.date > next.date { return false }
+            if next.sign == Zodiac.pisces && now.sign == Zodiac.aries { return true }
+            return next.longitude < now.longitude
+        }
+
+        func testPastTuple<T>(_ past: Coordinate<T>, _ now: Coordinate<T>) -> Bool {
+            if past.date > now.date { return false }
+            if past.sign == Zodiac.pisces && now.sign == Zodiac.aries { return false }
+            return past.longitude > now.longitude
+        }
+
         let startRxMonth: Coordinate<Planet>? = zip(months, monthOffsets)
-            .first { (now, next) in next.longitude < now.longitude }
+            .first { (now, next) in testNextTuple(now, next) }
             .map { $0.0 }
 
         let endRxMonth: Coordinate<Planet>? = Array(zip(months, monthOffsets))
-            .last { (past, now) in
-                if past.date > now.date { return false }
-                return past.longitude > now.longitude
-            }
+            .last { (past, now) in testPastTuple(past, now) }
             .map { $0.1 }
 
         guard let startRxMonth = startRxMonth else {
@@ -52,14 +61,11 @@ final class PlutoRetrograde: XCTestCase {
         let dayOffsets = Array(days.dropFirst()) + [days.first!]
 
         let startRxDay: Coordinate<Planet>? = zip(days, dayOffsets)
-            .first { (now, next) in next.longitude < now.longitude }
+            .first { (now, next) in testNextTuple(now, next) }
             .map { $0.0 }
 
         let endRxDay: Coordinate<Planet>? = Array(zip(days, dayOffsets))
-            .last { (past, now) in
-                if past.date > now.date { return false }
-                return past.longitude > now.longitude
-            }
+            .last { (past, now) in testPastTuple(past, now) }
             .map { $0.1 }
 
         guard let startRxDay = startRxDay else {
@@ -79,14 +85,11 @@ final class PlutoRetrograde: XCTestCase {
         let hourOffsets = Array(hours.dropFirst()) + [hours.first!]
 
         let startRxHour: Coordinate<Planet>? = zip(hours, hourOffsets)
-            .first { (now, next) in next.longitude < now.longitude }
+            .first { (now, next) in testNextTuple(now, next) }
             .map { $0.0 }
 
         let endRxHour: Coordinate<Planet>? = Array(zip(hours, hourOffsets))
-            .last { (past, now) in
-                if past.date > now.date { return false }
-                return past.longitude > now.longitude
-            }
+            .last { (past, now) in testPastTuple(past, now) }
             .map { $0.1 }
 
         guard let startRxHour = startRxHour else {
@@ -106,14 +109,11 @@ final class PlutoRetrograde: XCTestCase {
         let minuteOffsets = Array(minutes.dropFirst()) + [minutes.first!]
 
         let startRxMinute: Coordinate<Planet>? = zip(minutes, minuteOffsets)
-            .first { (now, next) in next.longitude < now.longitude }
+            .first { (now, next) in testNextTuple(now, next) }
             .map { $0.0 }
 
         let endRxMinute: Coordinate<Planet>? = Array(zip(minutes, minuteOffsets))
-            .last { (past, now) in
-                if past.date > now.date { return false }
-                return past.longitude > now.longitude
-            }
+            .last { (past, now) in testPastTuple(past, now) }
             .map { $0.1 }
 
         guard let startRxMinute = startRxMinute else {

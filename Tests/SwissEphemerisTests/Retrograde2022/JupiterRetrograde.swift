@@ -25,6 +25,7 @@ final class JupiterRetrograde: XCTestCase {
         let monthOffsets = Array(months.dropFirst()) + [months.first!]
 
         func testNextTuple<T>(_ now: Coordinate<T>, _ next: Coordinate<T>) -> Bool {
+            if now.date > next.date { return false }
             if next.sign == Zodiac.pisces && now.sign == Zodiac.aries { return true }
             return next.longitude < now.longitude
         }
