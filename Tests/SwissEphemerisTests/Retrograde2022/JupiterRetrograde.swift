@@ -31,6 +31,10 @@ final class JupiterRetrograde: XCTestCase {
         let endRxMonth: Coordinate<Planet>? = Array(zip(months, monthOffsets))
             .last { (past, now) in
                 if past.date > now.date { return false }
+                // Solve the rollover problem AGAIN
+                if now.longitude > 350.0 || past.longitude > 350.0 {
+                    return true
+                }
                 return past.longitude > now.longitude
             }
             .map { $0.1 }
