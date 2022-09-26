@@ -85,7 +85,7 @@ class MoonPhases: XCTestCase {
             return
         }
 
-        let testDate = Date(fromString: "2022-09-10 02:59:00 -0700")
+        let testDate = Date(fromString: "2022-09-10 02:59:00 -0700")!
         XCTAssert(minPos.sun.date == testDate)
     }
 
@@ -141,7 +141,7 @@ class MoonPhases: XCTestCase {
         let newToFullDelta = fullMoonDate.timeIntervalSince1970 - newMoonDate.timeIntervalSince1970
         let quarterMoonInterval = newToFullDelta / 2.0
         let quarterMoonDate = Date(timeInterval: quarterMoonInterval, since: newMoonDate)
-        let quarteMoonControl = Date(fromString: "2022-09-03 11:08:00 -0700")!
+        let quarteMoonControl = Date(fromString: "2022-09-03 11:0:00 -0700")!
 
         // This should fail because the quarter moon (and all moon phases) are based on ANGLES between the sun and moon,
         // not time distances from New to Full Moon
@@ -262,18 +262,52 @@ class MoonPhases: XCTestCase {
     }
 
     func testFindNextWaxingCrescent() throws {
-        let testDate1 = Date(fromString: "2022-08-27 01:17:00 -0700")!
-        let testDate2 = Date(fromString: "2022-09-25 14:55:00 -0700")!
+        // NOTE:
+        // Waxing Crescent is defined as:
+        // (Full Moon Date, Quarter Moon Date) <- Notice this is an OPEN interval
+        // (from Math's interval notation)
+        let newMoonDate = Date(fromString: "2022-08-27 01:17:00 -0700")!
+        let q1MoonDate = Date(fromString: "2022-09-03 11:08:00 -0700")!
+        let start = newMoonDate.offset(.minute, value: 1)!
+        let end = q1MoonDate.offset(.minute, value: -1)!
+        let waxingCrescent = start...end
+        let fullMoonDate = Date(fromString: "2022-09-10 02:59:00 -0700")!
+        var slice = TimeSlice.hour.slice
+        var suns = BodiesRequest(body: Planet.sun).fetch(start: newMoonDate, end: fullMoonDate, interval: slice)
+        var moons = BodiesRequest(body: Planet.moon).fetch(start: newMoonDate, end: fullMoonDate, interval: slice)
+        let minWCHour = Array(zip(suns, moons)).min { lhs, rhs in
+            return abs(45.0 - lhs.0.longitudeDelta(other: lhs.1)) < abs(45.0 - rhs.0.longitudeDelta(other: rhs.1))
+        }
 
-        let dateDelta = testDate2.timeIntervalSince1970 - testDate1.timeIntervalSince1970
-        let waxingCrescentDelta = Double(dateDelta / 8.0)
-        let waxingDate = testDate1.addingTimeInterval(waxingCrescentDelta)
+        guard let minWCHour = minWCHour else {
+            XCTFail("We couldn't find a suitable hour")
+            return
+        }
 
-        let tdStart = Date(fromString: "2022-08-27 01:17:00 -0700")!
-        let tdStop = Date(fromString: "2022-09-03 11:07:00 -0700")!
-        let tdDelta = Double((tdStop.timeIntervalSince1970 - tdStart.timeIntervalSince1970) / 2.0)
-        let waxingTestDate = tdStart.addingTimeInterval(tdDelta)
-        XCTAssert(waxingDate == waxingTestDate, "waxingDate = \(waxingDate.toString(format: .cocoaDateTime)!) and testDate = \(waxingTestDate.toString(format: .cocoaDateTime)!)")
+        let startSearchMin = minWCHour.1.date.offset(.hour, value: -1)!
+        let endSearchMin = minWCHour.1.date.offset(.hour, value: 1)!
+        slice = TimeSlice.minute.slice
+        suns = BodiesRequest(body: Planet.sun).fetch(start: newMoonDate, end: fullMoonDate, interval: slice)
+        moons = BodiesRequest(body: Planet.moon).fetch(start: newMoonDate, end: fullMoonDate, interval: slice)
+
+        let minWCMin = Array(zip(suns, moons)).min { lhs, rhs in
+            return abs(45.0 - lhs.0.longitudeDelta(other: lhs.1)) < abs(45.0 - rhs.0.longitudeDelta(other: rhs.1))
+        }
+
+        let resultDate = minWCMin!.1.date
+        print("result = \(resultDate.toString(format: .cocoaDateTime)!)")
+//        let testDate1 = Date(fromString: "2022-08-27 01:17:00 -0700")!
+//        let testDate2 = Date(fromString: "2022-09-25 14:55:00 -0700")!
+//
+//        let dateDelta = testDate2.timeIntervalSince1970 - testDate1.timeIntervalSince1970
+//        let waxingCrescentDelta = Double(dateDelta / 8.0)
+//        let waxingDate = testDate1.addingTimeInterval(waxingCrescentDelta)
+//
+//        let tdStart = Date(fromString: "2022-08-27 01:17:00 -0700")!
+//        let tdStop = Date(fromString: "2022-09-03 11:07:00 -0700")!
+//        let tdDelta = Double((tdStop.timeIntervalSince1970 - tdStart.timeIntervalSince1970) / 2.0)
+//        let waxingTestDate = tdStart.addingTimeInterval(tdDelta)
+//        XCTAssert(waxingDate == waxingTestDate, "waxingDate = \(waxingDate.toString(format: .cocoaDateTime)!) and testDate = \(waxingTestDate.toString(format: .cocoaDateTime)!)")
     }
 
 }
