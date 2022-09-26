@@ -1,5 +1,5 @@
 //
-//  Sept9MercuryRetrograde.swift
+//  MercuryRetrograde.swift
 //  
 //
 //  Created by Sam Krishna on 9/13/22.
@@ -8,15 +8,11 @@
 import XCTest
 @testable import SwissEphemeris
 
-class Sept9MercuryRetrograde: XCTestCase {
+class MercuryRetrograde: XCTestCase {
 
     override func setUpWithError() throws {
         JPLFileManager.setEphemerisPath()
     }
-
-    // Sept 9 to Oct 1
-    // Find the Oct 1 end of Mercury Retrograde
-    // Start was at 2022-09-09 23:38:00 EDT (-0400)
 
     func testMercuryRetrograde() throws {
         let start = Date(fromString: "2022-09-09 00:00:00 -0700")!

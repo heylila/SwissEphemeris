@@ -110,6 +110,106 @@ class MoonPhases: XCTestCase {
 //            k = k + 0.875
 //        }
 
+    func testFailedAugustFirstQuarterMoon() throws {
+        let startSearch = Date(fromString: "2022-08-25 00:00:00 -0700")!
+        let endSearch = startSearch.offset(.day, value: 28)!
+        let hourSlice = TimeSlice.hour.slice
+        var suns = BodiesRequest(body: Planet.sun).fetch(start: startSearch, end: endSearch, interval: hourSlice)
+        var moons = BodiesRequest(body: Planet.moon).fetch(start: startSearch, end: endSearch, interval: hourSlice)
+
+        XCTAssert(suns.count == moons.count)
+
+        let newMoonHourPos = Array(zip(suns, moons)).min { lhs, rhs in
+            return lhs.0.longitudeDelta(other: lhs.1) < rhs.0.longitudeDelta(other: rhs.1)
+        }
+
+        let hourSearch = newMoonHourPos!.1.date
+        let startSearchMin = hourSearch.offset(.minute, value: -60)!
+        let endSearchMin = hourSearch.offset(.minute, value: 60)!
+        suns = BodiesRequest(body: Planet.sun).fetch(start: startSearchMin, end: endSearchMin)
+        moons = BodiesRequest(body: Planet.moon).fetch(start: startSearchMin, end: endSearchMin)
+
+        let newMoonMinPos = Array(zip(suns, moons)).min { lhs, rhs in
+            return lhs.0.longitudeDelta(other: lhs.1) < rhs.0.longitudeDelta(other: rhs.1)
+        }
+
+        let newMoonDate = Date(fromString: "2022-08-27 01:17:00 -0700")!
+        let resultDate: Date = newMoonMinPos!.1.date
+        XCTAssert(newMoonDate == resultDate, "Error! result date = \(resultDate.toString(format: .cocoaDateTime)!)")
+
+        let fullMoonDate = Date(fromString: "2022-09-10 02:59:00 -0700")!
+        let newToFullDelta = fullMoonDate.timeIntervalSince1970 - newMoonDate.timeIntervalSince1970
+        let quarterMoonInterval = newToFullDelta / 2.0
+        let quarterMoonDate = Date(timeInterval: quarterMoonInterval, since: newMoonDate)
+        let quarteMoonControl = Date(fromString: "2022-09-03 11:08:00 -0700")!
+
+        // This should fail because the quarter moon (and all moon phases) are based on ANGLES between the sun and moon,
+        // not time distances from New to Full Moon
+        XCTAssertFalse(quarterMoonDate == quarteMoonControl, "Error: quarterMoonDate = \(quarterMoonDate.toString(format: .cocoaDateTime)!)")
+    }
+
+    func testFindNextFirstQuarterMoon() throws {
+        let originDate = Date(fromString: "2022-08-27 19:30:00 -0700", format: .cocoaDateTime)!
+        let endDate = originDate.offset(.day, value: 29)!
+
+        let interval = TimeSlice.hour.slice
+        var sunPositions = BodiesRequest(body: Planet.sun).fetch(start: originDate, end: endDate, interval: interval)
+        var moonPositions = BodiesRequest(body: Planet.moon).fetch(start: originDate, end: endDate, interval: interval)
+
+        XCTAssert(sunPositions.count == moonPositions.count)
+
+        var sun2Moon: [(sun: Coordinate<Planet>, moon: Coordinate<Planet>)] = Array(zip(sunPositions, moonPositions))
+        var minPos = sun2Moon.min { lhs, rhs in
+            return abs(180.0 - lhs.sun.longitudeDelta(other: lhs.moon)) < abs(180.0 - rhs.sun.longitudeDelta(other: rhs.moon))
+        }
+
+        let minPosDate = minPos!.sun.date
+        let fullMoonTestStart = minPosDate.offset(.day, value: -1)!
+        let fullMoonTestEnd = minPosDate.offset(.day, value: 1)!
+        sunPositions = BodiesRequest(body: Planet.sun).fetch(start: fullMoonTestStart, end: fullMoonTestEnd, interval: TimeSlice.minute.slice)
+        moonPositions = BodiesRequest(body: Planet.moon).fetch(start: fullMoonTestStart, end: fullMoonTestEnd, interval: TimeSlice.minute.slice)
+
+        sun2Moon = Array(zip(sunPositions, moonPositions))
+        minPos = sun2Moon.min { lhs, rhs in
+            return abs(180.0 - lhs.sun.longitudeDelta(other: lhs.moon)) < abs(180.0 - rhs.sun.longitudeDelta(other: rhs.moon))
+        }
+
+        guard let minPos = minPos else {
+            XCTFail("We couldn't create a min position")
+            return
+        }
+
+        let testFullMoonDate = Date(fromString: "2022-09-10 02:59:00 -0700")
+        XCTAssert(minPos.sun.date == testFullMoonDate)
+
+        let newMoonDate = Date(fromString: "2022-08-27 01:17:00 -0700")!
+        let fullMoonDate = minPos.sun.date
+        var slice = TimeSlice.hour.slice
+        var suns = BodiesRequest(body: Planet.sun).fetch(start: newMoonDate, end: fullMoonDate, interval: slice)
+        var moons = BodiesRequest(body: Planet.moon).fetch(start: newMoonDate, end: fullMoonDate, interval: slice)
+        let q1MoonHourPos = Array(zip(suns, moons)).min { lhs, rhs in
+            return abs(90.0 - lhs.0.longitudeDelta(other: lhs.1)) < abs(90.0 - rhs.0.longitudeDelta(other: rhs.1))
+        }
+
+        guard let q1MoonHourPos = q1MoonHourPos else {
+            XCTFail("Couldn't find a good hour")
+            return
+        }
+
+        let startMinSearch = q1MoonHourPos.1.date.offset(.hour, value: -1)!
+        let endMinSearch = q1MoonHourPos.1.date.offset(.hour, value: 1)!
+        suns = BodiesRequest(body: Planet.sun).fetch(start: startMinSearch, end: endMinSearch)
+        moons = BodiesRequest(body: Planet.moon).fetch(start: startMinSearch, end: endMinSearch)
+        let q1MoonMinPos = Array(zip(suns, moons)).min { lhs, rhs in
+            return abs(90.0 - lhs.0.longitudeDelta(other: lhs.1)) < abs(90.0 - rhs.0.longitudeDelta(other: rhs.1))
+        }
+
+        let testQuarterMoonDate = Date(fromString: "2022-09-03 11:08:00 -0700")!
+        let resultDate = q1MoonMinPos!.1.date
+        XCTAssert(testQuarterMoonDate == resultDate, "Error! result = \(resultDate.toString(format: .cocoaDateTime)!)")
+    }
+
+
     func testFindNextTwoNewMoons() throws {
         let originDate = Date(fromString: "2022-08-22 19:30:00 -0700", format: .cocoaDateTime)!
         let endDate1 = originDate.offset(.day, value: 29)!
