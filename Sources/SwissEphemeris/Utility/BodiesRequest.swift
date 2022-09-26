@@ -8,7 +8,6 @@
 import Foundation
 
 public enum TimeSlice: Double, CaseIterable {
-//    case second
     case minute
     case hour
     case day
@@ -16,8 +15,6 @@ public enum TimeSlice: Double, CaseIterable {
 
     public var slice: Double {
         switch self {
-//        case .second:
-//            return Double(1)
         case .minute:
             return Double(60)
         case .hour:
