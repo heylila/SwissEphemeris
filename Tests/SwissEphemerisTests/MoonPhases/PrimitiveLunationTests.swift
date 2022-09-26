@@ -1,5 +1,5 @@
 //
-//  SeptemberPhases.swift
+//  PrimitiveLunationTests.swift
 //  
 //
 //  Created by Sam Krishna on 9/18/22.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import SwissEphemeris
 
-final class SeptemberPhases: XCTestCase {
+final class PrimitiveLunationTests: XCTestCase {
 
     override func setUpWithError() throws {
         JPLFileManager.setEphemerisPath()
