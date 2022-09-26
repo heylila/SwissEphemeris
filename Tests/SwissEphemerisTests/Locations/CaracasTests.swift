@@ -6,30 +6,39 @@
 //
 
 import XCTest
+@testable import SwissEphemeris
 
 final class CaracasTests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        JPLFileManager.setEphemerisPath()
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    static var birthDate: Date {
+        return Date(fromString: "1992-06-17 07:52:00 -0400", format: .cocoaDateTime)!
+    }
+
+    static var houseCusps1: HouseCusps {
+        let lat = 10.4805937
+        let long = -66.90360629999999
+        return HouseCusps(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
+    }
+
+    static var houseCusps2: HouseCusps {
+        let lat = 10.38313599933997
+        let long = -67.16380596646617
+        return HouseCusps(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
     }
 
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+        var chart = CaracasTests.houseCusps1
+        let pluto = Coordinate(body: Planet.pluto, date: CaracasTests.birthDate)
+        print("5th house = \(chart.fifth.value)")
+        print("Pluto = \(pluto.longitude) and \(pluto.formatted)")
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+        chart = CaracasTests.houseCusps2
+        print("5th house = \(chart.fifth.value)")
+        print("Pluto = \(pluto.longitude) and \(pluto.formatted)")
     }
 
 }
