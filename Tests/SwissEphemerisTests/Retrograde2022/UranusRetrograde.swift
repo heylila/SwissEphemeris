@@ -86,7 +86,7 @@ final class UranusRetrograde: XCTestCase {
         XCTAssert(past.component(.year)! == 2022)
 
         XCTAssert(future.component(.month)! == 1, "Erroneoes Rx ending month is \(future.component(.month)!)")
-        XCTAssert(future.component(.day)! == 22, "Erroneoes Rx ending month is \(future.component(.day)!)")
+        XCTAssert(future.component(.day)! == 22, "Erroneoes Rx ending day is \(future.component(.day)!)")
         XCTAssert(future.component(.year)! == 2023)
 
     }

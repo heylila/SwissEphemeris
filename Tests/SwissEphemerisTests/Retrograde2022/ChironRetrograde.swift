@@ -82,11 +82,11 @@ final class ChironRetrograde: XCTestCase {
 
         // 2022-07-19 to 2022-12-23
         XCTAssert(past.component(.month)! == 7, "Erroneoes Rx starting month is \(past.component(.month)!)")
-        XCTAssert(past.component(.day)! == 19, "Erroneoes Rx starting month is \(past.component(.day)!)")
+        XCTAssert(past.component(.day)! == 19, "Erroneoes Rx starting day is \(past.component(.day)!)")
         XCTAssert(past.component(.year)! == 2022)
 
-        XCTAssert(future.component(.month)! == 12, "Erroneoes Rx starting month is \(past.component(.month)!)")
-        XCTAssert(future.component(.day)! == 23, "Erroneoes Rx starting month is \(past.component(.day)!)")
+        XCTAssert(future.component(.month)! == 12, "Erroneoes Rx ending month is \(future.component(.month)!)")
+        XCTAssert(future.component(.day)! == 23, "Erroneoes Rx ending day is \(future.component(.day)!)")
         XCTAssert(future.component(.year)! == 2022)
     }
 }

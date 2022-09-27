@@ -82,8 +82,8 @@ class MercuryRetrograde: XCTestCase {
         XCTAssert(past.component(.day)! == 9, "Erroneoes Rx starting day is \(past.component(.day)!)")
         XCTAssert(past.component(.year)! == 2022)
 
-        XCTAssert(future.component(.month)! == 10, "Erroneoes Rx starting month is \(past.component(.month)!)")
-        XCTAssert(future.component(.day)! == 2, "Erroneoes Rx starting month is \(past.component(.day)!)")
+        XCTAssert(future.component(.month)! == 10, "Erroneoes Rx ending month is \(future.component(.month)!)")
+        XCTAssert(future.component(.day)! == 2, "Erroneoes Rx ending day is \(future.component(.day)!)")
         XCTAssert(future.component(.year)! == 2022)
     }
 }
