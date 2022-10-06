@@ -122,4 +122,49 @@ public enum Aspect: Equatable, Hashable, Codable {
 			return remainder
 		}
 	}
+
+    var isConjunction: Bool {
+        switch self {
+        case .conjunction(_):
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isSextile: Bool {
+        switch self {
+        case .sextile(_):
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isSquare: Bool {
+        switch self {
+        case .square(_):
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isTrine: Bool {
+        switch self {
+        case .trine(_):
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isOpposition: Bool {
+        switch self {
+        case .opposition(_):
+            return true
+        default:
+            return false
+        }
+    }
 }
