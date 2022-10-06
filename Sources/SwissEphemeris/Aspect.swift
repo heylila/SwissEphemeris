@@ -46,7 +46,7 @@ public enum Aspect: Equatable, Hashable, Codable {
     case trine(Double)
 	/// An 180° alignment.
     case opposition(Double)
-	
+
 	/// Creates an optional `Aspect`. If there is no aspect within the orb, then this initializer will return `nil`.
 	/// - Parameters:
 	///   - pair: The two bodies to compare.
@@ -81,6 +81,15 @@ public enum Aspect: Equatable, Hashable, Codable {
 			return nil
 		}
 	}
+
+    /// Creates an optional `Aspect` between two Coordinates. Useful for generalizng between different aspect configurations (usually between a Transiting Body and a Natal Body). If there is no aspect within the orb, then this initializer will return `nil`.
+    /// - Parameters:
+    ///   - bodyA: The first body of the aspect.
+    ///   - bodyB: The second body of the aspect
+    ///   - orb: The number of degrees allowed for the aspect to differ from exactness.
+    public init?<T, U>(bodyA: Coordinate<T>, bodyB: Coordinate<U>, orb: Double = 10.0) {
+        self.init(a: bodyA.longitude, b: bodyB.longitude, orb: orb)
+    }
 
 	/// The symbol commonly associated with the aspect.
     public var symbol: String? {
