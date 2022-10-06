@@ -1,5 +1,5 @@
 //
-//  AllMercuryRetrogrades.swift
+//  AllRetrogrades.swift
 //  
 //
 //  Created by Sam Krishna on 9/27/22.
@@ -22,27 +22,9 @@ public struct Celestial : Codable {
     let endDate: Date
     let startLongitude: Double
     let endLongitude: Double
-
-    // Blake's requested open-and-closed Mercury retrogrades
-    //    {
-    //        "Planet": "Mercury",
-    //        "StartDate": "2022-02-19T03:51:00Z",
-    //        "EndDate": "2022-02-21T09:18:30Z",
-    //        "StartLongitude": 209.9999,
-    //        "EndLongitude": 10
-    //    }
-
-    // How it ended up:
-    //    {
-    //      "Planet" : "Mercury",
-    //      "EndLongitude" : 294.37826179257138,
-    //      "StartLongitude" : 310.31219379334334,
-    //      "EndDate" : "2022-02-04T00:00:00Z",
-    //      "StartDate" : "2022-01-15T00:00:00Z"
-    //    }
 }
 
-final class AllMercuryRetrogrades: XCTestCase {
+final class AllRetrogrades: XCTestCase {
 
     override func setUpWithError() throws {
         JPLFileManager.setEphemerisPath()
@@ -88,10 +70,10 @@ final class AllMercuryRetrogrades: XCTestCase {
         return (startRx.date, endRx.date)
     }
 
-    func testDiscoverNearbyWindows() throws {
-        let startOfYear = Date(fromString: "2022-01-01 00:00:00 +0000")!
-        let endOfYear = Date(fromString: "2024-12-31 23:59:59 +0000")!
-        let positions = BodiesRequest(body: Planet.mercury).fetch(start: startOfYear, end: endOfYear, interval: TimeSlice.day.slice)
+    func discoverWindows<T>(_ target: T, _ targetName: String) where T: CelestialBody {
+        let startOfYear = Date(fromString: "2021-12-01 00:00:00 +0000")!
+        let endOfYear = Date(fromString: "2032-12-31 23:59:59 +0000")!
+        let positions = BodiesRequest(body: target).fetch(start: startOfYear, end: endOfYear, interval: TimeSlice.day.slice)
         let offsets = Array(positions.dropFirst()) + [positions.first!]
 
         let retrogrades = zip(positions, offsets)
@@ -103,8 +85,8 @@ final class AllMercuryRetrogrades: XCTestCase {
             }
 
         let retroOffsets = Array(retrogrades.dropFirst()) + [retrogrades.first!]
-        var retroGroup = [Coordinate<Planet>]()
-        var retroGroups = [[Coordinate<Planet>]]()
+        var retroGroup = [Coordinate<T>]()
+        var retroGroups = [[Coordinate<T>]]()
 
         for (now, next) in zip(retrogrades, retroOffsets) {
             if retroGroup.count == 0 {
@@ -112,9 +94,8 @@ final class AllMercuryRetrogrades: XCTestCase {
                 continue
             }
 
-            retroGroup.append(now)
-
             if next.date.since(now.date, in: .day)! > 1 || next.date.since(now.date, in: .day)! < 0 {
+                retroGroup.append(now)
                 retroGroups.append(retroGroup)
                 retroGroup.removeAll()
             }
@@ -127,10 +108,9 @@ final class AllMercuryRetrogrades: XCTestCase {
             TimeSlice.minute : (component: Date.DateComponentType.minute, value: 60)
         ]
 
-        let sliceIndex = 1
+        let sliceIndex = 2
         let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
-        var retroGroups2 = [[Coordinate<Planet>]]()
-        let planet = Planet.mercury
+        var retroGroups2 = [(start: Coordinate<T>, end: Coordinate<T>)]()
 
         for group in retroGroups {
             var past = group.first!.date
@@ -141,30 +121,47 @@ final class AllMercuryRetrogrades: XCTestCase {
                 let offsetTuple = timeDict[time]!
                 past = past.offset(offsetTuple.component, value: (-1 * offsetTuple.value))!
                 future = future.offset(offsetTuple.component, value: offsetTuple.value)!
-                let window = findRetrogradeDates(target: planet, past, future, time)
+                let window = findRetrogradeDates(target: target, past, future, time)
                 if let window {
                     past = window.past
                     future = window.future
                 }
             }
 
-            let rxPositions = BodiesRequest(body: planet).fetch(start: past, end: future, interval: TimeSlice.minute.slice)
+            let rxStart = Coordinate(body: target, date: past)
+            let rxEnd = Coordinate(body: target, date: future)
+            let rxPositions = (start: rxStart, end: rxEnd)
             retroGroups2.append(rxPositions)
         }
 
         var celestials = [Celestial]()
 
         for group in retroGroups2 {
-            let start = group.first!
-            let end = group.last!
-            let c = Celestial(planet: "Mercury", startDate: start.date, endDate: end.date, startLongitude: start.longitude, endLongitude: end.longitude)
+            let start = group.start
+            let end = group.end
+            let c = Celestial(planet: targetName, startDate: start.date, endDate: end.date, startLongitude: start.longitude, endLongitude: end.longitude)
             celestials.append(c)
         }
 
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         encoder.dateEncodingStrategy = .iso8601
-        let jsonData = try encoder.encode(celestials)
-        print(String(data: jsonData, encoding: .utf8)!)
+
+        do {
+            let jsonData = try encoder.encode(celestials)
+            print("\n*******")
+            print(String(data: jsonData, encoding: .utf8)!)
+            print("*******")
+        } catch {
+            print(error)
+        }
+    }
+
+
+    func testDiscoverNearbyWindows() throws {
+        let target = LunarNode.trueSouthNode
+        let targetName = "South Node"
+
+        discoverWindows(target, targetName)
     }
 }
