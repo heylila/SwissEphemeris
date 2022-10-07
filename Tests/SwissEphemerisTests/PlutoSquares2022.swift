@@ -14,44 +14,75 @@ class PlutoSquares2022: XCTestCase {
         JPLFileManager.setEphemerisPath()
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
     static var birthDate: Date {
         let dob = "1983-03-17 09:45:00 -0500"
         let dobDate = Date(fromString: dob, format: .cocoaDateTime)!
         return dobDate
     }
 
-    static var houseSystem: HouseCusps {
+    static var chart: HouseCusps {
         let lat: Double = 41.49932
         let long: Double = -81.69436
         return HouseCusps(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
     }
 
-    func testPlutoSquares() throws {
-        let natalPluto = Coordinate(body: Planet.pluto, date: PlutoSquares2022.birthDate)
-        let start = Date(fromString: "2022-02-16 12:00:00 -0800", format: .cocoaDateTime)!
-        let end = Date(fromString: "2023-12-19 12:00:00 -0800", format: .cocoaDateTime)!
-        let daySlice = Double(24 * 60 * 60)
+    func testAspectsAndPairs() throws {
+        let chart = PlutoSquares2022.chart
+        let natalVenus = Coordinate(body: Planet.venus, date: chart.date)
 
-        func filterPredicate<First, Second>(other: Coordinate<Second>, degree: Double, orb: Double) -> (Coordinate<First>) -> Bool {
-            return { (first) in
-                let degreeRange = (degree - orb) ... (degree + orb)
-                return degreeRange.contains(first.longitudeDelta(other: other))
+        let start = Date(fromString: "2021-03-01 00:00:00 +0000", format: .cocoaDateTime)!
+        let end = Date(fromString: "2021-06-30 23:59:00 +0000", format: .cocoaDateTime)!
+
+        let positions = BodiesRequest(body: Planet.pluto).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
+        let orb = 1.5
+
+        let squares = positions.filter { Tpluto in
+            let a = Aspect(bodyA: Tpluto, bodyB: natalVenus, orb: orb)
+            return (a != nil && a!.isSquare)
+        }
+
+
+        let squareFirst = squares.first!
+
+        XCTAssert(squareFirst.date.component(.month)! == 3)
+        XCTAssert(squareFirst.date.component(.day)! == 13)
+        XCTAssert(squareFirst.date.component(.year)! == 2021)
+    }
+
+    func testAllSquares() throws {
+        let chart = PlutoSquares2022.chart
+        let natalVenus = Coordinate(body: Planet.venus, date: chart.date)
+        let start = Date(fromString: "2021-01-01 00:00:00 +0000", format: .cocoaDateTime)!
+        let end = Date(fromString: "2023-12-31 23:59:00 +0000", format: .cocoaDateTime)!
+
+        let positions = BodiesRequest(body: Planet.pluto).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
+        let orb = 1.5
+
+        let squares = positions.filter { Tpluto in
+            if let a = Aspect(bodyA: Tpluto, bodyB: natalVenus, orb: orb) {
+                return a.isSquare
+            }
+            
+            return false
+        }
+
+        let squareOffsets = Array(squares.dropFirst()) + [squares.first!]
+        var tGroup = [Coordinate<Planet>]()
+        var tGroups = [[Coordinate<Planet>]]()
+
+        for (now, next) in zip(squares, squareOffsets) {
+            if tGroup.count == 0 {
+                tGroup.append(now)
+                continue
+            }
+
+            if next.date.since(now.date, in: .day)! > 1 || next.date.since(now.date, in: .day)! < 0 {
+                tGroup.append(now)
+                tGroups.append(tGroup)
+                tGroup.removeAll()
             }
         }
 
-        let plutoPositions = BodiesRequest(body: Planet.pluto).fetch(start: start, end: end, interval: daySlice)
-            .filter(filterPredicate(other: natalPluto, degree: 90.0, orb: 1.0))
-
-        print("date,natal longitude,live longitude")
-        for position in plutoPositions {
-            let liveLongitude = preciseRound(position.longitude, precision: .hundredths)
-            let natalLongitude = preciseRound(natalPluto.longitude, precision: .hundredths)
-            let dateString = position.date.toString(format: .cocoaDateTime)!
-            print("\(dateString),\(natalLongitude),\(liveLongitude)")
-        }
+        XCTAssert(tGroups.count == 4)
     }
 }
