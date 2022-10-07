@@ -149,9 +149,6 @@ public struct HouseCusps {
         let cusp: Cusp? = zip(houses, offsetHouses)
             .first { (current, next) in
                 let sector = (current < next) ? current.value..<next.value : (current.value - 360.0)..<next.value
-
-                // This is a nested tertiary operation (essentially, a tertiary operator inside a tertiary operator)
-                // Being SUPER-explicit because of the rollover logic required to handle a house that crosses 0 degrees
                 let newLongitude = (current < next) ? coordinate : ((coordinate > current.value) ? (coordinate - 360.0) : coordinate)
                 return sector.contains(newLongitude)
             }
