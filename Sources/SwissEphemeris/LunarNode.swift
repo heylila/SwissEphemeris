@@ -22,5 +22,9 @@ extension LunarNode: CelestialBody {
 	public var value: Int32 {
 		rawValue
 	}
+
+    var celestialObject: CelestialObject {
+        return .lunarNode(self)
+    }
 }
 

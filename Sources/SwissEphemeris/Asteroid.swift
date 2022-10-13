@@ -23,4 +23,8 @@ extension Asteroid: CelestialBody {
 	public var value: Int32 {
 		rawValue
 	}
+
+    var celestialObject: CelestialObject {
+        return .asteroid(self)
+    }
 }
