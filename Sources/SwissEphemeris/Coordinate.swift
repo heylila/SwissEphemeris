@@ -10,10 +10,10 @@ import CSwissEphemeris
 
 
 /// Models a `CelestialBody` point in the sky.
-public struct Coordinate<T: CelestialBody>: Equatable {
+public struct Coordinate: Equatable {
 	
 	/// The type of `CelestialBody`.
-	public let body: T
+	public let body: CelestialObject
 	/// The date of the the coordinate.
 	public let date: Date
 	/// The coordinate's longitude.
@@ -61,41 +61,41 @@ public struct Coordinate<T: CelestialBody>: Equatable {
 	/// - Parameters:
 	///   - body: The `CelestialBody` for the placement.
 	///   - date: The date for the location of the coordinate.
-	public init(body: T, date: Date) {
+	public init(body: CelestialObject, date: Date) {
         defer {
             pointer.deinitialize(count: 6)
             pointer.deallocate()
-            if let star = body as? FixedStar {
-                charPointer.deinitialize(count: star.rawValue.count)
-                charPointer.deallocate()
-            }
         }
 		self.body = body
 		self.date = date
-        let isMeanSouthNode = (body is LunarNode && body as! LunarNode == .meanSouthNode)
-        let isTrueSouthNode = (body is LunarNode && body as! LunarNode == .trueSouthNode)
-		switch body.value {
-		case let value as Int32:
-            pointer.initialize(repeating: 0, count: 6)
-            let calcValue: Int32
-            if isMeanSouthNode {
-                calcValue = Int32(LunarNode.meanNode.rawValue)
-            }
-            else if isTrueSouthNode {
-                calcValue = Int32(LunarNode.trueNode.rawValue)
-            }
-            else {
-                calcValue = value
-            }
+        let isMeanSouthNode: Bool
+        let isTrueSouthNode: Bool
 
-            swe_calc_ut(date.julianDate(), calcValue, SEFLG_SPEED, pointer, nil)
-		case let value as String:
-			charPointer.initialize(from: value, count: value.count)
-			charPointer = strdup(value)
-			swe_fixstar2(charPointer, date.julianDate(), SEFLG_SPEED, pointer, nil)
-		default:
-			break
-		}
+        let value: Int32
+        switch body {
+        case let .planet(planet):
+            value = planet.value
+        case let .lunarNode(lunarNode):
+            value = lunarNode.value
+            isMeanSouthNode = (lunarNode.value == LunarNode.meanSouthNode.rawValue)
+            isTrueSouthNode = (lunarNode.value == LunarNode.trueSouthNode.rawValue)
+        case let .asteroid(asteroid):
+            value = asteroid.value
+        }
+
+        pointer.initialize(repeating: 0, count: 6)
+        let calcValue: Int32
+        if isMeanSouthNode {
+            calcValue = Int32(LunarNode.meanNode.rawValue)
+        }
+        else if isTrueSouthNode {
+            calcValue = Int32(LunarNode.trueNode.rawValue)
+        }
+        else {
+            calcValue = value
+        }
+
+        swe_calc_ut(date.julianDate(), calcValue, SEFLG_SPEED, pointer, nil)
 
         var longDegrees = 0.0
 
@@ -166,7 +166,7 @@ extension Coordinate: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        body = try container.decode(T.self, forKey: .body)
+        body = try container.decode(CelestialObject.self, forKey: .body)
         date = try container.decode(Date.self, forKey: .date)
         longitude = try container.decode(Double.self, forKey: .longitude)
         latitude = try container.decode(Double.self, forKey: .latitude)
@@ -189,7 +189,7 @@ extension Coordinate: Codable {
         try container.encode(speedDistance, forKey: .speedDistance)
     }
 
-    public func longitudeDelta<Body>(other: Coordinate<Body>) -> Double {
+    public func longitudeDelta(other: CelestialObject) -> Double {
         return abs(longitude - other.longitude)
     }
 }
