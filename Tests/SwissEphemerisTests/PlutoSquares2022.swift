@@ -85,4 +85,25 @@ class PlutoSquares2022: XCTestCase {
 
         XCTAssert(tGroups.count == 4)
     }
+
+    func testCelestialAspect() throws {
+        let chart = PlutoSquares2022.chart
+        let natalVenus = Coordinate(body: Planet.venus, date: chart.date)
+        let start = Date(fromString: "2021-01-01 00:00:00 +0000", format: .cocoaDateTime)!
+        let end = Date(fromString: "2023-12-31 23:59:00 +0000", format: .cocoaDateTime)!
+
+        let positions = BodiesRequest(body: Planet.pluto).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
+        let orb = 1.5
+
+        let squares = positions.filter { Tpluto in
+            if let ca = CelestialAspect(body1: Tpluto, body2: natalVenus, orb: orb) {
+                print("ca = \(ca)")
+            }
+//            if let a = Aspect(bodyA: Tpluto, bodyB: natalVenus, orb: orb) {
+//                return a.isSquare
+//            }
+
+            return false
+        }
+    }
 }
