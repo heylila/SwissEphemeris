@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct _Aspect<Body1, Body2>: Codable where Body1: CelestialBody, Body2: CelestialBody {
-    enum Kind: Codable {
+public struct CelestialAspect: Codable {
+    public enum Kind: Codable {
         /// A 0° alignment.
         case conjunction
         /// A 60° alignment.
@@ -21,10 +21,39 @@ public struct _Aspect<Body1, Body2>: Codable where Body1: CelestialBody, Body2: 
         case opposition
     }
 
-    let kind: Kind
-    let body1: Coordinate<Body1>
-    let body2: Coordinate<Body2>
-    let angle: Double
+    public let kind: Kind
+    public let body1: CelestialObject
+    public let body2: CelestialObject
+    public let angle: Double
+
+    public init?(body1: CelestialObject, body2: CelestialObject, orb: Double) {
+        if let a = Aspect(a: body1.longitude, b: body2.longitude, orb: orb) {
+            self.body1 = body1
+            self.body2 = body2
+
+            switch a {
+            case .conjunction(_):
+                self.angle = 0.0 + a.remainder
+                self.kind = .conjunction
+            case .sextile(_):
+                self.angle = 60.0 + a.remainder
+                self.kind = .sextile
+            case .square(_):
+                self.angle = 90.0 + a.remainder
+                self.kind = .square
+            case .trine(_):
+                self.angle = 120.0 + a.remainder
+                self.kind = .trine
+            case .opposition(_):
+                self.angle = 180.0 + a.remainder
+                self.kind = .opposition
+            }
+
+            return
+        }
+
+        return nil
+    }
 }
 
 /// Models a geometric aspect between two bodies.
