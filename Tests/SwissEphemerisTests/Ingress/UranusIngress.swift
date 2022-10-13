@@ -15,7 +15,6 @@ class UranusIngress: XCTestCase {
     }
 
     func testUranusEgressTaurus() throws {
-        let houses = ClevelandIngress.houseCusps
         let planet = Planet.uranus
         guard let signTuple = PlutoIngress.signTransits[planet] else { return }
         let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
