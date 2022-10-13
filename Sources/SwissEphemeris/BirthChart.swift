@@ -14,9 +14,9 @@ public struct BirthChart {
     /// The "HouseCusps", which models a house system with a `Cusp` for each house, ascendent and midheaven.
     public let houseCusps: HouseCusps
 
-    public let sun: Coordinate<Planet>
+    public let sun: Coordinate<CelestialObject>
 
-    public let moon: Coordinate<Planet>
+    public let moon: Coordinate<CelestialObject>
 
     public let mercury: Coordinate<Planet>
 
@@ -127,17 +127,20 @@ public struct BirthChart {
 //    ]
 //
 
-//    public var conjunctions: [Aspect]? {
-//        var conjs = [Aspect]()
-//
-//        for planet in self.planets {
-//            let filteredPlanets = self.planets.filter{ $0 != planet }
-//
-//            for fp in filteredPlanets {
-//
-//            }
-//        }
-//    }
+    public var conjunctions: [CelestialAspect<CelestialObject, CelestialObject>]? {
+        var conjs = [CelestialAspect<CelestialObject, CelestialObject>]()
+
+        for planet in self.planets {
+            let filteredPlanets = self.planets.filter{ $0 != planet }
+
+            for fp in filteredPlanets {
+
+            }
+        }
+
+        return conjs
+    }
+
 //
 //    public let oppositions: [Aspect]?
 //
