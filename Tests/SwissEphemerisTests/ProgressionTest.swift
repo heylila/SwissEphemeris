@@ -27,7 +27,6 @@ class ProgressionTest: XCTestCase {
     }
 
     func testExample() throws {
-        let today = Date(fromString: "2022-04-04 16:30:00 -0700", format: .cocoaDateTime)
         let houseSystem = ProgressionTest.houseSystem
         // Remember: the value you see for the Asc is the # of degrees from 0 degrees Aries
         print("pure asc = \(houseSystem.ascendent)")
