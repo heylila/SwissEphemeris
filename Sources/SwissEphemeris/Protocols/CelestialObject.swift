@@ -7,11 +7,10 @@
 
 import Foundation
 
-public enum CelestialObject: Codable {
+public enum CelestialObject: Codable, Equatable {
     case asteroid(Asteroid)
     case lunarNode(LunarNode)
     case planet(Planet)
-    case fixedStar(FixedStar)
 }
 
 extension CelestialObject {
