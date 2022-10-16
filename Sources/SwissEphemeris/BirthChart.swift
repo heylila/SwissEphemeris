@@ -195,7 +195,7 @@ public struct BirthChart {
         return (aspects.count > 0) ? aspects : nil
     }
 
-    public func transitingPlanets(for date: Date) -> [Coordinate<Planet>] {
+    public func snapshotOfPlanets(for date: Date) -> [Coordinate<Planet>] {
         return [
             Coordinate(body: Planet.sun, date: date),
             Coordinate(body: Planet.moon, date: date),
@@ -210,11 +210,11 @@ public struct BirthChart {
         ]
     }
 
-    public func transitingChiron(for date: Date) -> Coordinate<Asteroid> {
+    public func snapshotOfChiron(for date: Date) -> Coordinate<Asteroid> {
         return Coordinate(body: Asteroid.chiron, date: date)
     }
 
-    public func transitingNodes(for date: Date) -> [Coordinate<LunarNode>] {
+    public func snapshotOfNodes(for date: Date) -> [Coordinate<LunarNode>] {
         return [
             Coordinate(body: LunarNode.meanNode, date: date),
             Coordinate(body: LunarNode.meanSouthNode, date: date)
