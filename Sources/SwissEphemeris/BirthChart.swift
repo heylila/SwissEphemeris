@@ -82,22 +82,42 @@ public struct BirthChart {
             self.northNode,
             self.southNode
         ]
-
-
     }
 
-    public var fastOrbs: Dictionary<String, Double> {
+    public var fastBodies: [Coordinate<Planet>] {
         return [
-            "conjunction" : 5.0,
-            "sextile" : 3.0,
-            "square" : 4.0,
-            "trine" : 3.0,
-            "opposition" : 4.0
+            self.sun,
+            self.moon,
+            self.mercury,
+            self.venus,
+            self.mars
         ]
     }
 
-    public var mediumOrb: Double {
-        return 1.0
+    public var astroDeinstPlanetOrbs: Dictionary<Kind, Double> {
+        // Astrodeinst's orbs
+        return [
+            .conjunction : 10.0,
+            .sextile : 6.0,
+            .square : 10.0,
+            .trine : 10.0,
+            .opposition : 10.0
+        ]
+    }
+
+    public var stevensFastOrbs: Dictionary<Kind, Double> {
+        return [
+            .conjunction : 5.0,
+            .sextile : 3.0,
+            .square : 4.0,
+            .trine : 3.0,
+            .opposition : 4.0
+        ]
+    }
+
+    public var notFastOrb: Double {
+        return 0.0 // Astrodeinst orb
+        // return 1.0 // Steven's orb
     }
 
     public var slowOrb: Double {
