@@ -120,51 +120,78 @@ public struct BirthChart {
         // return 1.0 // Steven's orb
     }
 
-    public var slowOrb: Double {
-        return 1.0
+    public var planetToPlanetAspects: [CelestialAspect<Planet, Planet>]? {
+        var aspects = [CelestialAspect<Planet, Planet>]()
+
+        for planet in self.planets {
+            let filteredPlanets = self.planets.filter{ $0 != planet }
+
+            for fp in filteredPlanets {
+                for aspect in Kind.allCases {
+                    let orb = astroDeinstPlanetOrbs[aspect]!
+                    if let a = CelestialAspect(body1: planet, body2: fp, orb: orb) {
+                        if a.kind == aspect && aspects.contains(a) == false {
+                            aspects.append(a)
+                        }
+                    }
+                }
+            }
+        }
+
+        return (aspects.count > 0) ? aspects : nil
     }
 
-//    let fastPlanets = [
-//        "sun",
-//        "moon",
-//        "mercury",
-//        "venus",
-//        "mars"
-//    ]
-//
-//    let mediumPlanets = [
-//        "jupiter",
-//        "saturn"
-//    ]
-//
-//    let slowBodies = [
-//        "uranus",
-//        "neptune",
-//        "pluto",
-//        "chiron",
-//        "northnode",
-//        "southnode"
-//    ]
-//
+    public var planetToChironAspects: [CelestialAspect<Planet, Asteroid>]? {
+        var aspects = [CelestialAspect<Planet, Asteroid>]()
 
-//    public var conjunctions: [Aspect]? {
-//        var conjs = [Aspect]()
-//
-//        for planet in self.planets {
-//            let filteredPlanets = self.planets.filter{ $0 != planet }
-//
-//            for fp in filteredPlanets {
-//
-//            }
-//        }
-//    }
-//
-//    public let oppositions: [Aspect]?
-//
-//    public let trines: [Aspect]?
-//
-//    public let squares: [Aspect]?
-//
-//    public let sextiles: [Aspect]?
+        for planet in self.planets {
+            for aspect in Kind.allCases {
+                let orb = astroDeinstPlanetOrbs[aspect]!
+                if let a = CelestialAspect(body1: planet, body2: self.chiron, orb: orb) {
+                    if a.kind == aspect && aspects.contains(a) == false {
+                        aspects.append(a)
+                    }
+                }
+            }
+        }
 
+        return (aspects.count > 0) ? aspects : nil
+    }
+
+    public var planetToNodeAspects: [CelestialAspect<Planet, LunarNode>]? {
+        var aspects = [CelestialAspect<Planet, LunarNode>]()
+
+        for planet in self.planets {
+            for aspect in Kind.allCases {
+                for node in self.lunarNodes {
+                    let orb = astroDeinstPlanetOrbs[aspect]!
+                    if let a = CelestialAspect(body1: planet, body2: node, orb: orb) {
+                        if a.kind == aspect && aspects.contains(a) == false {
+                            aspects.append(a)
+                        }
+                    }
+                }
+            }
+        }
+
+        return (aspects.count > 0) ? aspects : nil
+    }
+
+
+    public var chironToNodeAspects: [CelestialAspect<Asteroid, LunarNode>]? {
+        var aspects = [CelestialAspect<Asteroid, LunarNode>]()
+
+        for aspect in Kind.allCases {
+            for node in self.lunarNodes {
+                let orb = astroDeinstPlanetOrbs[aspect]!
+                if let a = CelestialAspect(body1: self.chiron, body2: node, orb: orb) {
+                    if aspects.contains(a) == false {
+                        aspects.append(a)
+                    }
+                }
+            }
+        }
+
+        return (aspects.count > 0) ? aspects : nil
+    }
 }
