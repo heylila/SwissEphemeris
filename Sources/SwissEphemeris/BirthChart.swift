@@ -194,4 +194,30 @@ public struct BirthChart {
 
         return (aspects.count > 0) ? aspects : nil
     }
+
+    public func transitingPlanets(for date: Date) -> [Coordinate<Planet>] {
+        return [
+            Coordinate(body: Planet.sun, date: date),
+            Coordinate(body: Planet.moon, date: date),
+            Coordinate(body: Planet.mercury, date: date),
+            Coordinate(body: Planet.venus, date: date),
+            Coordinate(body: Planet.mars, date: date),
+            Coordinate(body: Planet.jupiter, date: date),
+            Coordinate(body: Planet.saturn, date: date),
+            Coordinate(body: Planet.uranus, date: date),
+            Coordinate(body: Planet.neptune, date: date),
+            Coordinate(body: Planet.pluto, date: date),
+        ]
+    }
+
+    public func transitingChiron(for date: Date) -> Coordinate<Asteroid> {
+        return Coordinate(body: Asteroid.chiron, date: date)
+    }
+
+    public func transitingNodes(for date: Date) -> [Coordinate<LunarNode>] {
+        return [
+            Coordinate(body: LunarNode.meanNode, date: date),
+            Coordinate(body: LunarNode.meanSouthNode, date: date)
+        ]
+    }
 }
