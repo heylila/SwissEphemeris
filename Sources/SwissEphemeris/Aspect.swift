@@ -7,24 +7,43 @@
 
 import Foundation
 
-public struct CelestialAspect<Body1, Body2>: Codable where Body1: CelestialBody, Body2: CelestialBody {
-    public enum Kind: Codable {
-        /// A 0° alignment.
-        case conjunction
-        /// A 60° alignment.
-        case sextile
-        /// A 90° alignment.
-        case square
-        /// A 120° alignment.
-        case trine
-        /// An 180° alignment.
-        case opposition
-    }
+public enum Kind: Codable, CaseIterable {
+    /// A 0° alignment.
+    case conjunction
+    /// A 60° alignment.
+    case sextile
+    /// A 90° alignment.
+    case square
+    /// A 120° alignment.
+    case trine
+    /// An 180° alignment.
+    case opposition
+}
 
+public struct CelestialAspect<Body1, Body2>: Codable, Equatable, Hashable where Body1: CelestialBody, Body2: CelestialBody {
     public let kind: Kind
     public let body1: Coordinate<Body1>
     public let body2: Coordinate<Body2>
     public let angle: Double
+
+    public var orbDelta: Double {
+        switch kind {
+        case .conjunction:
+            return angle
+        case .sextile:
+            return preciseRound(angle - 60.0, precision: .thousandths)
+        case .square:
+            return preciseRound(angle - 90.0, precision: .thousandths)
+        case .trine:
+            return preciseRound(angle - 120.0, precision: .thousandths)
+        case .opposition:
+            return preciseRound(angle - 180.0, precision: .thousandths)
+        }
+    }
+
+    public var aspectString: String {
+        return "\(body1.body) \(kind) \(body2.body) with orb: \(orbDelta)"
+    }
 
     public init?(body1: Coordinate<Body1>, body2: Coordinate<Body2>, orb: Double) {
         if let a = Aspect(a: body1.longitude, b: body2.longitude, orb: orb) {
@@ -53,6 +72,32 @@ public struct CelestialAspect<Body1, Body2>: Codable where Body1: CelestialBody,
         }
 
         return nil
+    }
+
+    public static func ==(lhs: CelestialAspect, rhs: CelestialAspect) -> Bool {
+        let test1 = (lhs.body1 == rhs.body1 &&
+                     lhs.body2 == rhs.body2 &&
+                     lhs.kind == rhs.kind &&
+                     lhs.angle == rhs.angle)
+        let test2 = (lhs.body1.formatted == rhs.body2.formatted &&
+                     lhs.kind == rhs.kind &&
+                     lhs.angle == rhs.angle)
+        let test3 = (lhs.body2.formatted == lhs.body1.formatted &&
+                     lhs.kind == rhs.kind &&
+                     lhs.angle == rhs.angle)
+        return test1 || test2 || test3
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(body1.date)
+        hasher.combine(body1.latitude)
+        hasher.combine(body1.longitude)
+        hasher.combine(body1.value)
+        hasher.combine(body2.date)
+        hasher.combine(body2.latitude)
+        hasher.combine(body2.longitude)
+        hasher.combine(body2.value)
+        hasher.combine(angle)
     }
 }
 
