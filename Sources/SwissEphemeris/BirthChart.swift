@@ -220,4 +220,59 @@ public struct BirthChart {
             Coordinate(body: LunarNode.meanSouthNode, date: date)
         ]
     }
+
+    public func transitingCoordinates<T, N>(for transitingBody: Coordinate<T>, with natalBody: Coordinate<N>, on date: Date) -> (first: Coordinate<T>, last: Coordinate<T>)? {
+
+        // So, IF we have a transiting aspect on a particular date, what we want to find is:
+        // The absolute BEGINNING minute of the transiting aspect
+        // The absolute ENDING minute of the transiting asect
+        // Think of this as a inclusive interval: [ <starting minute>, ... , <ending minute> ]
+
+        // Best way to do this is in days, and using inspiration from
+        // "sliceTimeForEgress / sliceTimeForIngress"
+
+        // Will return nil IF there's no aspect on the provided date
+
+        let orb = 2.0
+        guard let a = CelestialAspect(body1: transitingBody, body2: natalBody, orb: orb) else {
+            return nil
+        }
+
+        let TBody = transitingBody
+        var yesterday: CelestialAspect? = a
+        var tomorrow: CelestialAspect? = a
+        var dayBefore = date
+        var dayAfter = date
+
+        while yesterday != nil {
+            dayBefore = dayBefore.offset(.day, value: -1)!
+            let yesterdayTBody = Coordinate(body: TBody.body, date: dayBefore)
+            yesterday = CelestialAspect(body1: yesterdayTBody, body2: natalBody, orb: orb)
+        }
+
+        while tomorrow != nil {
+            dayAfter = dayAfter.offset(.day, value: 1)!
+            let tomorrowTBody = Coordinate(body: TBody.body, date: dayAfter)
+            tomorrow = CelestialAspect(body1: tomorrowTBody, body2: natalBody, orb: orb)
+        }
+
+        let beforeFirstDay = dayBefore
+        let firstDay = dayBefore.offset(.day, value: 1)!
+        let afterLastDay = dayAfter
+        let lastDay = dayAfter.offset(.day, value: -1)!
+
+        var positions = BodiesRequest(body: TBody.body).fetch(start: beforeFirstDay, end: firstDay, interval: TimeSlice.minute.slice)
+        let starting = positions.first { now in
+            let a = Aspect(bodyA: now, bodyB: natalBody, orb: orb)
+            return a != nil
+        }
+
+        positions = BodiesRequest(body: TBody.body).fetch(start: lastDay, end: afterLastDay, interval: TimeSlice.minute.slice)
+        let ending = positions.last { now in
+            let a = Aspect(bodyA: now, bodyB: natalBody, orb: orb)
+            return a != nil
+        }
+
+        return (starting, ending) as? (first: Coordinate<T>, last: Coordinate<T>)
+    }
 }
