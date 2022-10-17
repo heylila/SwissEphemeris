@@ -221,6 +221,15 @@ public struct BirthChart {
         ]
     }
 
+    public func transitType<T, U>(for body: T, with natalBody: Coordinate<U>, on date: Date) -> Kind? where T: CelestialBody {
+        let bodyCoordinate = Coordinate(body: body, date: date)
+        if let a = CelestialAspect(body1: bodyCoordinate, body2: natalBody, orb: 2.0) {
+            return a.kind
+        }
+
+        return nil
+    }
+
     public func transitingCoordinates<T, N>(for transitingBody: Coordinate<T>, with natalBody: Coordinate<N>, on date: Date) -> (first: Coordinate<T>, last: Coordinate<T>)? {
 
         // So, IF we have a transiting aspect on a particular date, what we want to find is:
