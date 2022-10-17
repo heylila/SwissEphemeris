@@ -26,9 +26,14 @@ final class ClevelandTransits: XCTestCase {
     func testPlutoSextileSun() throws {
         let chart = ClevelandTransits.chart
         let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
-        let TPluto = Coordinate(body: Planet.pluto, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TPluto, with: chart.sun, on: testDate)
+        let body = Planet.pluto
+        let TBody = Coordinate(body: body, date: testDate)
+        let natal = chart.sun
+        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .sextile)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 5)
