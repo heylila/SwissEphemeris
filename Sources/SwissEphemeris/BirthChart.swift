@@ -275,4 +275,49 @@ public struct BirthChart {
 
         return (starting, ending) as? (first: Coordinate<T>, last: Coordinate<T>)
     }
+
+    public func transitingCoordinates<T>(for transitingBody: Coordinate<T>, with cusp: Cusp, on date: Date) -> (first: Coordinate<T>, last: Coordinate<T>)? {
+        let orb = 2.0
+        let TBody = transitingBody
+
+        guard let a = Aspect(a: TBody.longitude, b: cusp.value, orb: orb) else {
+            return nil
+        }
+
+        var yesterday: Aspect? = a
+        var tomorrow: Aspect? = a
+        var dayBefore = date
+        var dayAfter = date
+
+        while yesterday != nil {
+            dayBefore = dayBefore.offset(.day, value: -1)!
+            let yesterdayTBody = Coordinate(body: TBody.body, date: dayBefore)
+            yesterday = Aspect(a: yesterdayTBody.longitude, b: cusp.value, orb: orb)
+        }
+
+        while tomorrow != nil {
+            dayAfter = dayAfter.offset(.day, value: 1)!
+            let tomorrowTBody = Coordinate(body: TBody.body, date: dayAfter)
+            tomorrow = Aspect(a: tomorrowTBody.longitude, b: cusp.value, orb: orb)
+        }
+
+        let beforeFirstDay = dayBefore
+        let firstDay = dayBefore.offset(.day, value: 1)!
+        let afterLastDay = dayAfter
+        let lastDay = dayAfter.offset(.day, value: -1)!
+
+        var positions = BodiesRequest(body: TBody.body).fetch(start: beforeFirstDay, end: firstDay, interval: TimeSlice.minute.slice)
+        let starting = positions.first { now in
+            let a = Aspect(a: now.longitude, b: cusp.value, orb: orb)
+            return a != nil
+        }
+
+        positions = BodiesRequest(body: TBody.body).fetch(start: lastDay, end: afterLastDay, interval: TimeSlice.minute.slice)
+        let ending = positions.last { now in
+            let a = Aspect(a: now.longitude, b: cusp.value, orb: orb)
+            return a != nil
+        }
+
+        return (starting, ending) as? (first: Coordinate<T>, last: Coordinate<T>)
+    }
 }
