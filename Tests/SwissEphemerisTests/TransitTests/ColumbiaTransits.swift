@@ -36,6 +36,9 @@ final class ColumbiaTransits: XCTestCase {
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .square)
+
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
             XCTAssert(first.date.component(.day) == 12)
@@ -58,6 +61,9 @@ final class ColumbiaTransits: XCTestCase {
         let TBody = Coordinate(body: body, date: testDate)
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .square)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 8)
@@ -82,6 +88,9 @@ final class ColumbiaTransits: XCTestCase {
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .square)
+
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 8)
             XCTAssert(first.date.component(.day) == 6)
@@ -104,6 +113,9 @@ final class ColumbiaTransits: XCTestCase {
         let natal = chart.saturn
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .trine)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
@@ -128,6 +140,9 @@ final class ColumbiaTransits: XCTestCase {
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .trine)
+
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
             XCTAssert(first.date.component(.day) == 13)
@@ -150,6 +165,9 @@ final class ColumbiaTransits: XCTestCase {
         let TBody = Coordinate(body: body, date: testDate)
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .trine)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 8)
@@ -174,6 +192,9 @@ final class ColumbiaTransits: XCTestCase {
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .trine)
+
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 8)
             XCTAssert(first.date.component(.day) == 14)
@@ -197,6 +218,9 @@ final class ColumbiaTransits: XCTestCase {
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .conjunction)
+
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
             XCTAssert(first.date.component(.day) == 13)
@@ -219,6 +243,9 @@ final class ColumbiaTransits: XCTestCase {
         let TBody = Coordinate(body: body, date: testDate)
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .trine)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 8)
