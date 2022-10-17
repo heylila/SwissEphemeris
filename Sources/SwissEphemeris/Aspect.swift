@@ -138,8 +138,15 @@ public enum Aspect: Equatable, Hashable, Codable {
 	///   - b: The second degree in the pair.
 	///   - orb: The number of degrees allowed for the aspect to differ from exactness.
 	public init?(a: Double, b: Double, orb: Double) {
-		let aspectValue = abs(b - a) >= 180 ?
-			abs(abs(b - a) - 360) : abs(b - a)
+
+        // NOTE: I'm not a fan of rounding here in the Aspect constructor
+        // because I believe this should be handled at the orb level. BUT if you're going
+        // to do it, this is how you would do it:
+        
+        // let aValue = abs(b - a) >= 180 ? abs(abs(b - a) - 360) : abs(b - a)
+        // let aspectValue = preciseRound(aValue, precision: .thousandths)
+
+        let aspectValue = abs(b - a) >= 180 ? abs(abs(b - a) - 360) : abs(b - a)
 		switch aspectValue {
 		case (0 - orb)...(0 + orb):
 			self = .conjunction(round(aspectValue * 100) / 100)
