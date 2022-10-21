@@ -230,6 +230,29 @@ public struct BirthChart {
         return nil
     }
 
+    public func transitType<T>(for body: T, with cusp: Cusp, on date: Date, orb: Double = 2.0) -> Kind? where T: CelestialBody {
+        let bodyCoordinate = Coordinate(body: body, date: date)
+        let kind: Kind
+        if let a = Aspect(a: bodyCoordinate.longitude, b: cusp.value, orb: orb) {
+            switch a {
+            case .conjunction(_):
+                kind = .conjunction
+            case .sextile(_):
+                kind = .sextile
+            case .square(_):
+                kind = .square
+            case .trine(_):
+                kind = .trine
+            case .opposition(_):
+                kind = .opposition
+            }
+
+            return kind
+        }
+
+        return nil
+    }
+
     public func transitingCoordinates<T, N>(for transitingBody: Coordinate<T>, with natalBody: Coordinate<N>, on date: Date) -> (first: Coordinate<T>, last: Coordinate<T>)? {
 
         // So, IF we have a transiting aspect on a particular date, what we want to find is:
