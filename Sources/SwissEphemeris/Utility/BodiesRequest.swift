@@ -42,7 +42,7 @@ final public class BodiesRequest<BodyType>: BatchRequest where BodyType: Celesti
     public let datesThreshold = 478
 
     /// Creates an instance of `BodiesRequest of type <BodyType>`.
-    /// - Parameter body: The planet to request.
+    /// - Parameter body: The celestial body to request.
     public init(body: BodyType) {
         self.body = body
     }
