@@ -221,9 +221,9 @@ public struct BirthChart {
         ]
     }
 
-    public func transitType<T, U>(for body: T, with natalBody: Coordinate<U>, on date: Date) -> Kind? where T: CelestialBody {
+    public func transitType<T, U>(for body: T, with natalBody: Coordinate<U>, on date: Date, orb: Double = 2.0) -> Kind? where T: CelestialBody {
         let bodyCoordinate = Coordinate(body: body, date: date)
-        if let a = CelestialAspect(body1: bodyCoordinate, body2: natalBody, orb: 2.0) {
+        if let a = CelestialAspect(body1: bodyCoordinate, body2: natalBody, orb: orb) {
             return a.kind
         }
 
