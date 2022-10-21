@@ -53,9 +53,13 @@ final class ClevelandTransits: XCTestCase {
         let chart = ClevelandTransits.chart
         let asc = chart.houseCusps.ascendent
         let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
-        let TMercury = Coordinate(body: Planet.mercury, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TMercury, with: asc, on: testDate)
+        let body = Planet.mercury
+        let TBody = Coordinate(body: body, date: testDate)
+        let boundaries = chart.transitingCoordinates(for: TBody, with: asc, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: asc, on: testDate)
+        XCTAssert(kind == .trine)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
@@ -76,8 +80,12 @@ final class ClevelandTransits: XCTestCase {
         let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
         let body = Planet.uranus
         let TBody = Coordinate(body: body, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TBody, with: chart.mercury, on: testDate)
+        let natal = chart.mercury
+        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .sextile)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 5)
@@ -98,8 +106,12 @@ final class ClevelandTransits: XCTestCase {
         let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
         let body = Planet.pluto
         let TBody = Coordinate(body: body, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TBody, with: chart.venus, on: testDate)
+        let natal = chart.venus
+        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .square)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 12)
@@ -124,6 +136,9 @@ final class ClevelandTransits: XCTestCase {
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .sextile)
+
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
             XCTAssert(first.date.component(.day) == 15)
@@ -146,6 +161,9 @@ final class ClevelandTransits: XCTestCase {
         let TBody = Coordinate(body: body, date: testDate)
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .square)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
@@ -170,6 +188,9 @@ final class ClevelandTransits: XCTestCase {
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .trine)
+
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
             XCTAssert(first.date.component(.day) == 10)
@@ -192,6 +213,9 @@ final class ClevelandTransits: XCTestCase {
         let TBody = Coordinate(body: body, date: testDate)
         let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
+
+        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        XCTAssert(kind == .square)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
