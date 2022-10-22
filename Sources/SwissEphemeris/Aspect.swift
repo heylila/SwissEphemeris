@@ -7,19 +7,20 @@
 
 import Foundation
 
+public enum Kind: Codable, CaseIterable {
+    /// A 0° alignment.
+    case conjunction
+    /// A 60° alignment.
+    case sextile
+    /// A 90° alignment.
+    case square
+    /// A 120° alignment.
+    case trine
+    /// An 180° alignment.
+    case opposition
+}
+
 public struct CelestialAspect: Codable {
-    public enum Kind: Codable {
-        /// A 0° alignment.
-        case conjunction
-        /// A 60° alignment.
-        case sextile
-        /// A 90° alignment.
-        case square
-        /// A 120° alignment.
-        case trine
-        /// An 180° alignment.
-        case opposition
-    }
 
     public let kind: Kind
     public let body1: CelestialObject
