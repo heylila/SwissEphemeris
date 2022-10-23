@@ -27,7 +27,7 @@ class PlutoIngress2: XCTestCase {
 
     func testNatalPlutoLocation() throws {
         let chart = PlutoIngress2.houseCusps
-        let pluto = Coordinate(body: Planet.pluto, date: PlutoIngress2.birthDate)
+        let pluto = Coordinate(body: Planet.pluto.celestialObject, date: PlutoIngress2.birthDate)
         let cusp = chart.cuspForLongitude(pluto.longitude)!
         XCTAssert(cusp.number == 5)
         XCTAssert(cusp.name == "fifth")

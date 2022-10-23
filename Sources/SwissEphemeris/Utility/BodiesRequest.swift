@@ -34,22 +34,21 @@ public enum TimeSlice: Double, CaseIterable {
 /// like an old-school film strip or flip book. To see whet I'm talking about, watch this video:
 ///
 /// https://youtu.be/ntD2qiGx-DY
-final public class BodiesRequest<BodyType>: BatchRequest where BodyType: CelestialBody {
+final public class BodiesRequest: BatchRequest {
 
     /// The `BodyType` to request (usually `Planet` or `LunarNode` or `Asteroid`)
-    private let body: BodyType
-    public typealias EphemerisItem = Coordinate<BodyType>
+    public let body: CelestialObject
     public let datesThreshold = 478
 
     /// Creates an instance of `BodiesRequest of type <BodyType>`.
     /// - Parameter body: The planet to request.
-    public init(body: BodyType) {
+    public init(body: CelestialObject) {
         self.body = body
     }
 
-    public func fetch(start: Date, end: Date, interval: TimeInterval = 60.0) -> [EphemerisItem] {
+    public func fetch(start: Date, end: Date, interval: TimeInterval = 60.0) -> [Coordinate] {
         stride(from: start, through: end, by: interval).map {
-            EphemerisItem(body: body, date: $0)
+            Coordinate(body: body, date: $0)
         }
     }
 }

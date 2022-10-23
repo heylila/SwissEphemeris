@@ -26,30 +26,30 @@ class ClevelandIngress: XCTestCase {
         return HouseCusps(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
     }
 
-    static var planets: [String : Coordinate<Planet> ] {
+    static var planets: [String : Coordinate ] {
         return [
-            Planet.sun.formatted : Coordinate(body: Planet.sun, date: birthDate),
-            Planet.moon.formatted : Coordinate(body: .moon, date: birthDate),
-            Planet.mercury.formatted : Coordinate(body: .mercury, date: birthDate),
-            Planet.venus.formatted : Coordinate(body: .venus, date: birthDate),
-            Planet.mars.formatted : Coordinate(body: .mars, date: birthDate),
-            Planet.jupiter.formatted : Coordinate(body: .jupiter, date: birthDate),
-            Planet.saturn.formatted : Coordinate(body: .saturn, date: birthDate),
-            Planet.uranus.formatted : Coordinate(body: .uranus, date: birthDate),
-            Planet.neptune.formatted : Coordinate(body: .neptune, date: birthDate),
-            Planet.pluto.formatted : Coordinate(body: .pluto, date: birthDate)
+            Planet.sun.formatted : Coordinate(body: Planet.sun.celestialObject, date: birthDate),
+            Planet.moon.formatted : Coordinate(body: Planet.moon.celestialObject, date: birthDate),
+            Planet.mercury.formatted : Coordinate(body: Planet.mercury.celestialObject, date: birthDate),
+            Planet.venus.formatted : Coordinate(body: Planet.venus.celestialObject, date: birthDate),
+            Planet.mars.formatted : Coordinate(body: Planet.mars.celestialObject, date: birthDate),
+            Planet.jupiter.formatted : Coordinate(body: Planet.jupiter.celestialObject, date: birthDate),
+            Planet.saturn.formatted : Coordinate(body: Planet.saturn.celestialObject, date: birthDate),
+            Planet.uranus.formatted : Coordinate(body: Planet.uranus.celestialObject, date: birthDate),
+            Planet.neptune.formatted : Coordinate(body: Planet.neptune.celestialObject, date: birthDate),
+            Planet.pluto.formatted : Coordinate(body: Planet.pluto.celestialObject, date: birthDate)
         ]
     }
 
-    static var nodes: [String : Coordinate<LunarNode> ] {
+    static var nodes: [String : Coordinate ] {
         return [
-            "North Node" : Coordinate(body: LunarNode.meanNode, date: birthDate),
-            "South Node" : Coordinate(body: LunarNode.meanSouthNode, date: birthDate)
+            "North Node" : Coordinate(body: LunarNode.meanNode.celestialObject, date: birthDate),
+            "South Node" : Coordinate(body: LunarNode.meanSouthNode.celestialObject, date: birthDate)
         ]
     }
 
-    static var chiron: Coordinate<Asteroid> {
-        return Coordinate(body: Asteroid.chiron, date: birthDate)
+    static var chiron: Coordinate {
+        return Coordinate(body: Asteroid.chiron.celestialObject, date: birthDate)
     }
 
     func returnHouseForRange(_ houses: HouseCusps, _ range: ClosedRange<Double>) -> (Cusp, String)? {
@@ -145,7 +145,7 @@ class ClevelandIngress: XCTestCase {
         }
 
         for planet in planetCases {
-            let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
+            let hourPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: hourSlice)
             let hourFirst = hourPositions.first!
             let hourLast = hourPositions.last!
             let startString = hourFirst.date.toString(format: .cocoaDateTime)!
@@ -158,7 +158,7 @@ class ClevelandIngress: XCTestCase {
                     continue
                 }
 
-                let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+                let minPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: minuteSlice)
                 for i in stride(from: minPositions.endIndex - 1, to: 0, by: -1) {
                     let minFirst = minPositions[i]
                     let minLast = minPositions[i - 1]
@@ -179,7 +179,7 @@ class ClevelandIngress: XCTestCase {
                 continue
             }
 
-            let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+            let minPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: minuteSlice)
 
             for i in stride(from: 0, to: minPositions.endIndex, by: 1) {
                 let minFirst = minPositions[i]
@@ -204,7 +204,7 @@ class ClevelandIngress: XCTestCase {
         }
 
         for planet in planetCases {
-            let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
+            let hourPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: hourSlice)
             let hourFirst = hourPositions.first!
             let hourLast = hourPositions.last!
 
@@ -222,7 +222,7 @@ class ClevelandIngress: XCTestCase {
             }
 
             let minuteSlice = 60.0
-            let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+            let minPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: minuteSlice)
             let usableSignLongitude = sign.value + houses.ascendent.value
 
             for i in stride(from: 0, to: minPositions.endIndex, by: 1) {
@@ -258,7 +258,7 @@ class ClevelandIngress: XCTestCase {
             print("House ingresses for week between \(sdString) and \(edString)")
 
             for planet in planetCases {
-                let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
+                let hourPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: hourSlice)
                 let hourFirst = hourPositions.first!
                 let hourLast = hourPositions.last!
 
@@ -269,7 +269,7 @@ class ClevelandIngress: XCTestCase {
                         continue
                     }
 
-                    let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+                    let minPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: minuteSlice)
                     for i in stride(from: minPositions.endIndex - 1, to: 0, by: -1) {
                         let minLast = minPositions[i]
                         let minFirst = minPositions[i - 1]
@@ -290,7 +290,7 @@ class ClevelandIngress: XCTestCase {
                     continue
                 }
 
-                let minPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: minuteSlice)
+                let minPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: minuteSlice)
 
                 for i in stride(from: 0, to: minPositions.endIndex, by: 1) {
                     let minFirst = minPositions[i]
@@ -308,7 +308,7 @@ class ClevelandIngress: XCTestCase {
         }
     }
 
-    func findRetrogradeTimeRangeForCoordinates<BodyType>(_ coordinates: [Coordinate<BodyType>]) -> (start: Date, end: Date)? where BodyType: CelestialBody {
+    func findRetrogradeTimeRangeForCoordinates(_ coordinates: [Coordinate]) -> (start: Date, end: Date)? {
         if coordinates.count < 3 {
             return nil;
         }
@@ -353,7 +353,7 @@ class ClevelandIngress: XCTestCase {
         return nil
     }
 
-    func findNormalTimeRangeForCoordinates<BodyType>(_ coordinates: [Coordinate<BodyType>]) -> (start: Date, end: Date)? where BodyType: CelestialBody {
+    func findNormalTimeRangeForCoordinates(_ coordinates: [Coordinate]) -> (start: Date, end: Date)? {
         if coordinates.count < 3 {
             return nil;
         }
@@ -401,7 +401,7 @@ class ClevelandIngress: XCTestCase {
         let start = Date(fromString: "2022-10-23 14:00:00 -0700", format: .cocoaDateTime)!
         let end = start.offset(.week, value: 1)!
         let hourSlice = Double(60 * 60)
-        let hourPositions = BodiesRequest(body: Planet.jupiter).fetch(start: start, end: end, interval: hourSlice)
+        let hourPositions = BodiesRequest(body: Planet.jupiter.celestialObject).fetch(start: start, end: end, interval: hourSlice)
 
         guard let retroTuple = findRetrogradeTimeRangeForCoordinates(hourPositions) else {
             XCTFail("No retrograde tuple found when one was expected")
@@ -421,7 +421,7 @@ class ClevelandIngress: XCTestCase {
         // Find Jupiter retrograde ingress for Pisces
         let houses = ClevelandIngress.houseCusps
         let minSlice = 60.0
-        let minPositions = BodiesRequest(body: Planet.jupiter).fetch(start: retroTuple.start, end: retroTuple.end, interval: minSlice)
+        let minPositions = BodiesRequest(body: Planet.jupiter.celestialObject).fetch(start: retroTuple.start, end: retroTuple.end, interval: minSlice)
         let pisces = houses.pisces.value + houses.ascendent.value + 30.0
         let roundedPisces = preciseRound(pisces, precision: .ones)
         let prePMRetroCrossRange = 0.0 ... 1.0
@@ -471,7 +471,7 @@ class ClevelandIngress: XCTestCase {
             print("Sign ingresses for week between \(sdString) and \(edString)")
 
             for planet in planetCases {
-                let hourPositions = BodiesRequest(body: planet).fetch(start: startDate, end: endDate, interval: hourSlice)
+                let hourPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: hourSlice)
                 let hourFirst = hourPositions.first!
                 let hourLast = hourPositions.last!
 
@@ -504,23 +504,23 @@ class ClevelandIngress: XCTestCase {
         var preIngress = Date(fromString: "2022-07-22 13:07:00 -0700", format: .cocoaDateTime)!
         var postIngress = preIngress.offset(.minute, value: 1)!
 
-        let preIngressSun = Coordinate(body: Planet.sun, date: preIngress)
-        let postIngressSun = Coordinate(body: Planet.sun, date: postIngress)
+        let preIngressSun = Coordinate(body: Planet.sun.celestialObject, date: preIngress)
+        let postIngressSun = Coordinate(body: Planet.sun.celestialObject, date: postIngress)
         XCTAssert(preIngressSun.longitude < leoValue)
         XCTAssert(postIngressSun.longitude > leoValue)
 
         preIngress = Date(fromString: "2022-07-19 05:35:00 -0700", format: .cocoaDateTime)!
         postIngress = preIngress.offset(.minute, value: 1)!
-        let preIngressMercury = Coordinate(body: Planet.mercury, date: preIngress)
-        let postIngressMercury = Coordinate(body: Planet.mercury, date: postIngress)
+        let preIngressMercury = Coordinate(body: Planet.mercury.celestialObject, date: preIngress)
+        let postIngressMercury = Coordinate(body: Planet.mercury.celestialObject, date: postIngress)
         XCTAssert(preIngressMercury.longitude < leoValue)
         XCTAssert(postIngressMercury.longitude > leoValue)
 
         let cancerValue = houses.ascendent.value + houses.cancer.value
         preIngress = Date(fromString: "2022-07-17 18:32:00 -0700", format: .cocoaDateTime)!
         postIngress = preIngress.offset(.minute, value: 1)!
-        let preIngressVenus = Coordinate(body: Planet.venus, date: preIngress)
-        let postIngressVenus = Coordinate(body: Planet.venus, date: postIngress)
+        let preIngressVenus = Coordinate(body: Planet.venus.celestialObject, date: preIngress)
+        let postIngressVenus = Coordinate(body: Planet.venus.celestialObject, date: postIngress)
         XCTAssert(preIngressVenus.longitude < cancerValue)
         XCTAssert(postIngressVenus.longitude > cancerValue)
     }
@@ -530,8 +530,8 @@ class ClevelandIngress: XCTestCase {
         let libraValue = houses.ascendent.value + houses.libra.value
         let preIngress = Date(fromString: "2022-09-23 05:04:00 -0700", format: .cocoaDateTime)!
         let postIngress = preIngress.offset(.minute, value: 1)!
-        let preIngressMercuryRetro = Coordinate(body: Planet.mercury, date: preIngress)
-        let postIngressMercuryRetro = Coordinate(body: Planet.mercury, date: postIngress)
+        let preIngressMercuryRetro = Coordinate(body: Planet.mercury.celestialObject, date: preIngress)
+        let postIngressMercuryRetro = Coordinate(body: Planet.mercury.celestialObject, date: postIngress)
         XCTAssert(preIngressMercuryRetro.longitude > libraValue)
         XCTAssert(postIngressMercuryRetro.longitude < libraValue)
     }
@@ -542,16 +542,16 @@ class ClevelandIngress: XCTestCase {
         var preIngress = Date(fromString: "2022-08-03 18:52:00 -0700", format: .cocoaDateTime)!
         var postIngress = preIngress.offset(.minute, value: 1)!
 
-        let preIngressSun = Coordinate(body: Planet.sun, date: preIngress)
-        let postIngressSun = Coordinate(body: Planet.sun, date: postIngress)
+        let preIngressSun = Coordinate(body: Planet.sun.celestialObject, date: preIngress)
+        let postIngressSun = Coordinate(body: Planet.sun.celestialObject, date: postIngress)
         XCTAssert(preIngressSun.longitude < fourth)
         XCTAssert(postIngressSun.longitude > fourth)
 
         preIngress = Date(fromString: "2022-08-02 21:40:00 -0700", format: .cocoaDateTime)!
         postIngress = preIngress.offset(.minute, value: 1)!
         let third = houses.third.value
-        let preIngressVenus = Coordinate(body: Planet.venus, date: preIngress)
-        let postIngressVenus = Coordinate(body: Planet.venus, date: postIngress)
+        let preIngressVenus = Coordinate(body: Planet.venus.celestialObject, date: preIngress)
+        let postIngressVenus = Coordinate(body: Planet.venus.celestialObject, date: postIngress)
         XCTAssert(preIngressVenus.longitude < third)
         XCTAssert(postIngressVenus.longitude > third)
     }
@@ -561,8 +561,8 @@ class ClevelandIngress: XCTestCase {
         let first = houses.first.value - houses.ascendent.value
         let preIngress = Date(fromString: "2023-02-19 23:55:00 -0800", format: .cocoaDateTime)!
         let postIngress = preIngress.offset(.minute, value: 1)!
-        let preIngressVenusRetrograde = Coordinate(body: Planet.venus, date: preIngress)
-        let postIngressVenusRetrograde = Coordinate(body: Planet.venus, date: postIngress)
+        let preIngressVenusRetrograde = Coordinate(body: Planet.venus.celestialObject, date: preIngress)
+        let postIngressVenusRetrograde = Coordinate(body: Planet.venus.celestialObject, date: postIngress)
 
         // Try a variation of this idea:
         // https://stackoverflow.com/a/5552247/14173138

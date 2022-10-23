@@ -30,29 +30,29 @@ final class AllRetrogrades: XCTestCase {
         JPLFileManager.setEphemerisPath()
     }
 
-    func testNextTuple<T>(_ now: Coordinate<T>, _ next: Coordinate<T>) -> Bool {
+    func testNextTuple(_ now: Coordinate, _ next: Coordinate) -> Bool {
         if now.date > next.date { return false }
         if now.sign == Zodiac.aries && next.sign == Zodiac.pisces { return true }
         if now.sign == Zodiac.pisces && next.sign == Zodiac.aries { return false }
         return now.longitude > next.longitude
     }
 
-    func testPastTuple<T>(_ past: Coordinate<T>, _ now: Coordinate<T>) -> Bool {
+    func testPastTuple(_ past: Coordinate, _ now: Coordinate) -> Bool {
         if now.date < past.date { return false }
         if now.sign == Zodiac.aries && past.sign == Zodiac.pisces { return false }
         if now.sign == Zodiac.pisces && past.sign == Zodiac.aries { return true }
         return now.longitude < past.longitude
     }
 
-    func findRetrogradeDates<U>(target: U, _ past: Date, _ future: Date, _ time: TimeSlice) -> (past: Date, future: Date)? where U: CelestialBody {
+    func findRetrogradeDates(target: CelestialObject, _ past: Date, _ future: Date, _ time: TimeSlice) -> (past: Date, future: Date)? {
         let positions = BodiesRequest(body: target).fetch(start: past, end: future, interval: time.slice)
         let offsets = Array(positions.dropFirst()) + [positions.first!]
 
-        let startRx: Coordinate<U>? = zip(positions, offsets)
+        let startRx: Coordinate? = zip(positions, offsets)
             .first { (now, next) in testNextTuple(now, next)}
             .map { $0.0 }
 
-        let endRx: Coordinate<U>? = Array(zip(positions, offsets))
+        let endRx: Coordinate? = Array(zip(positions, offsets))
             .last { (past, now) in testPastTuple(past, now) }
             .map { $0.1 }
 
@@ -70,7 +70,7 @@ final class AllRetrogrades: XCTestCase {
         return (startRx.date, endRx.date)
     }
 
-    func discoverWindows<T>(_ target: T, _ targetName: String) where T: CelestialBody {
+    func discoverWindows(_ target: CelestialObject, _ targetName: String) {
         let startOfYear = Date(fromString: "2021-12-01 00:00:00 +0000")!
         let endOfYear = Date(fromString: "2032-12-31 23:59:59 +0000")!
         let positions = BodiesRequest(body: target).fetch(start: startOfYear, end: endOfYear, interval: TimeSlice.day.slice)
@@ -85,8 +85,8 @@ final class AllRetrogrades: XCTestCase {
             }
 
         let retroOffsets = Array(retrogrades.dropFirst()) + [retrogrades.first!]
-        var retroGroup = [Coordinate<T>]()
-        var retroGroups = [[Coordinate<T>]]()
+        var retroGroup = [Coordinate]()
+        var retroGroups = [[Coordinate]]()
 
         for (now, next) in zip(retrogrades, retroOffsets) {
             if retroGroup.count == 0 {
@@ -110,7 +110,7 @@ final class AllRetrogrades: XCTestCase {
 
         let sliceIndex = 2
         let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
-        var retroGroups2 = [(start: Coordinate<T>, end: Coordinate<T>)]()
+        var retroGroups2 = [(start: Coordinate, end: Coordinate)]()
 
         for group in retroGroups {
             var past = group.first!.date
@@ -162,6 +162,6 @@ final class AllRetrogrades: XCTestCase {
         let target = LunarNode.trueSouthNode
         let targetName = "South Node"
 
-        discoverWindows(target, targetName)
+        discoverWindows(target.celestialObject, targetName)
     }
 }

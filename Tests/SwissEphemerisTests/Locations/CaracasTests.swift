@@ -32,7 +32,7 @@ final class CaracasTests: XCTestCase {
 
     func testExample() throws {
         var chart = CaracasTests.houseCusps1
-        let pluto = Coordinate(body: Planet.pluto, date: CaracasTests.birthDate)
+        let pluto = Coordinate(body: Planet.pluto.celestialObject, date: CaracasTests.birthDate)
         print("5th house = \(chart.fifth.value)")
         print("Pluto = \(pluto.longitude) and \(pluto.formatted)")
 

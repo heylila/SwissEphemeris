@@ -31,7 +31,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testSun() throws {
-        let body = Coordinate(body: Planet.sun, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.sun.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.virgo)
         XCTAssert(26 == Int32(body.degree))
         XCTAssert(4 == Int32(body.minute))
@@ -40,7 +40,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testMoon() throws {
-        let body = Coordinate(body: Planet.moon, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.moon.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.gemini)
         XCTAssert(3 == Int32(body.degree))
         XCTAssert(28 == Int32(body.minute))
@@ -49,7 +49,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testMercury() throws {
-        let body = Coordinate(body: Planet.mercury, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.mercury.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.libra)
         XCTAssert(21 == Int32(body.degree))
         XCTAssert(51 == Int32(body.minute))
@@ -58,7 +58,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testVenus() throws {
-        let body = Coordinate(body: Planet.venus, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.venus.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.scorpio)
         XCTAssert(7 == Int32(body.degree))
         XCTAssert(11 == Int32(body.minute))
@@ -67,7 +67,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testMars() throws {
-        let body = Coordinate(body: Planet.mars, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.mars.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.leo)
         XCTAssert(10 == Int32(body.degree))
         XCTAssert(42 == Int32(body.minute))
@@ -76,7 +76,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testJupiter() throws {
-        let body = Coordinate(body: Planet.jupiter, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.jupiter.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.libra)
         XCTAssert(15 == Int32(body.degree))
         XCTAssert(21 == Int32(body.minute))
@@ -85,7 +85,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testSaturn() throws {
-        let body = Coordinate(body: Planet.saturn, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.saturn.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.libra)
         XCTAssert(10 == Int32(body.degree))
         XCTAssert(45 == Int32(body.minute))
@@ -94,7 +94,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testUranus() throws {
-        let body = Coordinate(body: Planet.uranus, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.uranus.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.scorpio)
         XCTAssert(26 == Int32(body.degree))
         XCTAssert(55 == Int32(body.minute))
@@ -103,7 +103,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testNeptune() throws {
-        let body = Coordinate(body: Planet.neptune, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.neptune.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.sagittarius)
         XCTAssert(22 == Int32(body.degree))
         XCTAssert(9 == Int32(body.minute))
@@ -112,7 +112,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testPluto() throws {
-        let body = Coordinate(body: Planet.pluto, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Planet.pluto.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.libra)
         XCTAssert(23 == Int32(body.degree))
         XCTAssert(9 == Int32(body.minute))
@@ -121,7 +121,7 @@ class OxnardAries: XCTestCase {
     }
 
     func testChiron() throws {
-        let body = Coordinate(body: Asteroid.chiron, date: OxnardAries.birthDate)
+        let body = Coordinate(body: Asteroid.chiron.celestialObject, date: OxnardAries.birthDate)
         XCTAssert(body.sign == Zodiac.taurus)
         XCTAssert(22 == Int32(body.degree))
         XCTAssert(36 == Int32(body.minute))

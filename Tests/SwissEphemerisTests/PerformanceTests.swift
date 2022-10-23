@@ -16,7 +16,7 @@ final class PerformanceTests: XCTestCase {
         measure {
             for day in 0...1065 {
                 Planet.allCases.forEach {
-                    XCTAssertNotNil(Coordinate<Planet>(body: $0, date: date))
+                    XCTAssertNotNil(Coordinate(body: $0.celestialObject, date: date))
                     if #available(iOS 13.0, *) {
                         date = date.advanced(by: (60 * 60 * 24) * TimeInterval(day))
                     }
@@ -47,10 +47,10 @@ final class PerformanceTests: XCTestCase {
         measure {
             for day in 0...730 {
                 XCTAssertNotNil(
-                    RiseTime<Planet>(date: date,
-                                     body: .moon,
-                                     longitude: longitude,
-                                     latitude: latitude)
+                    RiseTime(date: date,
+                             body: Planet.moon.celestialObject,
+                             longitude: longitude,
+                             latitude: latitude)
                 )
                 if #available(iOS 13.0, *) {
                     date = date.advanced(by: (60 * 60 * 24) * TimeInterval(day))
@@ -65,10 +65,10 @@ final class PerformanceTests: XCTestCase {
         measure {
             for day in 0...730 {
                 XCTAssertNotNil(
-                    SetTime<Planet>(date: date,
-                                     body: .moon,
-                                     longitude: longitude,
-                                     latitude: latitude)
+                    SetTime(date: date,
+                            body: Planet.moon.celestialObject,
+                            longitude: longitude,
+                            latitude: latitude)
                 )
                 if #available(iOS 13.0, *) {
                     date = date.advanced(by: (60 * 60 * 24) * TimeInterval(day))
@@ -106,32 +106,25 @@ final class PerformanceTests: XCTestCase {
     
     func testSpringEquinoxDatePerformance() {
         measure {
-            var coordinate = Coordinate<Planet>(body: .sun, date: date)
+            var coordinate = Coordinate(body: Planet.sun.celestialObject, date: date)
             while coordinate.value > 1.0 {
-                coordinate = Coordinate(body: .sun, date: coordinate.date.addingTimeInterval(60 * 60 * 12))
+                coordinate = Coordinate(body: Planet.sun.celestialObject, date: coordinate.date.addingTimeInterval(60 * 60 * 12))
             }
         }
     }
     
     func testAutumnalEquinoxDatePerformance() {
         measure {
-            var coordinate = Coordinate<Planet>(body: .sun, date: date)
+            var coordinate = Coordinate(body: Planet.sun.celestialObject, date: date)
             while Int(coordinate.value) != 180 {
-                coordinate = Coordinate(body: .sun, date: coordinate.date.addingTimeInterval(60 * 60 * 12))
+                coordinate = Coordinate(body: Planet.sun.celestialObject, date: coordinate.date.addingTimeInterval(60 * 60 * 12))
             }
         }
     }
-    
-	func testBatchRequestPlanetCoordinatesDeprecated() {
-		measure {
-            let requests = BodiesRequest(body: Planet.moon).fetch(start: date, end: date.addingTimeInterval(60 * 60 * 24 * 30))
-            XCTAssertEqual(requests.count, 43200)
-		}
-	}
-	
+
 	func testBatchRequestPlanetCoordinates() async {
-		let batch = BodiesRequest(body: Planet.moon).fetch(start: date, end: date.addingTimeInterval(60 * 60 * 24 * 30))
-		XCTAssertEqual(batch.count, 43200)
+        let batch = BodiesRequest(body: Planet.moon.celestialObject).fetch(start: date, end: date.addingTimeInterval(60 * 60 * 24 * 30))
+		XCTAssertEqual(batch.count, 43201)
 	}
 
 	static var allTests = [
@@ -142,7 +135,6 @@ final class PerformanceTests: XCTestCase {
 		 "testLunationPerformance", testLunationPerformance,
 		 "testAspectPerformance", testAspectPerformance,
 		 "testSpringEquinoxDatePerformance", testSpringEquinoxDatePerformance,
-		 "testAutumnalEquinoxDatePerformance", testAutumnalEquinoxDatePerformance,
-		 "testBatchRequestPlanetCoordinatesDeprecated", testBatchRequestPlanetCoordinatesDeprecated)
+		 "testAutumnalEquinoxDatePerformance", testAutumnalEquinoxDatePerformance)
 	]
 }

@@ -31,7 +31,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testSun() throws {
-        let body = Coordinate(body: Planet.sun, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.sun.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.capricorn)
         XCTAssert(2 == Int32(body.degree))
         XCTAssert(6 == round(body.minute))
@@ -39,7 +39,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testMoon() throws {
-        let body = Coordinate(body: Planet.moon, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.moon.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.scorpio)
         XCTAssert(15 == Int32(body.degree))
         XCTAssert(3 == round(body.minute))
@@ -47,7 +47,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testMercury() throws {
-        let body = Coordinate(body: Planet.mercury, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.mercury.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.capricorn)
         XCTAssert(22 == Int32(body.degree))
         XCTAssert(2 == round(body.minute))
@@ -55,7 +55,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testVenus() throws {
-        let body = Coordinate(body: Planet.venus, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.venus.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.aquarius)
         XCTAssert(5 == Int32(body.degree))
         XCTAssert(51 == round(body.minute))
@@ -63,7 +63,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testMars() throws {
-        let body = Coordinate(body: Planet.mars, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.mars.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.sagittarius)
         XCTAssert(4 == Int32(body.degree))
         XCTAssert(0 == round(body.minute))
@@ -71,7 +71,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testJupiter() throws {
-        let body = Coordinate(body: Planet.jupiter, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.jupiter.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.cancer)
         XCTAssert(6 == Int32(body.degree))
         XCTAssert(18 == round(body.minute))
@@ -79,7 +79,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testSaturn() throws {
-        let body = Coordinate(body: Planet.saturn, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.saturn.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.capricorn)
         XCTAssert(14 == Int32(body.degree))
         XCTAssert(39 == round(body.minute))
@@ -87,7 +87,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testUranus() throws {
-        let body = Coordinate(body: Planet.uranus, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.uranus.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.capricorn)
         XCTAssert(5 == Int32(body.degree))
         XCTAssert(16 == round(body.minute))
@@ -95,7 +95,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testNeptune() throws {
-        let body = Coordinate(body: Planet.neptune, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.neptune.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.capricorn)
         XCTAssert(11 == Int32(body.degree))
         XCTAssert(43 == round(body.minute))
@@ -103,7 +103,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testPluto() throws {
-        let body = Coordinate(body: Planet.pluto, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Planet.pluto.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.scorpio)
         XCTAssert(16 == Int32(body.degree))
         XCTAssert(50 == Int32(body.minute))
@@ -111,7 +111,7 @@ class ToledoCancer: XCTestCase {
     }
 
     func testChiron() throws {
-        let body = Coordinate(body: Asteroid.chiron, date: ToledoCancer.birthDate)
+        let body = Coordinate(body: Asteroid.chiron.celestialObject, date: ToledoCancer.birthDate)
         XCTAssert(body.sign == Zodiac.cancer)
         XCTAssert(14 == Int32(body.degree))
         XCTAssert(23 == round(body.minute))

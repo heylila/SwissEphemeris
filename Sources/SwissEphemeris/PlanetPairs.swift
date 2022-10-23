@@ -11,7 +11,7 @@ import Foundation
 public struct PlanetPairs {
     
     /// Holds all possible pairs of planets.
-    public private (set) var pairs = [Pair<Planet, Planet>]()
+    public private (set) var pairs = [(a: CelestialObject, b: CelestialObject)]()
     
     /// Creates an instance of `PlanetPairs`.
     public init() {
@@ -20,7 +20,7 @@ public struct PlanetPairs {
         while outerIdx < planets.count - 1 {
             for innerIdx in outerIdx + 1..<planets.count {
                 pairs.append(
-                    Pair<Planet, Planet>(a: planets[outerIdx], b: planets[innerIdx])
+                    (a: planets[outerIdx].celestialObject, b: planets[innerIdx].celestialObject)
                 )
             }
             outerIdx += 1

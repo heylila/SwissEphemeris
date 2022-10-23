@@ -21,29 +21,29 @@ final class PlutoRetrograde: XCTestCase {
         var past = now.offset(.month, value: -6)!
         var future = now.offset(.month, value: 6)!
 
-        func testNextTuple<T>(_ now: Coordinate<T>, _ next: Coordinate<T>) -> Bool {
+        func testNextTuple(_ now: Coordinate, _ next: Coordinate) -> Bool {
             if now.date > next.date { return false }
             if now.sign == Zodiac.aries && next.sign == Zodiac.pisces { return true }
             if now.sign == Zodiac.pisces && next.sign == Zodiac.aries { return false }
             return now.longitude > next.longitude
         }
 
-        func testPastTuple<T>(_ past: Coordinate<T>, _ now: Coordinate<T>) -> Bool {
+        func testPastTuple(_ past: Coordinate, _ now: Coordinate) -> Bool {
             if now.date < past.date { return false }
             if now.sign == Zodiac.aries && past.sign == Zodiac.pisces { return false }
             if now.sign == Zodiac.pisces && past.sign == Zodiac.aries { return true }
             return now.longitude < past.longitude
         }
 
-        func findRetrogradeDates<U>(target: U, _ past: Date, _ future: Date, _ time: TimeSlice) -> (past: Date, future: Date)? where U: CelestialBody {
+        func findRetrogradeDates(target: CelestialObject, _ past: Date, _ future: Date, _ time: TimeSlice) -> (past: Date, future: Date)? {
             let positions = BodiesRequest(body: target).fetch(start: past, end: future, interval: time.slice)
             let offsets = Array(positions.dropFirst()) + [positions.first!]
 
-            let startRx: Coordinate<U>? = zip(positions, offsets)
+            let startRx: Coordinate? = zip(positions, offsets)
                 .first { (now, next) in testNextTuple(now, next)}
                 .map { $0.0 }
 
-            let endRx: Coordinate<U>? = Array(zip(positions, offsets))
+            let endRx: Coordinate? = Array(zip(positions, offsets))
                 .last { (past, now) in testPastTuple(past, now) }
                 .map { $0.1 }
 
@@ -74,7 +74,7 @@ final class PlutoRetrograde: XCTestCase {
             let offsetTuple = timeDict[time]!
             past = past.offset(offsetTuple.component, value: (-1 * offsetTuple.value))!
             future = future.offset(offsetTuple.component, value: offsetTuple.value)!
-            let window = findRetrogradeDates(target: Planet.pluto, past, future, time)
+            let window = findRetrogradeDates(target: Planet.pluto.celestialObject, past, future, time)
             guard let window = window else { break }
             past = window.past
             future = window.future

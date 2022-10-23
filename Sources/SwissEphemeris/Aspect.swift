@@ -23,11 +23,11 @@ public enum Kind: Codable, CaseIterable {
 public struct CelestialAspect: Codable {
 
     public let kind: Kind
-    public let body1: CelestialObject
-    public let body2: CelestialObject
+    public let body1: Coordinate
+    public let body2: Coordinate
     public let angle: Double
 
-    public init?(body1: CelestialObject, body2: CelestialObject, orb: Double) {
+    public init?(body1: Coordinate, body2: Coordinate, orb: Double) {
         if let a = Aspect(a: body1.longitude, b: body2.longitude, orb: orb) {
             self.body1 = body1
             self.body2 = body2
@@ -82,9 +82,9 @@ public enum Aspect: Equatable, Hashable, Codable {
 	///   - pair: The two bodies to compare.
 	///   - date: The date of the alignment.
 	///   - orb: The number of degrees allowed for the aspect to differ from exactness.
-    public init?<T, U>(pair: Pair<T, U>, date: Date, orb: Double = 10.0) {
-		let degreeA = Coordinate(body: pair.a, date: date)
-		let degreeB = Coordinate(body: pair.b, date: date)
+    public init?(pair: (a: CelestialObject, b: CelestialObject), date: Date, orb: Double = 10.0) {
+        let degreeA = Coordinate(body: pair.a, date: date)
+        let degreeB = Coordinate(body: pair.b, date: date)
 		self.init(a: degreeA.value, b: degreeB.value, orb: orb)
 	}
 	
@@ -117,7 +117,7 @@ public enum Aspect: Equatable, Hashable, Codable {
     ///   - bodyA: The first body of the aspect.
     ///   - bodyB: The second body of the aspect
     ///   - orb: The number of degrees allowed for the aspect to differ from exactness.
-    public init?<T, U>(bodyA: Coordinate<T>, bodyB: Coordinate<U>, orb: Double = 10.0) {
+    public init?(bodyA: Coordinate, bodyB: Coordinate, orb: Double = 10.0) {
         self.init(a: bodyA.longitude, b: bodyB.longitude, orb: orb)
     }
 

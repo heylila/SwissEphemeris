@@ -13,9 +13,8 @@ import Foundation
 /// and to avoid the undefined behavior that results from making a high number of
 /// calculations concurrently.
 public protocol BatchRequest {
-    /// The type returned from the fetch request.
-    associatedtype EphemerisItem
     /// The maximum amount of concurrent calculations. Exceed `478` at your own risk.
+    var body: CelestialObject { get }
     var datesThreshold: Int { get }
 	
 	/// Fetches a collection of `EphemerisItem` for a time interval through a span of dates.
@@ -24,7 +23,7 @@ public protocol BatchRequest {
 	///   - end: The end of the date range.
 	///   - interval: The frequency in which an item is calculated.
 	/// - Returns: An array of `EphemerisItem`.
-	func fetch(start: Date, end: Date, interval: TimeInterval) -> [EphemerisItem]
+	func fetch(start: Date, end: Date, interval: TimeInterval) -> [Coordinate]
 }
 
 // MARK: - Helper Methods

@@ -10,7 +10,7 @@ import Foundation
 import CSwissEphemeris
 
 /// Models the precise rising time for a celestial body.
-public struct RiseTime<T: CelestialBody> {
+public struct RiseTime {
 	
 	/// The date of the rise.
 	public let date: Date?
@@ -29,7 +29,7 @@ public struct RiseTime<T: CelestialBody> {
 	///   - atmosphericPressure: The level of atmospheric pressure. The default value is zero.
 	///   - atmosphericTemperature: The atmospheric temperature. The default value is zero.
 	public init(date: Date,
-				body: T,
+				body: CelestialObject,
 				longitude: Double,
 				latitude: Double,
                 altitude: Double = .zero,
@@ -42,7 +42,18 @@ public struct RiseTime<T: CelestialBody> {
 		geoPos[0] = longitude
 		geoPos[1] = latitude
 		geoPos[2] = altitude
-		if let value = body.value as? Int32 {
+        let value: Int32?
+
+        switch body {
+        case .asteroid(let asteroid):
+            value = asteroid.value
+        case .lunarNode(let lunarNode):
+            value = lunarNode.value
+        case .planet(let planet):
+            value = planet.value
+        }
+
+		if let value = value {
 			swe_rise_trans(date.julianDate(),
 						   value,
 						   nil,

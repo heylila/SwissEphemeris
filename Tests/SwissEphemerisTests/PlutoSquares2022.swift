@@ -28,12 +28,12 @@ class PlutoSquares2022: XCTestCase {
 
     func testAspectsAndPairs() throws {
         let chart = PlutoSquares2022.chart
-        let natalVenus = Coordinate(body: Planet.venus, date: chart.date)
+        let natalVenus = Coordinate(body: Planet.venus.celestialObject, date: chart.date)
 
         let start = Date(fromString: "2021-03-01 00:00:00 +0000", format: .cocoaDateTime)!
         let end = Date(fromString: "2021-06-30 23:59:00 +0000", format: .cocoaDateTime)!
 
-        let positions = BodiesRequest(body: Planet.pluto).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
+        let positions = BodiesRequest(body: Planet.pluto.celestialObject).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
         let orb = 1.5
 
         let squares = positions.filter { Tpluto in
@@ -51,11 +51,11 @@ class PlutoSquares2022: XCTestCase {
 
     func testAllSquares() throws {
         let chart = PlutoSquares2022.chart
-        let natalVenus = Coordinate(body: Planet.venus, date: chart.date)
+        let natalVenus = Coordinate(body: Planet.venus.celestialObject, date: chart.date)
         let start = Date(fromString: "2021-01-01 00:00:00 +0000", format: .cocoaDateTime)!
         let end = Date(fromString: "2023-12-31 23:59:00 +0000", format: .cocoaDateTime)!
 
-        let positions = BodiesRequest(body: Planet.pluto).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
+        let positions = BodiesRequest(body: Planet.pluto.celestialObject).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
         let orb = 1.5
 
         let squares = positions.filter { Tpluto in
@@ -67,8 +67,8 @@ class PlutoSquares2022: XCTestCase {
         }
 
         let squareOffsets = Array(squares.dropFirst()) + [squares.first!]
-        var tGroup = [Coordinate<Planet>]()
-        var tGroups = [[Coordinate<Planet>]]()
+        var tGroup = [Coordinate]()
+        var tGroups = [[Coordinate]]()
 
         for (now, next) in zip(squares, squareOffsets) {
             if tGroup.count == 0 {
@@ -88,11 +88,11 @@ class PlutoSquares2022: XCTestCase {
 
     func testCelestialAspect() throws {
         let chart = PlutoSquares2022.chart
-        let natalVenus = Coordinate(body: Planet.venus, date: chart.date)
+        let natalVenus = Coordinate(body: Planet.venus.celestialObject, date: chart.date)
         let start = Date(fromString: "2021-01-01 00:00:00 +0000", format: .cocoaDateTime)!
         let end = Date(fromString: "2023-12-31 23:59:00 +0000", format: .cocoaDateTime)!
 
-        let positions = BodiesRequest(body: Planet.pluto).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
+        let positions = BodiesRequest(body: Planet.pluto.celestialObject).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
         let orb = 1.5
 
         let squares = positions.filter { Tpluto in

@@ -85,30 +85,30 @@ class ClevelandDiscovery: XCTestCase {
         return HouseCusps(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
     }
 
-    static var planets: [String : Coordinate<Planet> ] {
+    static var planets: [String : Coordinate ] {
         return [
-            Planet.sun.formatted : Coordinate(body: Planet.sun, date: birthDate),
-            Planet.moon.formatted : Coordinate(body: .moon, date: birthDate),
-            Planet.mercury.formatted : Coordinate(body: .mercury, date: birthDate),
-            Planet.venus.formatted : Coordinate(body: .venus, date: birthDate),
-            Planet.mars.formatted : Coordinate(body: .mars, date: birthDate),
-            Planet.jupiter.formatted : Coordinate(body: .jupiter, date: birthDate),
-            Planet.saturn.formatted : Coordinate(body: .saturn, date: birthDate),
-            Planet.uranus.formatted : Coordinate(body: .uranus, date: birthDate),
-            Planet.neptune.formatted : Coordinate(body: .neptune, date: birthDate),
-            Planet.pluto.formatted : Coordinate(body: .pluto, date: birthDate)
+            Planet.sun.formatted : Coordinate(body: Planet.sun.celestialObject, date: birthDate),
+            Planet.moon.formatted : Coordinate(body: Planet.moon.celestialObject, date: birthDate),
+            Planet.mercury.formatted : Coordinate(body: Planet.mercury.celestialObject, date: birthDate),
+            Planet.venus.formatted : Coordinate(body: Planet.venus.celestialObject, date: birthDate),
+            Planet.mars.formatted : Coordinate(body: Planet.mars.celestialObject, date: birthDate),
+            Planet.jupiter.formatted : Coordinate(body: Planet.jupiter.celestialObject, date: birthDate),
+            Planet.saturn.formatted : Coordinate(body: Planet.saturn.celestialObject, date: birthDate),
+            Planet.uranus.formatted : Coordinate(body: Planet.uranus.celestialObject, date: birthDate),
+            Planet.neptune.formatted : Coordinate(body: Planet.neptune.celestialObject, date: birthDate),
+            Planet.pluto.formatted : Coordinate(body: Planet.pluto.celestialObject, date: birthDate)
         ]
     }
 
-    static var nodes: [String : Coordinate<LunarNode> ] {
+    static var nodes: [String : Coordinate ] {
         return [
-            "North Node" : Coordinate(body: LunarNode.meanNode, date: birthDate),
-            "South Node" : Coordinate(body: LunarNode.meanSouthNode, date: birthDate)
+            "North Node" : Coordinate(body: LunarNode.meanNode.celestialObject, date: birthDate),
+            "South Node" : Coordinate(body: LunarNode.meanSouthNode.celestialObject, date: birthDate)
         ]
     }
 
-    static var chiron: Coordinate<Asteroid> {
-        return Coordinate(body: Asteroid.chiron, date: birthDate)
+    static var chiron: Coordinate {
+        return Coordinate(body: Asteroid.chiron.celestialObject, date: birthDate)
     }
 
     func testNeptuneAndJupiterConjunction() throws {
@@ -116,15 +116,15 @@ class ClevelandDiscovery: XCTestCase {
         let end = Date(fromString: "2022-04-30 23:59:59 -0700", format: .cocoaDateTime)!
         let daySlice = Double(24 * 60 * 60)
 
-        func filterPredicate<First, Second>(other: Coordinate<Second>, degree: Double, orb: Double) -> (Coordinate<First>) -> Bool {
+        func filterPredicate(other: Coordinate, degree: Double, orb: Double) -> (Coordinate) -> Bool {
             return { (first) in
                 let degreeRange = (degree - orb) ... (degree + orb)
                 return degreeRange.contains(first.longitudeDelta(other: other))
             }
         }
 
-        let jupiterCoords = BodiesRequest(body: Planet.jupiter).fetch(start: start, end: end, interval: daySlice)
-        let neptuneCoords = BodiesRequest(body: Planet.neptune).fetch(start: start, end: end, interval: daySlice)
+        let jupiterCoords = BodiesRequest(body: Planet.jupiter.celestialObject).fetch(start: start, end: end, interval: daySlice)
+        let neptuneCoords = BodiesRequest(body: Planet.neptune.celestialObject).fetch(start: start, end: end, interval: daySlice)
 
         let jupiterRange = jupiterCoords.first!.longitude ... jupiterCoords.last!.longitude
         let neptuneRange = neptuneCoords.first!.longitude ... neptuneCoords.last!.longitude
@@ -149,7 +149,7 @@ class ClevelandDiscovery: XCTestCase {
             neptuneCoords[$0]
         }
 
-        func roundLongitude(_ body: Coordinate<Planet>) -> Double {
+        func roundLongitude(_ body: Coordinate) -> Double {
             let rlong = round(body.longitude * 100) / 100.0
             return rlong
         }
@@ -196,7 +196,7 @@ class ClevelandDiscovery: XCTestCase {
         let daysOut = 15
         let start = ClevelandDiscovery.testStartDate
         let end = start.offset(.day, value: daysOut)!
-        let moonConjunctions = [String : Coordinate<Planet>]()
+        let moonConjunctions = [String : Coordinate]()
 
         // 10° orb for conjunctions
         // 8° orb for oppositions and squares
@@ -208,7 +208,7 @@ class ClevelandDiscovery: XCTestCase {
         // 120° for trines
         // 180° for oppositions
 
-        func filterPredicate<First, Second>(other: Coordinate<Second>, degree: Double, orb: Double) -> (Coordinate<First>) -> Bool {
+        func filterPredicate(other: Coordinate, degree: Double, orb: Double) -> (Coordinate) -> Bool {
             return { (first) in
                 let degreeRange = (degree - orb) ... (degree + orb)
                 return degreeRange.contains(first.longitudeDelta(other: other))
@@ -223,9 +223,9 @@ class ClevelandDiscovery: XCTestCase {
         let daySlice = Double(24 * 60 * 60)
         let hourSlice = Double(60 * 60)
         let minuteSlice = 60.0
-        let planet = Coordinate(body: Planet.pluto, date: ClevelandDiscovery.birthDate)
+        let planet = Coordinate(body: Planet.pluto.celestialObject, date: ClevelandDiscovery.birthDate)
 
-        let nearestPositions = BodiesRequest(body: body).fetch(start: start, end: end, interval: daySlice)
+        let nearestPositions = BodiesRequest(body: body.celestialObject).fetch(start: start, end: end, interval: daySlice)
             .filter(filterPredicate(other: planet, degree: degree, orb: orb))
         if nearestPositions.count > 0 {
             for position in nearestPositions {
@@ -235,7 +235,7 @@ class ClevelandDiscovery: XCTestCase {
             }
         }
 
-        let nearestDayPosition = BodiesRequest(body: body).fetch(start: start, end: end, interval: daySlice)
+        let nearestDayPosition = BodiesRequest(body: body.celestialObject).fetch(start: start, end: end, interval: daySlice)
             .filter(filterPredicate(other: planet, degree: degree, orb: orb))
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
@@ -248,7 +248,7 @@ class ClevelandDiscovery: XCTestCase {
 
         let yearBefore = nearestDayPosition.date.offset(.year, value: -1)!
         let yearAfter = nearestDayPosition.date.offset(.year, value: 1)!
-        let orbPositions = BodiesRequest(body: body).fetch(start: yearBefore, end: yearAfter, interval: daySlice)
+        let orbPositions = BodiesRequest(body: body.celestialObject).fetch(start: yearBefore, end: yearAfter, interval: daySlice)
             .filter(filterPredicate(other: planet, degree: degree, orb: orb))
 
         if orbPositions.count == 0 {
@@ -263,7 +263,7 @@ class ClevelandDiscovery: XCTestCase {
         let dayDetailDate = nearestDayPosition.date
         let hourStart = dayDetailDate.offset(.hour, value: -12)!
         let hourend = dayDetailDate.offset(.hour, value: 12)!
-        let nearestHourPosition = BodiesRequest(body: body).fetch(start: hourStart, end: hourend, interval: hourSlice)
+        let nearestHourPosition = BodiesRequest(body: body.celestialObject).fetch(start: hourStart, end: hourend, interval: hourSlice)
             .filter(filterPredicate(other: planet, degree: degree, orb: orb))
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
@@ -279,7 +279,7 @@ class ClevelandDiscovery: XCTestCase {
         let minEnd = detailDate.offset(.minute, value: 30)!
 
         // Then slice it to the per-minute basis next
-        let _ = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: minuteSlice)
+        let _ = BodiesRequest(body: Planet.moon.celestialObject).fetch(start: minStart, end: minEnd, interval: minuteSlice)
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
             }

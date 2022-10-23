@@ -31,7 +31,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testSun() throws {
-        let body = Coordinate(body: Planet.sun, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.sun.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.cancer)
         XCTAssert(21 == Int32(body.degree))
         XCTAssert(31 == Int32(body.minute))
@@ -40,7 +40,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testMoon() throws {
-        let body = Coordinate(body: Planet.moon, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.moon.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.gemini)
         XCTAssert(26 == Int32(body.degree))
         XCTAssert(0 == Int32(body.minute))
@@ -49,7 +49,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testMercury() throws {
-        let body = Coordinate(body: Planet.mercury, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.mercury.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.leo)
         XCTAssert(6 == Int32(body.degree))
         XCTAssert(47 == Int32(body.minute))
@@ -58,7 +58,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testVenus() throws {
-        let body = Coordinate(body: Planet.venus, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.venus.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.gemini)
         XCTAssert(8 == Int32(body.degree))
         XCTAssert(0 == Int32(body.minute))
@@ -67,7 +67,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testMars() throws {
-        let body = Coordinate(body: Planet.mars, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.mars.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.taurus)
         XCTAssert(27 == Int32(body.degree))
         XCTAssert(30 == Int32(body.minute))
@@ -76,7 +76,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testJupiter() throws {
-        let body = Coordinate(body: Planet.jupiter, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.jupiter.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.gemini)
         XCTAssert(22 == Int32(body.degree))
         XCTAssert(39 == Int32(body.minute))
@@ -85,7 +85,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testSaturn() throws {
-        let body = Coordinate(body: Planet.saturn, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.saturn.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.leo)
         XCTAssert(16 == Int32(body.degree))
         XCTAssert(36 == Int32(body.minute))
@@ -94,7 +94,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testUranus() throws {
-        let body = Coordinate(body: Planet.uranus, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.uranus.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.scorpio)
         XCTAssert(7 == Int32(body.degree))
         XCTAssert(41 == Int32(body.minute))
@@ -103,7 +103,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testNeptune() throws {
-        let body = Coordinate(body: Planet.neptune, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.neptune.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.sagittarius)
         XCTAssert(13 == Int32(body.degree))
         XCTAssert(49 == Int32(body.minute))
@@ -112,7 +112,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testPluto() throws {
-        let body = Coordinate(body: Planet.pluto, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Planet.pluto.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.libra)
         XCTAssert(11 == Int32(body.degree))
         XCTAssert(32 == Int32(body.minute))
@@ -121,7 +121,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     func testChiron() throws {
-        let body = Coordinate(body: Asteroid.chiron, date: FresnoCapricorn.birthDate)
+        let body = Coordinate(body: Asteroid.chiron.celestialObject, date: FresnoCapricorn.birthDate)
         XCTAssert(body.sign == Zodiac.taurus)
         XCTAssert(5 == Int32(body.degree))
         XCTAssert(28 == Int32(body.minute))

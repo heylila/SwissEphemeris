@@ -68,8 +68,8 @@ public struct Coordinate: Equatable {
         }
 		self.body = body
 		self.date = date
-        let isMeanSouthNode: Bool
-        let isTrueSouthNode: Bool
+        var isMeanSouthNode: Bool = false
+        var isTrueSouthNode: Bool = false
 
         let value: Int32
         switch body {
@@ -84,6 +84,7 @@ public struct Coordinate: Equatable {
         }
 
         pointer.initialize(repeating: 0, count: 6)
+
         let calcValue: Int32
         if isMeanSouthNode {
             calcValue = Int32(LunarNode.meanNode.rawValue)
@@ -189,7 +190,7 @@ extension Coordinate: Codable {
         try container.encode(speedDistance, forKey: .speedDistance)
     }
 
-    public func longitudeDelta(other: CelestialObject) -> Double {
+    public func longitudeDelta(other: Coordinate) -> Double {
         return abs(longitude - other.longitude)
     }
 }

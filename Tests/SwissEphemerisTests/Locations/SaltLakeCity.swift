@@ -31,7 +31,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testSun() throws {
-        let body = Coordinate(body: Planet.sun, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.sun.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.leo)
         XCTAssert(23 == Int32(body.degree))
         XCTAssert(31 == Int32(body.minute))
@@ -39,7 +39,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testMoon() throws {
-        let body = Coordinate(body: Planet.moon, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.moon.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.cancer)
         XCTAssert(20 == Int32(body.degree))
         XCTAssert(58 == Int32(body.minute))
@@ -47,7 +47,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testMercury() throws {
-        let body = Coordinate(body: Planet.mercury, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.mercury.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.virgo)
         XCTAssert(13 == Int32(body.degree))
         XCTAssert(41 == Int32(body.minute))
@@ -55,7 +55,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testVenus() throws {
-        let body = Coordinate(body: Planet.venus, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.venus.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.leo)
         XCTAssert(2 == Int32(body.degree))
         XCTAssert(47 == Int32(body.minute))
@@ -63,7 +63,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testMars() throws {
-        let body = Coordinate(body: Planet.mars, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.mars.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.scorpio)
         XCTAssert(7 == Int32(body.degree))
         XCTAssert(48 == Int32(body.minute))
@@ -71,7 +71,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testJupiter() throws {
-        let body = Coordinate(body: Planet.jupiter, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.jupiter.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.scorpio)
         XCTAssert(3 == Int32(body.degree))
         XCTAssert(54 == Int32(body.minute))
@@ -79,7 +79,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testSaturn() throws {
-        let body = Coordinate(body: Planet.saturn, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.saturn.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.libra)
         XCTAssert(18 == Int32(body.degree))
         XCTAssert(14 == Int32(body.minute))
@@ -87,7 +87,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testUranus() throws {
-        let body = Coordinate(body: Planet.uranus, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.uranus.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.sagittarius)
         XCTAssert(0 == Int32(body.degree))
         XCTAssert(35 == Int32(body.minute))
@@ -95,7 +95,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testNeptune() throws {
-        let body = Coordinate(body: Planet.neptune, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.neptune.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.sagittarius)
         XCTAssert(24 == Int32(body.degree))
         XCTAssert(22 == Int32(body.minute))
@@ -103,7 +103,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testPluto() throws {
-        let body = Coordinate(body: Planet.pluto, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Planet.pluto.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.libra)
         XCTAssert(24 == Int32(body.degree))
         XCTAssert(37 == Int32(body.minute))
@@ -111,7 +111,7 @@ class SaltLakeCity: XCTestCase {
     }
 
     func testChiron() throws {
-        let body = Coordinate(body: Asteroid.chiron, date: SaltLakeCity.birthDate)
+        let body = Coordinate(body: Asteroid.chiron.celestialObject, date: SaltLakeCity.birthDate)
         XCTAssert(body.sign == Zodiac.taurus)
         XCTAssert(27 == Int32(body.degree))
         XCTAssert(34 == Int32(body.minute))

@@ -10,7 +10,7 @@ final class CelestialBodyTests: XCTestCase {
     func testSunZodiacCoordinate() {
         // 12.14.2019 13:39 UT/GMT
         let date = Date(timeIntervalSince1970: 598023482.487818)
-        let sunCoordinate = Coordinate<Planet>(body: .sun, date: date)
+        let sunCoordinate = Coordinate(body: Planet.sun.celestialObject, date: date)
         XCTAssertEqual(sunCoordinate.value, 261.7804948994796)
         XCTAssertEqual(sunCoordinate.sign, .sagittarius)
         XCTAssertEqual(sunCoordinate.formatted, "21 Degrees Sagittarius ♐︎ 46' 49''")
@@ -20,8 +20,9 @@ final class CelestialBodyTests: XCTestCase {
     }
 	
 	func testMoonSiderealCoordinate() {
-		let moonCoordinate = SiderealCoordinate(coordinate: Coordinate<Planet>(body: .moon, date: Mock.date),
-												ayanamshaValue: Ayanamsha()(for: Mock.date))
+        let coordinate = Coordinate(body: Planet.moon.celestialObject, date: Mock.date)
+        let moonCoordinate = SiderealCoordinate(coordinate: coordinate,
+                                                ayanamshaValue: Ayanamsha()(for: Mock.date))
 		XCTAssertEqual(Int(moonCoordinate.value), 295)
 		XCTAssertEqual(moonCoordinate.sign, .capricorn)
 		XCTAssertEqual(moonCoordinate.formatted, "25 Degrees Capricorn ♑︎ 3' 16''")
@@ -32,32 +33,32 @@ final class CelestialBodyTests: XCTestCase {
 	
 	func testAsteroids() throws {
 		let date = try XCTUnwrap(Mock.date(from: "2021-03-01T12:31:00-0800"))
-		let chiron = Coordinate<Asteroid>(body: .chiron, date: date)
+        let chiron = Coordinate(body: Asteroid.chiron.celestialObject, date: date)
 		XCTAssertEqual(Int(chiron.degree), 7)
 		XCTAssertEqual(chiron.sign, .aries)
-		let pholus = Coordinate<Asteroid>(body: .pholus, date: date)
+		let pholus = Coordinate(body: Asteroid.pholus.celestialObject, date: date)
 		XCTAssertEqual(Int(pholus.degree), 5)
 		XCTAssertEqual(pholus.sign, .capricorn)
-		let ceres = Coordinate<Asteroid>(body: .ceres, date: date)
+		let ceres = Coordinate(body: Asteroid.ceres.celestialObject, date: date)
 		XCTAssertEqual(Int(ceres.degree), 3)
 		XCTAssertEqual(ceres.sign, .aries)
-		let pallas = Coordinate<Asteroid>(body: .pallas, date: date)
+		let pallas = Coordinate(body: Asteroid.pallas.celestialObject, date: date)
 		XCTAssertEqual(Int(pallas.degree), 28)
 		XCTAssertEqual(pallas.sign, .aquarius)
-		let juno = Coordinate<Asteroid>(body: .juno, date: date)
+		let juno = Coordinate(body: Asteroid.juno.celestialObject, date: date)
 		XCTAssertEqual(Int(juno.degree), 19)
 		XCTAssertEqual(juno.sign, .sagittarius)
-		let vesta = Coordinate<Asteroid>(body: .vesta, date: date)
+		let vesta = Coordinate(body: Asteroid.vesta.celestialObject, date: date)
 		XCTAssertEqual(Int(vesta.degree), 15)
 		XCTAssertEqual(vesta.sign, .virgo)
 	}
 	
 	func testLunarNodes() throws {
 		let date = try XCTUnwrap(Mock.date(year: 2121, month: 1, day: 1, hour: 1, minute: 1, second: 1))
-		let trueNode = Coordinate<LunarNode>(body: .trueNode, date: date)
+		let trueNode = Coordinate(body: LunarNode.trueNode.celestialObject, date: date)
 		XCTAssertEqual(Int(trueNode.degree), 3)
 		XCTAssertEqual(trueNode.sign, .aquarius)
-		let meanNode = Coordinate<LunarNode>(body: .meanNode, date: date)
+		let meanNode = Coordinate(body: LunarNode.meanNode.celestialObject, date: date)
 		XCTAssertEqual(Int(meanNode.degree), 4)
 		XCTAssertEqual(meanNode.sign, .aquarius)
 	}
@@ -78,7 +79,7 @@ final class CelestialBodyTests: XCTestCase {
                 XCTAssertEqual(planet.formatted, "♀ Venus")
 				XCTAssertEqual(planet.symbol, "♀")
             case 4:
-                XCTAssertEqual(planet.formatted, "♂️Mars")
+                XCTAssertEqual(planet.formatted, "♂️ Mars")
 				XCTAssertEqual(planet.symbol, "♂︎")
             case 5:
                 XCTAssertEqual(planet.formatted, "♃ Jupiter")
@@ -177,49 +178,49 @@ final class CelestialBodyTests: XCTestCase {
     
     func testAspects() {
         // Expect 64.0 relationship sextile
-		var aspect = Aspect(pair: Pair<Planet, Planet>(a: .jupiter, b: .moon), date: Mock.date, orb: 8.0)
+        var aspect = Aspect(pair: (a: Planet.jupiter.celestialObject, b: Planet.moon.celestialObject), date: Mock.date, orb: 8.0)
 		XCTAssertEqual(aspect?.remainder, 3.45)
         XCTAssertEqual(aspect, .sextile(3.45))
         XCTAssertEqual(aspect?.symbol, "﹡")
         // Expect reverse to be 64.0 sextile
-		aspect = Aspect(pair: Pair<Planet, Planet>(a: .moon, b: .jupiter), date: Mock.date, orb: 8.0)
+		aspect = Aspect(pair: (a: Planet.moon.celestialObject, b: Planet.jupiter.celestialObject), date: Mock.date, orb: 8.0)
         XCTAssertEqual(aspect?.remainder, 3.45)
         XCTAssertEqual(aspect, .sextile(3.45))
         // Expect 3.0 relationship conjunction
-		aspect = Aspect(pair: Pair<Planet, Planet>(a: .sun, b: .pluto), date: Mock.date, orb: 8.0)
+		aspect = Aspect(pair: (a: Planet.sun.celestialObject, b: Planet.pluto.celestialObject), date: Mock.date, orb: 8.0)
         XCTAssertEqual(aspect?.remainder, 3.05)
         XCTAssertEqual(aspect, .conjunction(3.05))
         XCTAssertEqual(aspect?.symbol, "☌")
         // Expect 171.0 relationship opposition
-		aspect = Aspect(pair: Pair<Planet, Planet>(a: .mars, b: .jupiter), date: Mock.date, orb: 10)
+		aspect = Aspect(pair: (a: Planet.mars.celestialObject, b: Planet.jupiter.celestialObject), date: Mock.date, orb: 10)
         XCTAssertEqual(aspect?.remainder, -8.96)
         XCTAssertEqual(aspect, .opposition(-8.96))
         XCTAssertEqual(aspect?.symbol, "☍")
         // Expect 124.0 relationship trine
-		aspect = Aspect(pair: Pair<Planet, Planet>(a: .saturn, b: .jupiter), date: Mock.date, orb: 10)
+		aspect = Aspect(pair: (a: Planet.saturn.celestialObject, b: Planet.jupiter.celestialObject), date: Mock.date, orb: 10)
         XCTAssertEqual(aspect?.remainder, 4.65)
         XCTAssertEqual(aspect, .trine(4.65))
         XCTAssertEqual(aspect?.symbol, "▵")
         // Expect 84.0 relationship square
-		aspect = Aspect(pair: Pair<Planet, Planet>(a: .venus, b: .moon), date: Mock.date, orb: 10)
+		aspect = Aspect(pair: (a: Planet.venus.celestialObject, b: Planet.moon.celestialObject), date: Mock.date, orb: 10)
         XCTAssertEqual(aspect?.remainder, -5.07)
         XCTAssertEqual(aspect, .square(-5.07))
         XCTAssertEqual(aspect?.symbol, "◾️")
         // Expect no aspect
-        XCTAssertNil(Aspect(pair: Pair<Planet, Planet>(a: .venus, b: .mars), date: Mock.date, orb: 5))
+        XCTAssertNil(Aspect(pair: (a: Planet.venus.celestialObject, b: Planet.mars.celestialObject), date: Mock.date, orb: 5))
     }
 
 	func testAspectCount() {
 		let sunAspects = Planet.allCases.compactMap {
-			Aspect(pair: Pair<Planet, Planet>(a: .sun, b: $0),date: Mock.date, orb: 10)
+            Aspect(pair: (a: Planet.sun.celestialObject, b: $0.celestialObject),date: Mock.date, orb: 10)
 		}
 		XCTAssertEqual(sunAspects.count, 4)
 		let moonAspects = Planet.allCases.compactMap {
-			Aspect(pair: Pair<Planet, Planet>(a: .moon, b: $0),date: Mock.date, orb: 10)
+            Aspect(pair: (a: Planet.moon.celestialObject, b: $0.celestialObject),date: Mock.date, orb: 10)
 		}
 		XCTAssertEqual(moonAspects.count, 7)
 		let mercuryAspects = Planet.allCases.compactMap {
-			Aspect(pair: Pair<Planet, Planet>(a: .mercury, b: $0),date: Mock.date, orb: 8)
+            Aspect(pair: (a: Planet.mercury.celestialObject, b: $0.celestialObject),date: Mock.date, orb: 8)
 		}
 		XCTAssertEqual(mercuryAspects.count, 4)
 	}
@@ -228,18 +229,16 @@ final class CelestialBodyTests: XCTestCase {
         let houseSystem = Mock.makeHouses()
         let ascendent = houseSystem.ascendent
         let aspects = Planet.allCases.compactMap {
-			Aspect(a: ascendent.value,
-				   b: Coordinate<Planet>(body: $0, date: Mock.date).value,
-				   orb: 10)
+			Aspect(a: ascendent.value, b: Coordinate(body: $0.celestialObject, date: Mock.date).value, orb: 10)
         }
         XCTAssertEqual(aspects.compactMap { $0 }.count, 1)
     }
     
     func testPlanetaryStation() {
-        XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .sun, date: Mock.date)), .direct)
-        XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .mars, date: Mock.date)), .direct)
-        XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .mercury, date: Mock.date)), .retrograde)
-        XCTAssertEqual(Station<Planet>(coordinate: Coordinate(body: .jupiter, date: Mock.date)), .retrograde)
+        XCTAssertEqual(Station(coordinate: Coordinate(body: Planet.sun.celestialObject, date: Mock.date)), .direct)
+        XCTAssertEqual(Station(coordinate: Coordinate(body: Planet.mars.celestialObject, date: Mock.date)), .direct)
+        XCTAssertEqual(Station(coordinate: Coordinate(body: Planet.mercury.celestialObject, date: Mock.date)), .retrograde)
+        XCTAssertEqual(Station(coordinate: Coordinate(body: Planet.jupiter.celestialObject, date: Mock.date)), .retrograde)
     }
 	
 	func testAyanamsha() throws {
@@ -254,18 +253,18 @@ final class CelestialBodyTests: XCTestCase {
 		dateFormatter.timeZone = TimeZone(identifier: "America/Los_Angeles")
 		dateFormatter.dateFormat = "yyyy-MM-dd"
 		let date = try XCTUnwrap(dateFormatter.date(from: timestamp))
-		let sunriseSantaCruz = RiseTime<Planet>(date: date,
-												body: .sun,
-												longitude: -122.0297222,
-												latitude: 36.9741667,
-												altitude: 0)
+        let sunriseSantaCruz = RiseTime(date: date,
+                                        body: Planet.sun.celestialObject,
+                                        longitude: -122.0297222,
+                                        latitude: 36.9741667,
+                                        altitude: 0)
 		XCTAssertEqual(sunriseSantaCruz.date?.description, "2021-03-14 14:19:44 +0000")
 		let dateB = try XCTUnwrap(dateFormatter.date(from: "2021-03-15"))
-		let moonRiseNYC = RiseTime<Planet>(date: dateB,
-										   body: .moon,
-										   longitude: -73.935242,
-										   latitude: 40.730610,
-										   altitude: 0)
+        let moonRiseNYC = RiseTime(date: dateB,
+                                   body: Planet.moon.celestialObject,
+                                   longitude: -73.935242,
+                                   latitude: 40.730610,
+                                   altitude: 0)
 		XCTAssertEqual(moonRiseNYC.date?.description, "2021-03-15 12:25:55 +0000")
 	}
     
@@ -274,16 +273,16 @@ final class CelestialBodyTests: XCTestCase {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
 		let date = try XCTUnwrap(dateFormatter.date(from: timestamp))
-		let moonSet = SetTime<Planet>(date: date,
-									  body: .moon,
-									  longitude: 13.41053,
-									  latitude: 52.52437)
-		XCTAssertEqual(moonSet.date?.description, "2021-03-15 19:25:58 +0000")
-		let dateB = try XCTUnwrap(dateFormatter.date(from: "2021-03-16"))
-        let sunsetTokyo = SetTime<Planet>(date: dateB,
-                                          body: .sun,
-                                          longitude: 139.69171,
-                                          latitude: 35.6895)
+        let moonSet = SetTime(date: date,
+                              body: Planet.moon.celestialObject,
+                              longitude: 13.41053,
+                              latitude: 52.52437)
+        XCTAssertEqual(moonSet.date?.description, "2021-03-15 19:25:58 +0000")
+        let dateB = try XCTUnwrap(dateFormatter.date(from: "2021-03-16"))
+        let sunsetTokyo = SetTime(date: dateB,
+                                  body: Planet.sun.celestialObject,
+                                  longitude: 139.69171,
+                                  latitude: 35.6895)
         XCTAssertEqual(sunsetTokyo.date?.description, "2021-03-16 08:49:34 +0000")
     }
 	
@@ -316,7 +315,7 @@ final class CelestialBodyTests: XCTestCase {
 		let interval: TimeInterval = 60 * 60 * 12
 		var formatted = Set<String>()
 		for _ in 0...56 {
-			let moon = Coordinate<Planet>(body: .moon, date: date)
+			let moon = Coordinate(body: Planet.moon.celestialObject, date: date)
 			formatted.insert(moon.lunarMansion.formatted)
             if #available(iOS 13.0, *) {
                 date = date.advanced(by: interval)
@@ -328,7 +327,7 @@ final class CelestialBodyTests: XCTestCase {
 
 	func testSiderealCoordinateEarlyAries() throws {
 		let date = try Mock.date(from: "2021-03-25T01:11:00-0001")
-		let sun = Coordinate<Planet>(body: .sun, date: date)
+		let sun = Coordinate(body: Planet.sun.celestialObject, date: date)
 		XCTAssertEqual(sun.sign, .aries)
 		let siderealSun = SiderealCoordinate(coordinate: sun)
 		XCTAssertEqual(siderealSun.sign, .pisces)

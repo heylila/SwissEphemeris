@@ -63,37 +63,37 @@ class TottenhamUKTests: XCTestCase {
         return HouseCusps(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
     }
 
-    static var planets: [String : Coordinate<Planet> ] {
+    static var planets: [String : Coordinate ] {
         return [
-            Planet.sun.formatted : Coordinate(body: Planet.sun, date: birthDate),
-            Planet.moon.formatted : Coordinate(body: .moon, date: birthDate),
-            Planet.mercury.formatted : Coordinate(body: .mercury, date: birthDate),
-            Planet.venus.formatted : Coordinate(body: .venus, date: birthDate),
-            Planet.mars.formatted : Coordinate(body: .mars, date: birthDate),
-            Planet.jupiter.formatted : Coordinate(body: .jupiter, date: birthDate),
-            Planet.saturn.formatted : Coordinate(body: .saturn, date: birthDate),
-            Planet.uranus.formatted : Coordinate(body: .uranus, date: birthDate),
-            Planet.neptune.formatted : Coordinate(body: .neptune, date: birthDate),
-            Planet.pluto.formatted : Coordinate(body: .pluto, date: birthDate)
+            Planet.sun.formatted : Coordinate(body: Planet.sun.celestialObject, date: birthDate),
+            Planet.moon.formatted : Coordinate(body: Planet.moon.celestialObject, date: birthDate),
+            Planet.mercury.formatted : Coordinate(body: Planet.mercury.celestialObject, date: birthDate),
+            Planet.venus.formatted : Coordinate(body: Planet.venus.celestialObject, date: birthDate),
+            Planet.mars.formatted : Coordinate(body: Planet.mars.celestialObject, date: birthDate),
+            Planet.jupiter.formatted : Coordinate(body: Planet.jupiter.celestialObject, date: birthDate),
+            Planet.saturn.formatted : Coordinate(body: Planet.saturn.celestialObject, date: birthDate),
+            Planet.uranus.formatted : Coordinate(body: Planet.uranus.celestialObject, date: birthDate),
+            Planet.neptune.formatted : Coordinate(body: Planet.neptune.celestialObject, date: birthDate),
+            Planet.pluto.formatted : Coordinate(body: Planet.pluto.celestialObject, date: birthDate)
         ]
     }
 
-    static var nodes: [String : Coordinate<LunarNode> ] {
+    static var nodes: [String : Coordinate ] {
         return [
-            "North Node" : Coordinate(body: LunarNode.meanNode, date: birthDate),
-            "South Node" : Coordinate(body: LunarNode.meanSouthNode, date: birthDate)
+            "North Node" : Coordinate(body: LunarNode.meanNode.celestialObject, date: birthDate),
+            "South Node" : Coordinate(body: LunarNode.meanSouthNode.celestialObject, date: birthDate)
         ]
     }
 
-    static var chiron: Coordinate<Asteroid> {
-        return Coordinate(body: Asteroid.chiron, date: birthDate)
+    static var chiron: Coordinate {
+        return Coordinate(body: Asteroid.chiron.celestialObject, date: birthDate)
     }
 
     func testTottenhamUKConjunctions() throws {
         let daysOut = 14
         let start = TottenhamUKTests.testStartDate
         let end = start.offset(.day, value: daysOut)!
-        var moonConjunctions = [String : Coordinate<Planet>]()
+        var moonConjunctions = [String : Coordinate]()
 
         // 10° orb for conjunctions
         // 8° orb for oppositions and squares
@@ -105,7 +105,7 @@ class TottenhamUKTests: XCTestCase {
         // 120° for trines
         // 180° for oppositions
 
-        func filterPredicate<First, Second>(other: Coordinate<Second>, degree: Double, orb: Double) -> (Coordinate<First>) -> Bool {
+        func filterPredicate(other: Coordinate, degree: Double, orb: Double) -> (Coordinate) -> Bool {
             return { (first) in
                 let degreeRange = (degree - orb / 2) ... (degree + orb / 2)
                 return degreeRange.contains(first.longitudeDelta(other: other))
@@ -113,7 +113,7 @@ class TottenhamUKTests: XCTestCase {
         }
 
         for (planetName, planet) in TottenhamUKTests.planets {
-            let nearestHourMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: start, end: end, interval: Double(60 * 60))
+            let nearestHourMoonPosition = BodiesRequest(body: Planet.moon.celestialObject).fetch(start: start, end: end, interval: Double(60 * 60))
                 .filter(filterPredicate(other: planet, degree: 0.0, orb: 10.0))
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
@@ -129,7 +129,7 @@ class TottenhamUKTests: XCTestCase {
             let minEnd = detailDate.offset(.minute, value: 30)!
 
             // Then slice it to the per-minute basis next
-            let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+            let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon.celestialObject).fetch(start: minStart, end: minEnd, interval: 60.0)
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: planet) < rhs.longitudeDelta(other: planet)
                 }
@@ -142,7 +142,7 @@ class TottenhamUKTests: XCTestCase {
         }
 
         for (nodeName, node) in TottenhamUKTests.nodes {
-            let nearestHourMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: start, end: end, interval: Double(60 * 60))
+            let nearestHourMoonPosition = BodiesRequest(body: Planet.moon.celestialObject).fetch(start: start, end: end, interval: Double(60 * 60))
                 .filter(filterPredicate(other: node, degree: 0.0, orb: 10.0))
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: node) < rhs.longitudeDelta(other: node)
@@ -158,7 +158,7 @@ class TottenhamUKTests: XCTestCase {
             let minEnd = detailDate.offset(.minute, value: 30)!
 
             // Then slice it to the per-minute basis next
-            let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+            let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon.celestialObject).fetch(start: minStart, end: minEnd, interval: 60.0)
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: node) < rhs.longitudeDelta(other: node)
                 }
@@ -170,8 +170,8 @@ class TottenhamUKTests: XCTestCase {
             moonConjunctions[nodeName] = nearestMinuteMoonPosition
         }
 
-        let chiron = Coordinate(body: Asteroid.chiron, date: TottenhamUKTests.birthDate)
-        let nearestHourMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: start, end: end, interval: Double(60 * 60))
+        let chiron = Coordinate(body: Asteroid.chiron.celestialObject, date: TottenhamUKTests.birthDate)
+        let nearestHourMoonPosition = BodiesRequest(body: Planet.moon.celestialObject).fetch(start: start, end: end, interval: Double(60 * 60))
             .filter(filterPredicate(other: chiron, degree: 0.0, orb: 10.0))
             .min { lhs, rhs in
                 return lhs.longitudeDelta(other: chiron) < rhs.longitudeDelta(other: chiron)
@@ -183,7 +183,7 @@ class TottenhamUKTests: XCTestCase {
             let minEnd = detailDate.offset(.minute, value: 30)!
 
             // Then slice it to the per-minute basis next
-            let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon).fetch(start: minStart, end: minEnd, interval: 60.0)
+            let nearestMinuteMoonPosition = BodiesRequest(body: Planet.moon.celestialObject).fetch(start: minStart, end: minEnd, interval: 60.0)
                 .min { lhs, rhs in
                     return lhs.longitudeDelta(other: chiron) < rhs.longitudeDelta(other: chiron)
                 }
