@@ -11,6 +11,7 @@ public enum CelestialObject: Codable, Equatable, Hashable {
     case asteroid(Asteroid)
     case lunarNode(LunarNode)
     case planet(Planet)
+//    case fixedStar(FixedStar)
 }
 
 extension CelestialObject {
@@ -40,4 +41,13 @@ extension CelestialObject {
             return nil
         }
     }
+
+//    var fixedStar: FixedStar? {
+//        switch self {
+//        case let .fixedStar(fixedStar):
+//            return fixedStar
+//        default:
+//            return nil
+//        }
+//    }
 }
