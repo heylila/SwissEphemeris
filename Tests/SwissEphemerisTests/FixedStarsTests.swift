@@ -6,7 +6,7 @@ final class FixedStarsTests: XCTestCase {
 	override func setUpWithError() throws {
 		JPLFileManager.setEphemerisPath()
 	}
-	
+/*
 	func testGalacticCenter() {
 		let galacticCenter = Coordinate<FixedStar>(body: .galacticCenter, date: Mock.date)
 		XCTAssertEqual(galacticCenter.formatted, "26 Degrees Sagittarius ♐︎ 40' 39''")
@@ -99,4 +99,5 @@ final class FixedStarsTests: XCTestCase {
 		 "testAldebaran", testAldebaran,
 		 "testGalacticCenter", testGalacticCenter)
 	]
+*/
 }
