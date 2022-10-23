@@ -11,7 +11,6 @@ import Foundation
 /// Includes all planets at the time of birth.
 public struct BirthChart {
 
-    /// The "HouseCusps", which models a house system with a `Cusp` for each house, ascendent and midheaven.
     public let houseCusps: HouseCusps
 
     public let sun: Coordinate
@@ -102,7 +101,7 @@ public struct BirthChart {
         ]
     }
 
-    public var fastBodies: [Coordinate] {
+    var fastBodies: [Coordinate] {
         return [
             self.sun,
             self.moon,
@@ -112,7 +111,7 @@ public struct BirthChart {
         ]
     }
 
-    public var astroDeinstPlanetOrbs: Dictionary<Kind, Double> {
+    var astroDeinstPlanetOrbs: Dictionary<Kind, Double> {
         // Astrodeinst's orbs
         return [
             .conjunction : 10.0,
@@ -123,7 +122,7 @@ public struct BirthChart {
         ]
     }
 
-    public var stevensFastOrbs: Dictionary<Kind, Double> {
+    var stevensFastOrbs: Dictionary<Kind, Double> {
         return [
             .conjunction : 5.0,
             .sextile : 3.0,
@@ -133,7 +132,7 @@ public struct BirthChart {
         ]
     }
 
-    public var notFastOrb: Double {
+    var notFastOrb: Double {
         return 0.0 // Astrodeinst orb
         // return 1.0 // Steven's orb
     }
