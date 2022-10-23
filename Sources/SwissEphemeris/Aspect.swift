@@ -20,12 +20,31 @@ public enum Kind: Codable, CaseIterable {
     case opposition
 }
 
-public struct CelestialAspect: Codable {
+public struct CelestialAspect: Codable, Equatable, Hashable {
 
     public let kind: Kind
     public let body1: Coordinate
     public let body2: Coordinate
     public let angle: Double
+
+    public var orbDelta: Double {
+        switch kind {
+        case .conjunction:
+            return angle
+        case .sextile:
+            return preciseRound(angle - 60.0, precision: .thousandths)
+        case .square:
+            return preciseRound(angle - 90.0, precision: .thousandths)
+        case .trine:
+            return preciseRound(angle - 120.0, precision: .thousandths)
+        case .opposition:
+            return preciseRound(angle - 180.0, precision: .thousandths)
+        }
+    }
+
+    public var aspectString: String {
+        return "\(body1.body) \(kind) \(body2.body) with orb: \(orbDelta)"
+    }
 
     public init?(body1: Coordinate, body2: Coordinate, orb: Double) {
         if let a = Aspect(a: body1.longitude, b: body2.longitude, orb: orb) {
@@ -54,6 +73,32 @@ public struct CelestialAspect: Codable {
         }
 
         return nil
+    }
+
+    public static func ==(lhs: CelestialAspect, rhs: CelestialAspect) -> Bool {
+        let test1 = (lhs.body1 == rhs.body1 &&
+                     lhs.body2 == rhs.body2 &&
+                     lhs.kind == rhs.kind &&
+                     lhs.angle == rhs.angle)
+        let test2 = (lhs.body1.formatted == rhs.body2.formatted &&
+                     lhs.kind == rhs.kind &&
+                     lhs.angle == rhs.angle)
+        let test3 = (lhs.body2.formatted == lhs.body1.formatted &&
+                     lhs.kind == rhs.kind &&
+                     lhs.angle == rhs.angle)
+        return test1 || test2 || test3
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(body1.date)
+        hasher.combine(body1.latitude)
+        hasher.combine(body1.longitude)
+        hasher.combine(body1.value)
+        hasher.combine(body2.date)
+        hasher.combine(body2.latitude)
+        hasher.combine(body2.longitude)
+        hasher.combine(body2.value)
+        hasher.combine(angle)
     }
 }
 
@@ -94,8 +139,15 @@ public enum Aspect: Equatable, Hashable, Codable {
 	///   - b: The second degree in the pair.
 	///   - orb: The number of degrees allowed for the aspect to differ from exactness.
 	public init?(a: Double, b: Double, orb: Double) {
-		let aspectValue = abs(b - a) >= 180 ?
-			abs(abs(b - a) - 360) : abs(b - a)
+
+        // NOTE: I'm not a fan of rounding here in the Aspect constructor
+        // because I believe this should be handled at the orb level. BUT if you're going
+        // to do it, this is how you would do it:
+        
+        // let aValue = abs(b - a) >= 180 ? abs(abs(b - a) - 360) : abs(b - a)
+        // let aspectValue = preciseRound(aValue, precision: .thousandths)
+
+        let aspectValue = abs(b - a) >= 180 ? abs(abs(b - a) - 360) : abs(b - a)
 		switch aspectValue {
 		case (0 - orb)...(0 + orb):
 			self = .conjunction(round(aspectValue * 100) / 100)

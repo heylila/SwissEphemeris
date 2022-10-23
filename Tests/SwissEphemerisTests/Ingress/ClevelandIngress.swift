@@ -458,7 +458,6 @@ class ClevelandIngress: XCTestCase {
 
         let originDate = Date(fromString: "2022-07-17 14:00:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
         let hourSlice = Double(60 * 60)
-        let minuteSlice = Double(60)
         let planetCases = Planet.allCases.filter { planet in
             return planet != .moon
         }
@@ -472,11 +471,9 @@ class ClevelandIngress: XCTestCase {
 
             for planet in planetCases {
                 let hourPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: hourSlice)
-                let hourFirst = hourPositions.first!
-                let hourLast = hourPositions.last!
 
-                guard let protoTuple = findNormalTimeRangeForCoordinates(hourPositions) else {
-                    guard let retroTuple = findRetrogradeTimeRangeForCoordinates(hourPositions) else {
+                guard findNormalTimeRangeForCoordinates(hourPositions) != nil else {
+                    guard findRetrogradeTimeRangeForCoordinates(hourPositions) != nil else {
                         continue
                     }
 

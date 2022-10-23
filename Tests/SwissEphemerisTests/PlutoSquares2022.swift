@@ -41,7 +41,6 @@ class PlutoSquares2022: XCTestCase {
             return (a != nil && a!.isSquare)
         }
 
-
         let squareFirst = squares.first!
 
         XCTAssert(squareFirst.date.component(.month)! == 3)
