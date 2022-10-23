@@ -44,6 +44,8 @@ public struct BirthChart {
 
     public let lunarNodes: [Coordinate]
 
+    public let allBodies: [Coordinate]
+
     public init(date: Date,
                 latitude: Double,
                 longitude: Double,
@@ -81,6 +83,22 @@ public struct BirthChart {
         self.lunarNodes = [
             self.northNode,
             self.southNode
+        ]
+
+        self.allBodies = [
+            self.sun,
+            self.moon,
+            self.mercury,
+            self.venus,
+            self.mars,
+            self.jupiter,
+            self.saturn,
+            self.uranus,
+            self.neptune,
+            self.pluto,
+            self.northNode,
+            self.southNode,
+            self.chiron
         ]
     }
 
