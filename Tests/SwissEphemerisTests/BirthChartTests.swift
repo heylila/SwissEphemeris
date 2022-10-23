@@ -53,4 +53,10 @@ final class BirthChartTests: XCTestCase {
         XCTAssert(aspectCount == 0, "Aspect count is \(aspectCount)")
     }
 
+    func testAllAspects() throws {
+        let chart = BirthChartTests.chart
+        let aspectCount = chart.allAspects?.count ?? 0
+        XCTAssert(aspectCount == 32, "Aspect count is \(aspectCount)")
+    }
+
 }

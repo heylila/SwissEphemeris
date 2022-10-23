@@ -213,6 +213,27 @@ public struct BirthChart {
         return (aspects.count > 0) ? aspects : nil
     }
 
+    public var allAspects: [CelestialAspect]? {
+        var aspects = [CelestialAspect]()
+
+        for aBody in self.allBodies {
+            let filteredBodies = self.allBodies.filter{ $0 != aBody }
+
+            for fp in filteredBodies {
+                for aspect in Kind.allCases {
+                    let orb = astroDeinstPlanetOrbs[aspect]!
+                    if let a = CelestialAspect(body1: aBody, body2: fp, orb: orb) {
+                        if a.kind == aspect && aspects.contains(a) == false {
+                            aspects.append(a)
+                        }
+                    }
+                }
+            }
+        }
+
+        return (aspects.count > 0) ? aspects : nil
+    }
+
     public func snapshotOfPlanets(for date: Date) -> [Coordinate] {
         return [
             Coordinate(body: Planet.sun.celestialObject, date: date),
