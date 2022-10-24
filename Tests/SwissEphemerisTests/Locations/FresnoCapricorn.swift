@@ -21,7 +21,7 @@ class FresnoCapricorn: XCTestCase {
     }
 
     static var birthDate: Date {
-        return Date(fromString: "1977-07-13 18:51:00 -0700", format: .cocoaDateTime, timeZone: .utc)!
+        return Date(fromString: "1977-07-13 18:51:00 -0700")!
     }
 
     static var houseCusps: HouseCusps {
