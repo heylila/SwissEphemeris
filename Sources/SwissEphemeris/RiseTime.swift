@@ -51,6 +51,8 @@ public struct RiseTime {
             value = lunarNode.value
         case .planet(let planet):
             value = planet.value
+        case .fixedStar(_):
+            value = nil
         }
 
 		if let value = value {
