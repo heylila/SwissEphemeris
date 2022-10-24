@@ -71,32 +71,48 @@ public struct Coordinate: Equatable {
         var isMeanSouthNode: Bool = false
         var isTrueSouthNode: Bool = false
 
-        let value: Int32
+        let intValue: Int32?
+        let stringValue: String?
+
         switch body {
         case let .planet(planet):
-            value = planet.value
+            stringValue = nil
+            intValue = planet.value
         case let .lunarNode(lunarNode):
-            value = lunarNode.value
+            stringValue = nil
+            intValue = lunarNode.value
             isMeanSouthNode = (lunarNode.value == LunarNode.meanSouthNode.rawValue)
             isTrueSouthNode = (lunarNode.value == LunarNode.trueSouthNode.rawValue)
         case let .asteroid(asteroid):
-            value = asteroid.value
+            stringValue = nil
+            intValue = asteroid.value
+        case let .fixedStar(fixedStar):
+            intValue = nil
+            stringValue = fixedStar.value
         }
 
-        pointer.initialize(repeating: 0, count: 6)
+        if let intValue = intValue {
+            pointer.initialize(repeating: 0, count: 6)
 
-        let calcValue: Int32
-        if isMeanSouthNode {
-            calcValue = Int32(LunarNode.meanNode.rawValue)
-        }
-        else if isTrueSouthNode {
-            calcValue = Int32(LunarNode.trueNode.rawValue)
-        }
-        else {
-            calcValue = value
+            let calcValue: Int32
+            if isMeanSouthNode {
+                calcValue = Int32(LunarNode.meanNode.rawValue)
+            }
+            else if isTrueSouthNode {
+                calcValue = Int32(LunarNode.trueNode.rawValue)
+            }
+            else {
+                calcValue = intValue
+            }
+
+            swe_calc_ut(date.julianDate(), calcValue, SEFLG_SPEED, pointer, nil)
         }
 
-        swe_calc_ut(date.julianDate(), calcValue, SEFLG_SPEED, pointer, nil)
+        if let stringValue = stringValue {
+            charPointer.initialize(from: stringValue, count: stringValue.count)
+            charPointer = strdup(stringValue)
+            swe_fixstar2(charPointer, date.julianDate(), SEFLG_SPEED, pointer, nil)
+        }
 
         var longDegrees = 0.0
 
