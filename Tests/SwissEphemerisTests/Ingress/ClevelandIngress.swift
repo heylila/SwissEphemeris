@@ -371,7 +371,6 @@ class ClevelandIngress: XCTestCase {
             let postCrossPrimeRange = 0.0 ... 1.0
 
             if thisCoordinate.longitude > prevCoordinate.longitude {
-                print("\(dateString) normal motion: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
                 dates.append(prevCoordinate.date)
 
                 if i == coordinates.endIndex - 2 {
@@ -383,7 +382,6 @@ class ClevelandIngress: XCTestCase {
             }
 
             if postCrossPrimeRange.contains(thisCoordinate.longitude) && preCrossPrimeRange.contains(prevCoordinate.longitude) {
-                print("\(dateString) normal motion crosses Prime Meridian: thisCoordinate = \(roundedThis) | prevCoordinate = \(roundedPrev)")
                 dates.append(prevCoordinate.date)
                 continue
             }
@@ -467,7 +465,6 @@ class ClevelandIngress: XCTestCase {
             let endDate = startDate.offset(.week, value: 1)!.offset(.hour, value: 1)!
             let sdString = startDate.toString(format: .cocoaDateTime)!
             let edString = endDate.offset(.hour, value: -1)!.toString(format: .cocoaDateTime)!
-            print("Sign ingresses for week between \(sdString) and \(edString)")
 
             for planet in planetCases {
                 let hourPositions = BodiesRequest(body: planet.celestialObject).fetch(start: startDate, end: endDate, interval: hourSlice)

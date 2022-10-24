@@ -96,11 +96,8 @@ class PlutoSquares2022: XCTestCase {
 
         let squares = positions.filter { Tpluto in
             if let ca = CelestialAspect(body1: Tpluto, body2: natalVenus, orb: orb) {
-                print("ca = \(ca)")
+                return ca.kind == .square
             }
-//            if let a = Aspect(bodyA: Tpluto, bodyB: natalVenus, orb: orb) {
-//                return a.isSquare
-//            }
 
             return false
         }
