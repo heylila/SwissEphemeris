@@ -45,5 +45,9 @@ public enum FixedStar: String, CaseIterable {
 
 extension FixedStar: CelestialBody {
 	public var value: String { rawValue }
+
+    var celestialObject: CelestialObject {
+        return .fixedStar(self)
+    }
 }
 
