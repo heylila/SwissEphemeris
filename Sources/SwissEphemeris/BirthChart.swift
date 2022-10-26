@@ -52,52 +52,52 @@ public struct BirthChart {
 
         houseCusps = HouseCusps(date: date, latitude: latitude, longitude: longitude, houseSystem: houseSystem)
 
-        self.sun = Coordinate(body: Planet.sun.celestialObject, date: date)
-        self.moon = Coordinate(body: Planet.moon.celestialObject, date: date)
-        self.mercury = Coordinate(body: Planet.mercury.celestialObject, date: date)
-        self.venus = Coordinate(body: Planet.venus.celestialObject, date: date)
-        self.mars = Coordinate(body: Planet.mars.celestialObject, date: date)
-        self.jupiter = Coordinate(body: Planet.jupiter.celestialObject, date: date)
-        self.saturn = Coordinate(body: Planet.saturn.celestialObject, date: date)
-        self.uranus = Coordinate(body: Planet.uranus.celestialObject, date: date)
-        self.neptune = Coordinate(body: Planet.neptune.celestialObject, date: date)
-        self.pluto = Coordinate(body: Planet.pluto.celestialObject, date: date)
-        self.chiron = Coordinate(body: Asteroid.chiron.celestialObject, date: date)
-        self.northNode = Coordinate(body: LunarNode.meanNode.celestialObject, date: date)
-        self.southNode = Coordinate(body: LunarNode.meanSouthNode.celestialObject, date: date)
+        sun = Coordinate(body: Planet.sun.celestialObject, date: date)
+        moon = Coordinate(body: Planet.moon.celestialObject, date: date)
+        mercury = Coordinate(body: Planet.mercury.celestialObject, date: date)
+        venus = Coordinate(body: Planet.venus.celestialObject, date: date)
+        mars = Coordinate(body: Planet.mars.celestialObject, date: date)
+        jupiter = Coordinate(body: Planet.jupiter.celestialObject, date: date)
+        saturn = Coordinate(body: Planet.saturn.celestialObject, date: date)
+        uranus = Coordinate(body: Planet.uranus.celestialObject, date: date)
+        neptune = Coordinate(body: Planet.neptune.celestialObject, date: date)
+        pluto = Coordinate(body: Planet.pluto.celestialObject, date: date)
+        chiron = Coordinate(body: Asteroid.chiron.celestialObject, date: date)
+        northNode = Coordinate(body: LunarNode.meanNode.celestialObject, date: date)
+        southNode = Coordinate(body: LunarNode.meanSouthNode.celestialObject, date: date)
 
-        self.planets = [
-            self.sun,
-            self.moon,
-            self.mercury,
-            self.venus,
-            self.mars,
-            self.jupiter,
-            self.saturn,
-            self.uranus,
-            self.neptune,
-            self.pluto
+        planets = [
+            sun,
+            moon,
+            mercury,
+            venus,
+            mars,
+            jupiter,
+            saturn,
+            uranus,
+            neptune,
+            pluto
         ]
 
-        self.lunarNodes = [
-            self.northNode,
-            self.southNode
+        lunarNodes = [
+            northNode,
+            southNode
         ]
 
-        self.allBodies = [
-            self.sun,
-            self.moon,
-            self.mercury,
-            self.venus,
-            self.mars,
-            self.jupiter,
-            self.saturn,
-            self.uranus,
-            self.neptune,
-            self.pluto,
-            self.northNode,
-            self.southNode,
-            self.chiron
+        allBodies = [
+            sun,
+            moon,
+            mercury,
+            venus,
+            mars,
+            jupiter,
+            saturn,
+            uranus,
+            neptune,
+            pluto,
+            northNode,
+            southNode,
+            chiron
         ]
     }
 
