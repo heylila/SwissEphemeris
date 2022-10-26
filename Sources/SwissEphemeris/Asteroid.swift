@@ -15,6 +15,23 @@ public enum Asteroid: Int32 {
 	case pallas
 	case juno
 	case vesta
+
+    public var formatted: String {
+        switch self {
+        case .chiron:
+            return "⚷ Chiron"
+        case .pholus:
+            return "Pholus"
+        case .ceres:
+            return "⚳ Ceres"
+        case .pallas:
+            return "⚴ Pallas"
+        case .juno:
+            return "⚵ Juno"
+        case .vesta:
+            return "⚶ Vesta"
+        }
+    }
 }
 
 // MARK: - CelestialBody Conformance

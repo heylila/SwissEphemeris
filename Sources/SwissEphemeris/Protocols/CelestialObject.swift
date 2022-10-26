@@ -50,4 +50,18 @@ extension CelestialObject {
             return nil
         }
     }
+
+    public var formatted: String {
+        switch self {
+        case .asteroid(let asteroid):
+            return asteroid.formatted
+        case .lunarNode(let lunarNode):
+            return lunarNode.formatted
+        case .planet(let planet):
+            return planet.formatted
+        case .fixedStar(let fixedStar):
+            return fixedStar.formatted
+        }
+    }
+
 }

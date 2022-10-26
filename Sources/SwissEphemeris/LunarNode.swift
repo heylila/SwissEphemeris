@@ -14,6 +14,19 @@ public enum LunarNode: Int32 {
 	case trueNode
     case meanSouthNode = 24
     case trueSouthNode = 25
+
+    public var formatted: String {
+        switch self {
+        case .meanNode:
+            return "☊ Mean Node"
+        case .trueNode:
+            return "☊ True Node"
+        case .meanSouthNode:
+            return "☋ Mean South Node"
+        case .trueSouthNode:
+            return "☋ True South Node"
+        }
+    }
 }
 
 // MARK: - CelestialBody Conformance

@@ -39,6 +39,41 @@ public enum FixedStar: String, CaseIterable {
 	case pollux
 	///
 	case betelgeuse
+
+    public var formatted: String {
+        switch self {
+        case .galacticCenter:
+            return "Galactic Center"
+        case .aldebaran:
+            return "Alderbaran"
+        case .antares:
+            return "Antares"
+        case .regulus:
+            return "Regulus"
+        case .sirius:
+            return "Sirius"
+        case .spica:
+            return "Spica"
+        case .algol:
+            return "Algol"
+        case .rigel:
+            return "Rigel"
+        case .altair:
+            return "Altair"
+        case .capella:
+            return "Capella"
+        case .arcturus:
+            return "Arcturus"
+        case .procyon:
+            return "Procyon"
+        case .castor:
+            return "Castor"
+        case .pollux:
+            return "Pollux"
+        case .betelgeuse:
+            return "Betelgeuse"
+        }
+    }
 }
 
 // MARK: CelestialBody Conformance
