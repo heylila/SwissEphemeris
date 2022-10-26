@@ -51,7 +51,7 @@ public struct SetTime {
             value = lunarNode.value
         case .planet(let planet):
             value = planet.value
-        case .fixedStar(_):
+        default:
             value = nil
         }
 

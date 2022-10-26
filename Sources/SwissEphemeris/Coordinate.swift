@@ -89,6 +89,9 @@ public struct Coordinate: Equatable {
         case let .fixedStar(fixedStar):
             intValue = nil
             stringValue = fixedStar.value
+        default:
+            intValue = nil
+            stringValue = nil
         }
 
         if let intValue = intValue {
