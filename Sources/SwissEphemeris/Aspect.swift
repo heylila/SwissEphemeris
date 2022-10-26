@@ -75,6 +75,15 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
         return nil
     }
 
+    public func shortDebug() -> String {
+        let body1Name = String(describing: body1.body.formatted)
+        let body2Name = String(describing: body2.body.formatted)
+        let aspect = String("\(kind)")
+        let body1TimeStamp = body1.date.toString(format: .cocoaDateTime)!
+        let body2TimeStamp = body2.date.toString(format: .cocoaDateTime)!
+        return "\(body1Name) at \(body1TimeStamp) makes \(aspect) with \(body2Name) at \(body2TimeStamp)"
+    }
+
     public static func ==(lhs: CelestialAspect, rhs: CelestialAspect) -> Bool {
         let test1 = (lhs.body1 == rhs.body1 &&
                      lhs.body2 == rhs.body2 &&
