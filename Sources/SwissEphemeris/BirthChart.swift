@@ -233,6 +233,24 @@ public struct BirthChart {
         return (aspects.count > 0) ? aspects : nil
     }
 
+    public func snapshotOfTransitingBodies(for date: Date) -> [Coordinate] {
+        return [
+            Coordinate(body: Planet.sun.celestialObject, date: date),
+            Coordinate(body: Planet.moon.celestialObject, date: date),
+            Coordinate(body: Planet.mercury.celestialObject, date: date),
+            Coordinate(body: Planet.venus.celestialObject, date: date),
+            Coordinate(body: Planet.mars.celestialObject, date: date),
+            Coordinate(body: Planet.jupiter.celestialObject, date: date),
+            Coordinate(body: Planet.saturn.celestialObject, date: date),
+            Coordinate(body: Planet.uranus.celestialObject, date: date),
+            Coordinate(body: Planet.neptune.celestialObject, date: date),
+            Coordinate(body: Planet.pluto.celestialObject, date: date),
+            Coordinate(body: LunarNode.meanNode.celestialObject, date: date),
+            Coordinate(body: LunarNode.meanSouthNode.celestialObject, date: date),
+            Coordinate(body: Asteroid.chiron.celestialObject, date: date)
+        ]
+    }
+
     public func snapshotOfPlanets(for date: Date) -> [Coordinate] {
         return [
             Coordinate(body: Planet.sun.celestialObject, date: date),
