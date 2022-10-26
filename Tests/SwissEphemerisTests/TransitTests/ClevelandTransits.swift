@@ -20,6 +20,10 @@ final class ClevelandTransits: XCTestCase {
         return dobDate
     }
 
+    static var testDate: Date {
+        return Date(fromString: "2022-10-16 08:04:00 -0700")!
+    }
+
     static var chart: BirthChart {
         let lat: Double = 41.49932
         let long: Double = -81.69436
@@ -29,7 +33,7 @@ final class ClevelandTransits: XCTestCase {
     // Pluto Sextile Sun 5-25-2022 until 1-24-2023
     func testPlutoSextileSun() throws {
         let chart = ClevelandTransits.chart
-        let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
+        let testDate = ClevelandTransits.testDate
         let body = Planet.pluto.celestialObject
         let TBody = Coordinate(body: body, date: testDate)
         let natal = chart.sun
@@ -56,7 +60,7 @@ final class ClevelandTransits: XCTestCase {
     func testMercuryTrineAscendant() throws {
         let chart = ClevelandTransits.chart
         let asc = chart.houseCusps.ascendent
-        let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
+        let testDate = ClevelandTransits.testDate
         let body = Planet.mercury.celestialObject
         let TBody = Coordinate(body: body, date: testDate)
         let boundaries = chart.transitingCoordinates(for: TBody, with: asc, on: testDate)
@@ -81,7 +85,7 @@ final class ClevelandTransits: XCTestCase {
     // Uranus Sextile Mercury 5-28-2022 until 11-27-2022
     func testUranusSextileMercury() throws {
         let chart = ClevelandTransits.chart
-        let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
+        let testDate = ClevelandTransits.testDate
         let body = Planet.uranus.celestialObject
         let TBody = Coordinate(body: body, date: testDate)
         let natal = chart.mercury
@@ -107,7 +111,7 @@ final class ClevelandTransits: XCTestCase {
     // Pluto Square Venus 12-28-2021 until 3-14-2023
     func testPlutoSquareVenus() throws {
         let chart = ClevelandTransits.chart
-        let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
+        let testDate = ClevelandTransits.testDate
         let body = Planet.pluto.celestialObject
         let TBody = Coordinate(body: body, date: testDate)
         let natal = chart.venus
@@ -133,7 +137,7 @@ final class ClevelandTransits: XCTestCase {
     // Mercury Sextile Uranus 10-15-2022 until 10-18-2022
     func testMercurySextileUranus() throws {
         let chart = ClevelandTransits.chart
-        let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
+        let testDate = ClevelandTransits.testDate
         let body = Planet.mercury.celestialObject
         let natal = chart.uranus
         let TBody = Coordinate(body: body, date: testDate)
@@ -159,7 +163,7 @@ final class ClevelandTransits: XCTestCase {
     // Jupiter Square Neptune 10-16-2022 until 12-31-2022
     func testJupiterSquareNeptune() throws {
         let chart = ClevelandTransits.chart
-        let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
+        let testDate = ClevelandTransits.testDate
         let body = Planet.jupiter.celestialObject
         let natal = chart.neptune
         let TBody = Coordinate(body: body, date: testDate)
@@ -185,7 +189,7 @@ final class ClevelandTransits: XCTestCase {
     // Jupiter Square SN 10-10-2022 until 1-5-2023
     func testJupiterSquareSouthNode() throws {
         let chart = ClevelandTransits.chart
-        let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
+        let testDate = ClevelandTransits.testDate
         let body = Planet.jupiter.celestialObject
         let natal = chart.southNode
         let TBody = Coordinate(body: body, date: testDate)
@@ -193,7 +197,7 @@ final class ClevelandTransits: XCTestCase {
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
-        XCTAssert(kind == .trine)
+        XCTAssert(kind == .square)
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
@@ -211,7 +215,7 @@ final class ClevelandTransits: XCTestCase {
     // Jupiter Square NN 10-10-2022 until 1-5-2023
     func testJupiterSquareNorthNode() throws {
         let chart = ClevelandTransits.chart
-        let testDate = Date(fromString: "2022-10-16 08:04:00 -0700")!
+        let testDate = ClevelandTransits.testDate
         let body = Planet.jupiter.celestialObject
         let natal = chart.northNode
         let TBody = Coordinate(body: body, date: testDate)
@@ -231,6 +235,59 @@ final class ClevelandTransits: XCTestCase {
             XCTAssert(last.date.component(.month) == 1)
             XCTAssert(last.date.component(.day) == 5)
             XCTAssert(last.date.component(.year) == 2023)
+        }
+    }
+
+    func testAspectsForDate() throws {
+        let chart = ClevelandTransits.chart
+        let testDate = ClevelandTransits.testDate
+
+        if let sunAspects = chart.aspects(for: chart.sun, on: testDate) {
+            XCTAssertTrue(sunAspects.count == 1, "aspects = \(sunAspects.count)")
+        }
+
+        if let mercuryAspects = chart.aspects(for: chart.mercury, on: testDate) {
+            XCTAssertTrue(mercuryAspects.count == 1, "aspects = \(mercuryAspects.count)")
+        }
+
+        if let venusAspects = chart.aspects(for: chart.venus, on: testDate) {
+            XCTAssertTrue(venusAspects.count == 1, "aspects = \(venusAspects.count)")
+        }
+
+        if let marsAspects = chart.aspects(for: chart.mars, on: testDate) {
+            XCTAssertTrue(marsAspects.count == 1, "aspects = \(marsAspects.count)")
+        }
+
+        if let jupiterAspects = chart.aspects(for: chart.jupiter, on: testDate) {
+            XCTAssertTrue(jupiterAspects.count == 1, "aspects = \(jupiterAspects.count)")
+        }
+
+        if let saturnAspects = chart.aspects(for: chart.saturn, on: testDate) {
+            XCTAssertTrue(saturnAspects.count == 1, "aspects = \(saturnAspects.count)")
+        }
+
+        if let uranusAspects = chart.aspects(for: chart.uranus, on: testDate) {
+            XCTAssertTrue(uranusAspects.count == 1, "aspects = \(uranusAspects.count)")
+        }
+
+        if let neptuneAspects = chart.aspects(for: chart.neptune, on: testDate) {
+            XCTAssertTrue(neptuneAspects.count == 1, "aspects = \(neptuneAspects.count)")
+        }
+
+        if let plutoAspects = chart.aspects(for: chart.pluto, on: testDate) {
+            XCTAssertTrue(plutoAspects.count == 1, "aspects = \(plutoAspects.count)")
+        }
+
+        if let chironAspects = chart.aspects(for: chart.chiron, on: testDate) {
+            XCTAssertTrue(chironAspects.count == 1, "aspects = \(chironAspects.count)")
+        }
+
+        if let northNodeAspects = chart.aspects(for: chart.northNode, on: testDate) {
+            XCTAssertTrue(northNodeAspects.count == 1, "aspects = \(northNodeAspects.count)")
+        }
+
+        if let southNodeAspects = chart.aspects(for: chart.southNode, on: testDate) {
+            XCTAssertTrue(southNodeAspects.count == 1, "aspects = \(southNodeAspects.count)")
         }
     }
 }
