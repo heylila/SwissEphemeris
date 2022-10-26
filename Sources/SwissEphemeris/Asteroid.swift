@@ -41,7 +41,7 @@ extension Asteroid: CelestialBody {
 		rawValue
 	}
 
-    var celestialObject: CelestialObject {
+    public var celestialObject: CelestialObject {
         return .asteroid(self)
     }
 }

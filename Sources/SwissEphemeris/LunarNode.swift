@@ -36,7 +36,7 @@ extension LunarNode: CelestialBody {
 		rawValue
 	}
 
-    var celestialObject: CelestialObject {
+    public var celestialObject: CelestialObject {
         return .lunarNode(self)
     }
 }

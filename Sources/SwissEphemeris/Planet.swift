@@ -79,7 +79,7 @@ public enum Planet: Int32 {
 extension Planet: CelestialBody {
 	public var value: Int32 { rawValue }
 
-    var celestialObject: CelestialObject {
+    public var celestialObject: CelestialObject {
         return .planet(self)
     }
 }
