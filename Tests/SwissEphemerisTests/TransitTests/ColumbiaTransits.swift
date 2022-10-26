@@ -20,6 +20,10 @@ final class ColumbiaTransits: XCTestCase {
         return dobDate
     }
 
+    static var testDate: Date {
+        return Date(fromString: "2022-10-16 22:30:00 -0700")!
+    }
+
     static var chart: BirthChart {
         let lat: Double = 38.9517053
         let long: Double = -92.3340724
@@ -29,7 +33,7 @@ final class ColumbiaTransits: XCTestCase {
     // Uranus Squaring Moon 10-12-2022 until 4-22-2023
     func testUranusSquareMoon() throws {
         let chart = ColumbiaTransits.chart
-        let testDate = Date(fromString: "2022-10-16 22:30:00 -0700")!
+        let testDate = ColumbiaTransits.testDate
         let body = Planet.uranus.celestialObject
         let natal = chart.moon
         let TBody = Coordinate(body: body, date: testDate)
@@ -55,7 +59,7 @@ final class ColumbiaTransits: XCTestCase {
     // North Node Squaring Moon 8-6-2022 until 10-21-2022
     func testNorthNodeSquareMoon() throws {
         let chart = ColumbiaTransits.chart
-        let testDate = Date(fromString: "2022-10-16 22:30:00 -0700")!
+        let testDate = ColumbiaTransits.testDate
         let body = LunarNode.meanNode.celestialObject
         let natal = chart.moon
         let TBody = Coordinate(body: body, date: testDate)
@@ -81,7 +85,7 @@ final class ColumbiaTransits: XCTestCase {
     // South Node Squaring Moon 8-6-2022 until 10-21-2022
     func testSouthNodeSquareMoon() throws {
         let chart = ColumbiaTransits.chart
-        let testDate = Date(fromString: "2022-10-16 22:30:00 -0700")!
+        let testDate = ColumbiaTransits.testDate
         let body = LunarNode.meanSouthNode.celestialObject
         let natal = chart.moon
         let TBody = Coordinate(body: body, date: testDate)
@@ -133,7 +137,7 @@ final class ColumbiaTransits: XCTestCase {
     // Jupiter Trine Mercury 10-9-2022 until 12-29-2022
     func testJupiterTrineMercury() throws {
         let chart = ColumbiaTransits.chart
-        let testDate = Date(fromString: "2022-10-16 22:30:00 -0700")!
+        let testDate = ColumbiaTransits.testDate
         let body = Planet.jupiter.celestialObject
         let TBody = Coordinate(body: body, date: testDate)
         let natal = chart.mercury
@@ -159,7 +163,7 @@ final class ColumbiaTransits: XCTestCase {
     // Saturn Trine Mars 8-28-2022 until 12-14-2022
     func testSaturnTrineMars() throws {
         let chart = ColumbiaTransits.chart
-        let testDate = Date(fromString: "2022-10-16 22:30:00 -0700")!
+        let testDate = ColumbiaTransits.testDate
         let body = Planet.saturn.celestialObject
         let natal = chart.mars
         let TBody = Coordinate(body: body, date: testDate)
@@ -185,7 +189,7 @@ final class ColumbiaTransits: XCTestCase {
     // Saturn Trine Saturn 8-14-2022 until 12-26-2022
     func testSaturnTrineSaturn() throws {
         let chart = ColumbiaTransits.chart
-        let testDate = Date(fromString: "2022-10-16 22:30:00 -0700")!
+        let testDate = ColumbiaTransits.testDate
         let body = Planet.saturn.celestialObject
         let natal = chart.saturn
         let TBody = Coordinate(body: body, date: testDate)
@@ -237,7 +241,7 @@ final class ColumbiaTransits: XCTestCase {
     // Saturn Trine Uranus 8-15-2022 until 12-25-2022
     func testSaturnTrineUranus() throws {
         let chart = ColumbiaTransits.chart
-        let testDate = Date(fromString: "2022-10-16 22:30:00 -0700")!
+        let testDate = ColumbiaTransits.testDate
         let body = Planet.saturn.celestialObject
         let natal = chart.uranus
         let TBody = Coordinate(body: body, date: testDate)
