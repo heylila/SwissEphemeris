@@ -289,6 +289,9 @@ public struct BirthChart {
 
         return aspects.count > 0 ? aspects : nil
     }
+
+    public func transitType(for Tbody: CelestialObject, with natalBody: Coordinate, on date: Date, orb: Double = 2.0) -> Kind? {
+        let bodyCoordinate = Coordinate(body: Tbody, date: date)
         if let a = CelestialAspect(body1: bodyCoordinate, body2: natalBody, orb: orb) {
             return a.kind
         }
@@ -296,8 +299,8 @@ public struct BirthChart {
         return nil
     }
 
-    public func transitType(for body: CelestialObject, with cusp: Cusp, on date: Date, orb: Double = 2.0) -> Kind? {
-        let bodyCoordinate = Coordinate(body: body, date: date)
+    public func transitType(for Tbody: CelestialObject, with cusp: Cusp, on date: Date, orb: Double = 2.0) -> Kind? {
+        let bodyCoordinate = Coordinate(body: Tbody, date: date)
         let kind: Kind
         if let a = Aspect(a: bodyCoordinate.longitude, b: cusp.value, orb: orb) {
             switch a {
