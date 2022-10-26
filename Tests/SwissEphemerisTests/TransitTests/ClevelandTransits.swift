@@ -10,6 +10,10 @@ import XCTest
 
 final class ClevelandTransits: XCTestCase {
 
+    override func setUpWithError() throws {
+        JPLFileManager.setEphemerisPath()
+    }
+
     static var birthDate: Date {
         let dob = "1983-03-17 09:45:00 -0500"
         let dobDate = Date(fromString: dob, format: .cocoaDateTime)!
