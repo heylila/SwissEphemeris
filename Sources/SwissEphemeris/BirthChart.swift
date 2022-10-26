@@ -277,8 +277,18 @@ public struct BirthChart {
         ]
     }
 
-    public func transitType(for body: CelestialObject, with natalBody: Coordinate, on date: Date, orb: Double = 2.0) -> Kind? {
-        let bodyCoordinate = Coordinate(body: body, date: date)
+    public func aspects(for natalBody: Coordinate, on date: Date, with orb: Double = 2.0) -> [CelestialAspect]? {
+        let bodies = snapshotOfTransitingBodies(for: date)
+        var aspects = [CelestialAspect]()
+
+        for Tbody in bodies {
+            if let ca = CelestialAspect(body1: Tbody, body2: natalBody, orb: orb) {
+                aspects.append(ca)
+            }
+        }
+
+        return aspects.count > 0 ? aspects : nil
+    }
         if let a = CelestialAspect(body1: bodyCoordinate, body2: natalBody, orb: orb) {
             return a.kind
         }
