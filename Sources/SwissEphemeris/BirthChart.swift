@@ -101,6 +101,24 @@ public struct BirthChart {
         ]
     }
 
+    public static var allBodyCases: [CelestialObject] {
+        return [
+            Planet.sun.celestialObject,
+            Planet.moon.celestialObject,
+            Planet.mercury.celestialObject,
+            Planet.venus.celestialObject,
+            Planet.mars.celestialObject,
+            Planet.jupiter.celestialObject,
+            Planet.saturn.celestialObject,
+            Planet.uranus.celestialObject,
+            Planet.neptune.celestialObject,
+            Planet.pluto.celestialObject,
+            LunarNode.meanNode.celestialObject,
+            LunarNode.meanSouthNode.celestialObject,
+            Asteroid.chiron.celestialObject
+        ]
+    }
+
     var fastBodies: [Coordinate] {
         return [
             self.sun,
