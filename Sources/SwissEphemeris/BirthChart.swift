@@ -212,7 +212,6 @@ public struct BirthChart {
         return (aspects.count > 0) ? aspects : nil
     }
 
-
     public var chironToNodeAspects: [CelestialAspect]? {
         var aspects = [CelestialAspect]()
 
@@ -340,23 +339,13 @@ public struct BirthChart {
         return nil
     }
 
-    public func transitingCoordinates(for transitingBody: Coordinate, with natalBody: Coordinate, on date: Date, orb: Double = 2.0) -> (first: Coordinate, last: Coordinate)? {
+    public func transitingCoordinates(for transitingBody: CelestialObject, with natalBody: Coordinate, on date: Date, orb: Double = 2.0) -> (first: Coordinate, last: Coordinate)? {
 
-        // So, IF we have a transiting aspect on a particular date, what we want to find is:
-        // The absolute BEGINNING minute of the transiting aspect
-        // The absolute ENDING minute of the transiting asect
-        // Think of this as a inclusive interval: [ <starting minute>, ... , <ending minute> ]
-
-        // Best way to do this is in days, and using inspiration from
-        // "sliceTimeForEgress / sliceTimeForIngress"
-
-        // Will return nil IF there's no aspect on the provided date
-
-        guard let a = CelestialAspect(body1: transitingBody, body2: natalBody, orb: orb) else {
+        let TBody = Coordinate(body: transitingBody, date: date)
+        guard let a = CelestialAspect(body1: TBody, body2: natalBody, orb: orb) else {
             return nil
         }
 
-        let TBody = transitingBody
         var yesterday: CelestialAspect? = a
         var tomorrow: CelestialAspect? = a
         var dayBefore = date
@@ -394,9 +383,8 @@ public struct BirthChart {
         return (starting, ending) as? (first: Coordinate, last: Coordinate)
     }
 
-    public func transitingCoordinates(for transitingBody: Coordinate, with cusp: Cusp, on date: Date, orb: Double = 2.0) -> (first: Coordinate, last: Coordinate)? {
-        let TBody = transitingBody
-
+    public func transitingCoordinates(for transitingBody: CelestialObject, with cusp: Cusp, on date: Date, orb: Double = 2.0) -> (first: Coordinate, last: Coordinate)? {
+        let TBody = Coordinate(body: transitingBody, date: date)
         guard let a = Aspect(a: TBody.longitude, b: cusp.value, orb: orb) else {
             return nil
         }

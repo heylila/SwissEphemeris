@@ -36,8 +36,7 @@ final class ColumbiaTransits: XCTestCase {
         let testDate = ColumbiaTransits.testDate
         let body = Planet.uranus.celestialObject
         let natal = chart.moon
-        let TBody = Coordinate(body: body, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
@@ -62,8 +61,7 @@ final class ColumbiaTransits: XCTestCase {
         let testDate = ColumbiaTransits.testDate
         let body = LunarNode.meanNode.celestialObject
         let natal = chart.moon
-        let TBody = Coordinate(body: body, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
@@ -88,8 +86,7 @@ final class ColumbiaTransits: XCTestCase {
         let testDate = ColumbiaTransits.testDate
         let body = LunarNode.meanSouthNode.celestialObject
         let natal = chart.moon
-        let TBody = Coordinate(body: body, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
@@ -113,9 +110,8 @@ final class ColumbiaTransits: XCTestCase {
         let chart = ColumbiaTransits.chart
         let testDate = Date(fromString: "2022-10-15 22:30:00 -0700")!
         let body = Planet.venus.celestialObject
-        let TBody = Coordinate(body: body, date: testDate)
         let natal = chart.saturn
-        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
@@ -139,9 +135,8 @@ final class ColumbiaTransits: XCTestCase {
         let chart = ColumbiaTransits.chart
         let testDate = ColumbiaTransits.testDate
         let body = Planet.jupiter.celestialObject
-        let TBody = Coordinate(body: body, date: testDate)
         let natal = chart.mercury
-        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
@@ -166,8 +161,7 @@ final class ColumbiaTransits: XCTestCase {
         let testDate = ColumbiaTransits.testDate
         let body = Planet.saturn.celestialObject
         let natal = chart.mars
-        let TBody = Coordinate(body: body, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
@@ -192,8 +186,7 @@ final class ColumbiaTransits: XCTestCase {
         let testDate = ColumbiaTransits.testDate
         let body = Planet.saturn.celestialObject
         let natal = chart.saturn
-        let TBody = Coordinate(body: body, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
@@ -218,8 +211,7 @@ final class ColumbiaTransits: XCTestCase {
         let testDate = Date(fromString: "2022-10-15 22:30:00 -0700")!
         let body = Planet.venus.celestialObject
         let natal = chart.uranus
-        let TBody = Coordinate(body: body, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
@@ -244,8 +236,7 @@ final class ColumbiaTransits: XCTestCase {
         let testDate = ColumbiaTransits.testDate
         let body = Planet.saturn.celestialObject
         let natal = chart.uranus
-        let TBody = Coordinate(body: body, date: testDate)
-        let boundaries = chart.transitingCoordinates(for: TBody, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
         XCTAssertNotNil(boundaries)
 
         let kind = chart.transitType(for: body, with: natal, on: testDate)
