@@ -340,6 +340,8 @@ public struct BirthChart {
     }
 
     public func transitingCoordinates(for transitingBody: CelestialObject, with natalBody: Coordinate, on date: Date, orb: Double = 2.0) -> (first: Coordinate, last: Coordinate)? {
+        precondition(transitingBody != .all, "All is not allowed")
+        precondition(transitingBody != .noBody, "No Body is not allowed")
 
         let TBody = Coordinate(body: transitingBody, date: date)
         guard let a = CelestialAspect(body1: TBody, body2: natalBody, orb: orb) else {
@@ -384,6 +386,8 @@ public struct BirthChart {
     }
 
     public func transitingCoordinates(for transitingBody: CelestialObject, with cusp: Cusp, on date: Date, orb: Double = 2.0) -> (first: Coordinate, last: Coordinate)? {
+        precondition(transitingBody != .all, "All is not allowed")
+        precondition(transitingBody != .noBody, "No Body is not allowed")
         let TBody = Coordinate(body: transitingBody, date: date)
         guard let a = Aspect(a: TBody.longitude, b: cusp.value, orb: orb) else {
             return nil
