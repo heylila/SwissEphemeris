@@ -18,9 +18,9 @@ public enum LunarNode: Int32 {
     public var formatted: String {
         switch self {
         case .meanNode:
-            return "☊ Mean Node"
+            return "☊ Mean (North) Node"
         case .trueNode:
-            return "☊ True Node"
+            return "☊ True (North) Node"
         case .meanSouthNode:
             return "☋ Mean South Node"
         case .trueSouthNode:
