@@ -117,20 +117,20 @@ class NeptuneIngress: XCTestCase {
     }
 
     func testNeptuneNextHouseIngress() throws {
-        let chart = ClevelandIngress.houseCusps
+        let houses = ClevelandIngress.houseCusps
+        let chart = BirthChart(date: ClevelandIngress.birthDate, latitude: houses.latitude, longitude: houses.longitude, houseSystem: .placidus)
         let planet = Planet.neptune
         guard let signTuple = PlutoIngress.signTransits[planet] else { return }
         let originDate = Date(fromString: "2022-08-20 19:30:00 -0700", format: .cocoaDateTime)!
         let endDate = originDate.offset(signTuple.dateType, value: signTuple.amount)!
-
 
         func sliceTimeForEgress(_ start: Date, _ stop: Date, _ timeSlice: Double) -> (egress: Coordinate, ingress: Coordinate)? {
             let positions = BodiesRequest(body: planet.celestialObject).fetch(start: start, end: stop, interval: timeSlice)
 
             return zip(positions, positions.dropFirst())
                 .first { (now, later) in
-                    let nowCusp = chart.cuspForLongitude(now.longitude)
-                    let laterCusp = chart.cuspForLongitude(later.longitude)
+                    let nowCusp = chart.houseCusps.cuspForLongitude(now.longitude)
+                    let laterCusp = chart.houseCusps.cuspForLongitude(later.longitude)
                     return nowCusp != laterCusp
                 }
                 .map { (now, later) in (now, later) }
@@ -168,8 +168,8 @@ class NeptuneIngress: XCTestCase {
         XCTAssert(tuple.egress.date == egressDate, "actual egress is: \(tuple.egress.date.toString(format: .cocoaDateTime)!)")
         XCTAssert(tuple.ingress.date == ingressDate, "actual ingress is: \(tuple.ingress.date.toString(format: .cocoaDateTime)!)")
 
-        guard let egressCusp = chart.cuspForLongitude(tuple.egress.longitude) else { return }
-        guard let ingressCusp = chart.cuspForLongitude(tuple.ingress.longitude) else { return }
+        guard let egressCusp = chart.houseCusps.cuspForLongitude(tuple.egress.longitude) else { return }
+        guard let ingressCusp = chart.houseCusps.cuspForLongitude(tuple.ingress.longitude) else { return }
         XCTAssert(egressCusp.name == "eleventh", "egressCusp name = \(egressCusp.name)")
         XCTAssert(ingressCusp.name == "twelfth", "ingressCusp name = \(ingressCusp.name)")
         print("egress date: \(tuple.egress.date.toString(format: .cocoaDateTime)!)")
