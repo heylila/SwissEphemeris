@@ -28,7 +28,7 @@ class JupiterIngress: XCTestCase {
                 .map { (now, later) in (now, later) }
         }
 
-        let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
+        let slices = TimeSlice.typicalSlices
         let sliceIndex = signTuple.dateType == .month ? 0 : 1
         var start = originDate
         var end = endDate
@@ -80,7 +80,7 @@ class JupiterIngress: XCTestCase {
                 .map { (now, later) in (now, later) }
         }
 
-        let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
+        let slices = TimeSlice.typicalSlices
         let sliceIndex = signTuple.dateType == .month ? 0 : 1
         var start = priorDate
         var end = originDate
@@ -161,7 +161,7 @@ class JupiterIngress: XCTestCase {
                 .map { (now, later) in (now, later) }
         }
 
-        let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
+        let slices = TimeSlice.typicalSlices
         let sliceIndex = signTuple.dateType == .month ? 0 : 1
         var start = originDate
         var end = endDate
@@ -220,7 +220,7 @@ class JupiterIngress: XCTestCase {
                 .map { (now, later) in (now, later) }
         }
 
-        let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
+        let slices = TimeSlice.typicalSlices
         let sliceIndex = signTuple.dateType == .month ? 0 : 1
         var start = priorDate
         var end = originDate

@@ -68,7 +68,7 @@ final class SaturnRetrograde: XCTestCase {
         ]
 
         let sliceIndex = 0
-        let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
+        let slices = TimeSlice.typicalSlices
         for i in stride(from: sliceIndex, to: slices.endIndex, by: 1) {
             let time = slices[i]
             let offsetTuple = timeDict[time]!

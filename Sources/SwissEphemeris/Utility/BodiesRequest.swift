@@ -31,6 +31,10 @@ public enum TimeSlice: Double, CaseIterable {
             return Double(29.530588 * 24 * 60 * 60)
         }
     }
+
+    public static var typicalSlices: [TimeSlice] {
+        return [ .month, .day, .hour, .minute ]
+    }
 }
 
 /// A generic `BatchRequest` for a collection of `<BodyType>` `Coordinates`.

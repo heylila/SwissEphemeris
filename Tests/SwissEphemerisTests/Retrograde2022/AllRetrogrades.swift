@@ -109,7 +109,7 @@ final class AllRetrogrades: XCTestCase {
         ]
 
         let sliceIndex = 2
-        let slices: [TimeSlice] = [ .month, .day, .hour, .minute ]
+        let slices = TimeSlice.typicalSlices
         var retroGroups2 = [(start: Coordinate, end: Coordinate)]()
 
         for group in retroGroups {
