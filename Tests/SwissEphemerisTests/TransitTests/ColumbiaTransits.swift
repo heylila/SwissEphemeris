@@ -254,4 +254,14 @@ final class ColumbiaTransits: XCTestCase {
             XCTAssert(last.date.component(.year) == 2022)
         }
     }
+
+//    func testFindPeakCoordinate() throws {
+//        let chart = ColumbiaTransits.chart
+//        let testDate = ColumbiaTransits.testDate
+//        let body = Planet.saturn.celestialObject
+//        let natal = chart.uranus
+//        if let peak = chart.findPeakCoordinate(for: body, with: natal, on: testDate) {
+//            print("\(peak)")
+//        }
+//    }
 }
