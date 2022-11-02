@@ -12,6 +12,8 @@ public enum TimeSlice: Double, CaseIterable {
     case hour
     case day
     case month
+    case siderealMonh
+    case synodicMonth
 
     public var slice: Double {
         switch self {
@@ -23,6 +25,10 @@ public enum TimeSlice: Double, CaseIterable {
             return Double(24 * 60 * 60)
         case .month:
             return Double(28 * 24 * 60 * 60)
+        case .siderealMonh:
+            return Double(27.321661 * 24 * 60 * 60)
+        case .synodicMonth:
+            return Double(29.530588 * 24 * 60 * 60)
         }
     }
 }
