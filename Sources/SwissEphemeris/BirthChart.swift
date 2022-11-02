@@ -430,3 +430,66 @@ public struct BirthChart {
         return (starting, ending) as? (first: Coordinate, last: Coordinate)
     }
 }
+
+extension BirthChart {
+    public static var aspectTransits: [CelestialObject : (dateType: Date.DateComponentType, amount: Int)] {
+        let d: [ CelestialObject : (dateType: Date.DateComponentType, amount: Int) ] = [
+            Planet.sun.celestialObject : (.day, 40),
+            Planet.mercury.celestialObject : (.day, 70),
+            Planet.venus.celestialObject : (.day, 75),
+            Planet.mars.celestialObject : (.month, 8),
+            Planet.jupiter.celestialObject : (.month, 24),
+            Planet.saturn.celestialObject : (.month, Int(2.8 * 12)),
+            Planet.uranus.celestialObject : (.month, Int(8 * 12)),
+            Planet.neptune.celestialObject : (.month, Int(15 * 12)),
+            Planet.pluto.celestialObject : (.month, Int(32 * 12)),
+            LunarNode.meanNode.celestialObject : (.month, Int(1.55 * 12)),
+            LunarNode.meanSouthNode.celestialObject : (.month, Int(1.55 * 12)),
+            Asteroid.chiron.celestialObject : (.month, Int(8.25 * 12))
+        ]
+
+        return d
+    }
+
+    public func findPeakCoordinate(for transitingBody: CelestialObject, with natalBody: Coordinate, on date: Date, orb: Double = 2.0) -> Coordinate? {
+        let TBody = Coordinate(body: transitingBody, date: date)
+        guard let a = CelestialAspect(body1: TBody, body2: natalBody, orb: orb) else {
+            return nil
+        }
+
+        if a.angle == 0.0 {
+            return TBody
+        }
+
+        let kind = a.kind
+
+        func getBestPosition(for start: Date, end: Date, slice: TimeInterval) -> Coordinate? {
+            let positions = BodiesRequest(body: transitingBody).fetch(start: start, end: end, interval: slice)
+            let range = -1.0...1.0
+            let outcome = positions.min { lhs, rhs in
+                guard let aspect = CelestialAspect(body1: lhs, body2: natalBody, orb: orb) else {
+                    return false
+                }
+
+                return kind == aspect.kind && range.contains(abs(aspect.angle))
+            }
+
+            return outcome
+        }
+
+        // OK so now the trick will be to get the "best minute" of a position
+        // that has as close to a ZERO degree for the remainder for a particular aspect
+        guard let tuple = BirthChart.aspectTransits[transitingBody] else { return nil }
+        var yesterdayStart = date.offset(tuple.dateType, value: (-1 * tuple.amount))!
+        var tomorrowEnd = date.offset(tuple.dateType, value: tuple.amount)!
+        let slices = TimeSlice.typicalSlices
+
+        for i in stride(from: 1, to: TimeSlice.typicalSlices.endIndex, by: 1) {
+            let window = slices[i]
+            let best = getBestPosition(for: yesterdayStart, end: tomorrowEnd, slice: window.slice)
+
+        }
+
+        return nil
+    }
+}
