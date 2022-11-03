@@ -10,12 +10,20 @@ import Foundation
 public enum Kind: Codable, CaseIterable {
     /// A 0° alignment.
     case conjunction
+    /// A 30° alignment.
+    case semisextile
+    /// A 45° alignment.
+    case semisquare
     /// A 60° alignment.
     case sextile
     /// A 90° alignment.
     case square
     /// A 120° alignment.
     case trine
+    /// An 135° alignment.
+    case sesiquadrate
+    /// A 150° alignment.
+    case inconjunction
     /// An 180° alignment.
     case opposition
 }
@@ -31,12 +39,20 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
         switch kind {
         case .conjunction:
             return angle
+        case .semisextile:
+            return preciseRound(angle - 30.0, precision: .thousandths)
+        case .semisquare:
+            return preciseRound(angle - 45.0, precision: .thousandths)
         case .sextile:
             return preciseRound(angle - 60.0, precision: .thousandths)
         case .square:
             return preciseRound(angle - 90.0, precision: .thousandths)
         case .trine:
             return preciseRound(angle - 120.0, precision: .thousandths)
+        case .sesiquadrate:
+            return preciseRound(angle - 135.0, precision: .thousandths)
+        case .inconjunction:
+            return preciseRound(angle - 150.0, precision: .thousandths)
         case .opposition:
             return preciseRound(angle - 180.0, precision: .thousandths)
         }
@@ -55,6 +71,12 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
             case .conjunction(_):
                 self.angle = 0.0 + a.remainder
                 self.kind = .conjunction
+            case .semisextile(_):
+                self.angle = 30.0 + a.remainder
+                self.kind = .semisextile
+            case .semisquare(_):
+                self.angle = 45.0 + a.remainder
+                self.kind = .semisquare
             case .sextile(_):
                 self.angle = 60.0 + a.remainder
                 self.kind = .sextile
@@ -64,6 +86,12 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
             case .trine(_):
                 self.angle = 120.0 + a.remainder
                 self.kind = .trine
+            case .sesiquadrate(_):
+                self.angle = 135.0 + a.remainder
+                self.kind = .sesiquadrate
+            case .inconjunction(_):
+                self.angle = 150.0 + a.remainder
+                self.kind = .inconjunction
             case .opposition(_):
                 self.angle = 180.0 + a.remainder
                 self.kind = .opposition
@@ -120,15 +148,23 @@ public enum Aspect: Equatable, Hashable, Codable {
     //      - Planet 1
     //      - Planet 2
 
-	/// A 0° alignment.
+    /// A 0° alignment.
     case conjunction(Double)
-	/// A 60° alignment.
+    /// A 30° alignment.
+    case semisextile(Double)
+    /// A 45° alignment.
+    case semisquare(Double)
+    /// A 60° alignment.
     case sextile(Double)
-	/// A 90° alignment.
+    /// A 90° alignment.
     case square(Double)
-	/// A 120° alignment.
+    /// A 120° alignment.
     case trine(Double)
-	/// An 180° alignment.
+    /// A 135° alignment.
+    case sesiquadrate(Double)
+    /// A 150° alignment.
+    case inconjunction(Double)
+    /// An 180° alignment.
     case opposition(Double)
 
 	/// Creates an optional `Aspect`. If there is no aspect within the orb, then this initializer will return `nil`.
@@ -149,28 +185,29 @@ public enum Aspect: Equatable, Hashable, Codable {
 	///   - orb: The number of degrees allowed for the aspect to differ from exactness.
 	public init?(a: Double, b: Double, orb: Double) {
 
-        // NOTE: I'm not a fan of rounding here in the Aspect constructor
-        // because I believe this should be handled at the orb level. BUT if you're going
-        // to do it, this is how you would do it:
-        
-        // let aValue = abs(b - a) >= 180 ? abs(abs(b - a) - 360) : abs(b - a)
-        // let aspectValue = preciseRound(aValue, precision: .thousandths)
-
         let aspectValue = abs(b - a) >= 180 ? abs(abs(b - a) - 360) : abs(b - a)
-		switch aspectValue {
-		case (0 - orb)...(0 + orb):
-			self = .conjunction(round(aspectValue * 100) / 100)
-		case (60 - orb)...(60 + orb):
-			self = .sextile(round((aspectValue - 60) * 100) / 100)
-		case (90 - orb)...(90 + orb):
-			self = .square(round((aspectValue - 90) * 100) / 100)
-		case (120 - orb)...(120 + orb):
-			self = .trine(round((aspectValue - 120) * 100) / 100)
-		case (180 - orb)...(180 + orb):
-			self = .opposition(round((aspectValue - 180) * 100) / 100)
-		default:
-			return nil
-		}
+        switch aspectValue {
+        case (0 - orb)...(0 + orb):
+            self = .conjunction(preciseRound(aspectValue, precision: .hundredths))
+        case (30 - orb)...(30 + orb):
+            self = .semisextile(preciseRound((aspectValue - 30), precision: .hundredths))
+        case (45 - orb)...(45 + orb):
+            self = .semisquare(preciseRound((aspectValue - 45), precision: .hundredths))
+        case (60 - orb)...(60 + orb):
+            self = .sextile(preciseRound((aspectValue - 60), precision: .hundredths))
+        case (90 - orb)...(90 + orb):
+            self = .square(preciseRound((aspectValue - 90), precision: .hundredths))
+        case (120 - orb)...(120 + orb):
+            self = .trine(preciseRound((aspectValue - 120), precision: .hundredths))
+        case (135 - orb)...(135 + orb):
+            self = .sesiquadrate(preciseRound((aspectValue - 135), precision: .hundredths))
+        case (150 - orb)...(150 + orb):
+            self = .inconjunction(preciseRound((aspectValue - 150), precision: .hundredths))
+        case (180 - orb)...(180 + orb):
+            self = .opposition(preciseRound((aspectValue - 180), precision: .hundredths))
+        default:
+            return nil
+        }
 	}
 
     /// Creates an optional `Aspect` between two Coordinates. Useful for generalizng between different aspect configurations (usually between a Transiting Body and a Natal Body). If there is no aspect within the orb, then this initializer will return `nil`.
@@ -186,37 +223,71 @@ public enum Aspect: Equatable, Hashable, Codable {
     public var symbol: String? {
         switch self {
         case .conjunction:
-            return "☌"
+            return "☌ (prominence)"
+        case .semisextile:
+            return "growth"
+        case .semisquare:
+            return "friction"
         case .sextile:
-            return "﹡"
+            return "﹡ (opportunity)"
         case .square:
-            return "◾️"
+            return "◾️ (obstacle)"
         case .trine:
-            return "▵"
+            return "▵ (luck)"
+        case .sesiquadrate:
+            return "agitation"
+        case .inconjunction:
+            return "expansion"
         case .opposition:
-            return "☍"
+            return "☍ (separation)"
         }
     }
 	
 	/// The number of degrees from exactness.
 	var remainder: Double {
 		switch self {
-		case .conjunction(let remainder):
-			return remainder
-		case .sextile(let remainder):
-			return remainder
-		case .square(let remainder):
-			return remainder
-		case .trine(let remainder):
-			return remainder
-		case .opposition(let remainder):
-			return remainder
-		}
+        case .conjunction(let remainder):
+            return remainder
+        case .semisextile(let remainder):
+            return remainder
+        case .semisquare(let remainder):
+            return remainder
+        case .sextile(let remainder):
+            return remainder
+        case .square(let remainder):
+            return remainder
+        case .trine(let remainder):
+            return remainder
+        case .sesiquadrate(let remainder):
+            return remainder
+        case .inconjunction(let remainder):
+            return remainder
+        case .opposition(let remainder):
+            return remainder
+        }
 	}
 
     var isConjunction: Bool {
         switch self {
         case .conjunction(_):
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isSemisextile: Bool {
+        switch self {
+        case .semisextile(_):
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isSemisquare: Bool {
+        switch self {
+        case .semisquare(_):
             return true
         default:
             return false
@@ -244,6 +315,24 @@ public enum Aspect: Equatable, Hashable, Codable {
     var isTrine: Bool {
         switch self {
         case .trine(_):
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isSesiquadrate: Bool {
+        switch self {
+        case .sesiquadrate(_):
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isInconjunction: Bool {
+        switch self {
+        case .inconjunction(_):
             return true
         default:
             return false
