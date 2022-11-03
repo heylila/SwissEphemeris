@@ -133,13 +133,9 @@ public struct BirthChart {
         // Astrodeinst's orbs
         return [
             .conjunction : 10.0,
-            .semisextile : 3.0,
-            .semisquare : 3.0,
             .sextile : 6.0,
             .square : 10.0,
             .trine : 10.0,
-            .sesiquadrate : 3.0,
-            .inconjunction : 3.0,
             .opposition : 10.0
         ]
     }
@@ -147,13 +143,9 @@ public struct BirthChart {
     var stevensFastOrbs: Dictionary<Kind, Double> {
         return [
             .conjunction : 5.0,
-            .semisextile : 3.0,
-            .semisquare : 3.0,
             .sextile : 3.0,
             .square : 4.0,
             .trine : 3.0,
-            .sesiquadrate : 3.0,
-            .inconjunction : 3.0,
             .opposition : 4.0
         ]
     }
@@ -331,20 +323,12 @@ public struct BirthChart {
             switch a {
             case .conjunction(_):
                 kind = .conjunction
-            case .semisextile(_):
-                kind = .semisextile
-            case .semisquare(_):
-                kind = .semisquare
             case .sextile(_):
                 kind = .sextile
             case .square(_):
                 kind = .square
             case .trine(_):
                 kind = .trine
-            case .sesiquadrate(_):
-                kind = .sesiquadrate
-            case .inconjunction(_):
-                kind = .inconjunction
             case .opposition(_):
                 kind = .opposition
             }
