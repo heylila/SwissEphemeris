@@ -429,6 +429,31 @@ public struct BirthChart {
 
         return (starting, ending) as? (first: Coordinate, last: Coordinate)
     }
+
+//    1. Pick a moment in time ("search start date")
+//    2. Discover ALL aspects AT THAT MOMENT between the transiting bodies and the natal bodies
+//    3. For the natal bodies that DO NOT YET have a transit, find the next earliest transit for a given body (ugh) as a "final candidate"
+//    3. Output ALL boundary coordinates for each "final candidate" transiting aspect
+
+    public func findNextAspect(for body: CelestialObject, with natal: Coordinate, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CelestialAspect) {
+
+        let TBody = Coordinate(body: body, date: date)
+        if let a = CelestialAspect(body1: TBody, body2: natal, orb: orb) {
+            return (date, a)
+        }
+
+        var aspect: CelestialAspect?
+        var tomorrow = date
+
+        while aspect == nil {
+            tomorrow = tomorrow.offset(.day, value: 1)!
+            let tomorrowTBody = Coordinate(body: TBody.body, date: tomorrow)
+            aspect = CelestialAspect(body1: tomorrowTBody, body2: natal, orb: orb)
+        }
+
+        return (tomorrow, aspect!)
+    }
+
 }
 
 extension BirthChart {
