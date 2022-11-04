@@ -94,4 +94,38 @@ final class BirthChartTests: XCTestCase {
         print("close: \(window!.last.date.toString(format: .cocoaDateTime)!)")
     }
 
+    func testFindAllNextAspectsForEachNatalBody() throws {
+        let chart = ClevelandTransits.chart
+        var earliestAspects = [(date: Date, aspect: CelestialAspect)]()
+        let date = Date(fromString: "2022-11-04 12:00:00 -0700")!
+        let allBodyCases = BirthChart.allBodyCases.filter{ $0 != Planet.moon.celestialObject }
+
+        for natal in chart.allBodies {
+            var tupleArray = [(date: Date, aspect: CelestialAspect)]()
+
+            for TBody in allBodyCases {
+                let tuple = chart.findNextAspect(for: TBody, with: natal, on: date)
+                tupleArray.append(tuple)
+            }
+
+            let min = tupleArray.min { lhs, rhs in
+                return lhs.date < rhs.date
+            }
+
+            earliestAspects.append(min!)
+        }
+
+//        for tuple in earliestAspects {
+//            let date = tuple.date
+//            print("\(date.toString(format: .cocoaDateTime)!) T-body: \(tuple.aspect.body1.body.formatted) \(tuple.aspect.kind) Natal \(tuple.aspect.body2.body.formatted)")
+//        }
+
+        for tuple in earliestAspects {
+            let TBody = tuple.aspect.body1.body
+            let natal = tuple.aspect.body2
+            let window = chart.transitingCoordinates(for: TBody, with: natal, on: tuple.date)
+            print("For T-body: \(tuple.aspect.body1.body.formatted) \(tuple.aspect.kind) Natal \(tuple.aspect.body2.body.formatted), open date: \(window!.first.date.toString(format: .cocoaDateTime)!) and close date: \(window!.last.date.toString(format: .cocoaDateTime)!)")
+        }
+    }
+
 }
