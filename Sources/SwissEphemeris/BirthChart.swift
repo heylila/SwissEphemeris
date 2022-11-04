@@ -456,6 +456,7 @@ public struct BirthChart {
 
 }
 
+/*
 extension BirthChart {
     public static var aspectTransits: [CelestialObject : (dateType: Date.DateComponentType, amount: Int)] {
         let d: [ CelestialObject : (dateType: Date.DateComponentType, amount: Int) ] = [
@@ -518,3 +519,4 @@ extension BirthChart {
         return nil
     }
 }
+*/
