@@ -115,11 +115,6 @@ final class BirthChartTests: XCTestCase {
             earliestAspects.append(min!)
         }
 
-//        for tuple in earliestAspects {
-//            let date = tuple.date
-//            print("\(date.toString(format: .cocoaDateTime)!) T-body: \(tuple.aspect.body1.body.formatted) \(tuple.aspect.kind) Natal \(tuple.aspect.body2.body.formatted)")
-//        }
-
         for tuple in earliestAspects {
             let TBody = tuple.aspect.body1.body
             let natal = tuple.aspect.body2
