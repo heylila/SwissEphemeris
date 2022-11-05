@@ -138,7 +138,7 @@ public struct CuspAspect: Codable, Equatable, Hashable {
     }
 
     public init?(body: Coordinate, cusp: Cusp, orb: Double) {
-        if let a = Aspect(a: body.longitude, b: cusp.value, orb: orb) {
+        if let a = Aspect(body: body, cusp: cusp, orb: orb) {
             self.body = body
             self.cusp = cusp
 
@@ -260,6 +260,15 @@ public enum Aspect: Equatable, Hashable, Codable {
     ///   - orb: The number of degrees allowed for the aspect to differ from exactness.
     public init?(bodyA: Coordinate, bodyB: Coordinate, orb: Double = 10.0) {
         self.init(a: bodyA.longitude, b: bodyB.longitude, orb: orb)
+    }
+
+    /// Creates an optional `Aspect` between a Coordinate and a Cusp. If there is no aspect within the orb, then this initializer will return `nil`.
+    /// - Parameters:
+    ///   - body: The body of the aspect.
+    ///   - cusp: The cusp of the aspect
+    ///   - orb: The number of degrees allowed for the aspect to differ from exactness.
+    public init?(body: Coordinate, cusp: Cusp, orb: Double = 10.0) {
+        self.init(a: body.longitude, b: cusp.value, orb: orb)
     }
 
 	/// The symbol commonly associated with the aspect.

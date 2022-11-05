@@ -389,7 +389,7 @@ public struct BirthChart {
         precondition(transitingBody != .all, "All is not allowed")
         precondition(transitingBody != .noBody, "No Body is not allowed")
         let TBody = Coordinate(body: transitingBody, date: date)
-        guard let a = Aspect(a: TBody.longitude, b: cusp.value, orb: orb) else {
+        guard let a = Aspect(body: TBody, cusp: cusp, orb: orb) else {
             return nil
         }
 
@@ -401,13 +401,13 @@ public struct BirthChart {
         while yesterday != nil {
             dayBefore = dayBefore.offset(.day, value: -1)!
             let yesterdayTBody = Coordinate(body: TBody.body, date: dayBefore)
-            yesterday = Aspect(a: yesterdayTBody.longitude, b: cusp.value, orb: orb)
+            yesterday = Aspect(body: yesterdayTBody, cusp: cusp, orb: orb)
         }
 
         while tomorrow != nil {
             dayAfter = dayAfter.offset(.day, value: 1)!
             let tomorrowTBody = Coordinate(body: TBody.body, date: dayAfter)
-            tomorrow = Aspect(a: tomorrowTBody.longitude, b: cusp.value, orb: orb)
+            tomorrow = Aspect(body: tomorrowTBody, cusp: cusp, orb: orb)
         }
 
         let beforeFirstDay = dayBefore
