@@ -111,6 +111,86 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
     }
 }
 
+public struct CuspAspect: Codable, Equatable, Hashable {
+
+    public let kind: Kind
+    public let body: Coordinate
+    public let cusp: Cusp
+    public let angle: Double
+
+    public var orbDelta: Double {
+        switch kind {
+        case .conjunction:
+            return angle
+        case .sextile:
+            return preciseRound(angle - 60.0, precision: .thousandths)
+        case .square:
+            return preciseRound(angle - 90.0, precision: .thousandths)
+        case .trine:
+            return preciseRound(angle - 120.0, precision: .thousandths)
+        case .opposition:
+            return preciseRound(angle - 180.0, precision: .thousandths)
+        }
+    }
+
+    public var aspectString: String {
+        return "\(body.body) \(kind) \(cusp.name) with orb: \(orbDelta)"
+    }
+
+    public init?(body: Coordinate, cusp: Cusp, orb: Double) {
+        if let a = Aspect(a: body.longitude, b: cusp.value, orb: orb) {
+            self.body = body
+            self.cusp = cusp
+
+            switch a {
+            case .conjunction(_):
+                self.angle = 0.0 + a.remainder
+                self.kind = .conjunction
+            case .sextile(_):
+                self.angle = 60.0 + a.remainder
+                self.kind = .sextile
+            case .square(_):
+                self.angle = 90.0 + a.remainder
+                self.kind = .square
+            case .trine(_):
+                self.angle = 120.0 + a.remainder
+                self.kind = .trine
+            case .opposition(_):
+                self.angle = 180.0 + a.remainder
+                self.kind = .opposition
+            }
+
+            return
+        }
+
+        return nil
+    }
+
+    public static func ==(lhs: CuspAspect, rhs: CuspAspect) -> Bool {
+        let test1 = (lhs.body == rhs.body &&
+                     lhs.cusp == rhs.cusp &&
+                     lhs.kind == rhs.kind &&
+                     lhs.angle == rhs.angle)
+        let test2 = (lhs.body.formatted == rhs.body.formatted &&
+                     lhs.kind == rhs.kind &&
+                     lhs.angle == rhs.angle)
+        let test3 = (lhs.cusp.name == lhs.cusp.name &&
+                     lhs.cusp.value == rhs.cusp.value &&
+                     lhs.kind == rhs.kind &&
+                     lhs.angle == rhs.angle)
+        return test1 || test2 || test3
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(body.date)
+        hasher.combine(body.latitude)
+        hasher.combine(body.longitude)
+        hasher.combine(cusp.name)
+        hasher.combine(cusp.value)
+        hasher.combine(angle)
+    }
+}
+
 /// Models a geometric aspect between two bodies.
 public enum Aspect: Equatable, Hashable, Codable {
 
