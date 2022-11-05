@@ -56,6 +56,7 @@ final class ClevelandTransits: XCTestCase {
         }
     }
 
+    // (CHECK) Transiting ☿ Mercury trine with ascendant Cusp (6 Degrees Gemini ♊︎ 16' 30'') (orb: 2.5), start date: 2022-10-13 12:34:00 -0700 and end date: 2022-10-16 19:24:00 -0700
     // Mercury Trine Ascendant 10-13-2022 until 10-16-2022
     func testMercuryTrineAscendant() throws {
         let chart = ClevelandTransits.chart
