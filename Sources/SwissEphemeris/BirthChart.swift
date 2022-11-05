@@ -431,7 +431,6 @@ public struct BirthChart {
     }
 
     public func findNextAspect(for body: CelestialObject, with natal: Coordinate, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CelestialAspect) {
-
         let TBody = Coordinate(body: body, date: date)
         if let a = CelestialAspect(body1: TBody, body2: natal, orb: orb) {
             return (date, a)
@@ -449,6 +448,23 @@ public struct BirthChart {
         return (tomorrow, aspect!)
     }
 
+    public func findNextAspect(for body: CelestialObject, with cusp: Cusp, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CuspAspect) {
+        let TBody = Coordinate(body: body, date: date)
+        if let a = CuspAspect(body: TBody, cusp: cusp, orb: orb) {
+            return (date, a)
+        }
+
+        var aspect: CuspAspect?
+        var tomorrow = date
+
+        while aspect == nil {
+            tomorrow = tomorrow.offset(.day, value: 1)!
+            let tomorrowTBody = Coordinate(body: TBody.body, date: tomorrow)
+            aspect = CuspAspect(body: tomorrowTBody, cusp: cusp, orb: orb)
+        }
+
+        return (tomorrow, aspect!)
+    }
 }
 
 /*
