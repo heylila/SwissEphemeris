@@ -123,4 +123,30 @@ final class BirthChartTests: XCTestCase {
         }
     }
 
+    func testFindAllNextAspectsForAscendant() throws {
+        let chart = ClevelandTransits.chart
+        let asc = chart.houseCusps.ascendent
+        let testDate = ClevelandTransits.testDate
+        let body = Planet.mercury.celestialObject
+        let aspect = chart.findNextAspect(for: body, with: asc, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: asc, on: aspect.date)
+
+        // Mercury Trine Ascendant 10-13-2022 until 10-16-2022
+        let start = boundaries?.first.date
+        let end = boundaries?.last.date
+
+        XCTAssert(start?.component(.month) == 10)
+        XCTAssert(start?.component(.day) == 13)
+        XCTAssert(start?.component(.year) == 2022)
+
+        XCTAssert(end?.component(.month) == 10)
+        XCTAssert(end?.component(.day) == 16)
+        XCTAssert(end?.component(.year) == 2022)
+
+        for body in BirthChart.allBodyCases {
+            let window = chart.findNextAspect(for: body, with: asc, on: testDate)
+            XCTAssertNotNil(window)
+            XCTAssert(window.aspect.body.body == body)
+        }
+    }
 }
