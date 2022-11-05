@@ -30,6 +30,7 @@ final class ClevelandTransits: XCTestCase {
         return BirthChart(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
     }
 
+    // (CHECK) Transiting ♇ Pluto sextile with natal ☉ Sun (orb: 2.0), start date: 2022-05-25 17:06:00 -0700 and end date: 2023-01-24 18:25:00 -0800
     // Pluto Sextile Sun 5-25-2022 until 1-24-2023
     func testPlutoSextileSun() throws {
         let chart = ClevelandTransits.chart
@@ -80,6 +81,7 @@ final class ClevelandTransits: XCTestCase {
         }
     }
 
+    // (CHECK) Transiting ♅ Uranus sextile with natal ☿ Mercury (orb: 2.0), start date: 2022-05-28 19:55:00 -0700 and end date: 2022-11-27 22:10:00 -0800
     // Uranus Sextile Mercury 5-28-2022 until 11-27-2022
     func testUranusSextileMercury() throws {
         let chart = ClevelandTransits.chart
@@ -105,6 +107,7 @@ final class ClevelandTransits: XCTestCase {
         }
     }
 
+    // (CHECK) Transiting ♇ Pluto square with natal ♀ Venus (orb: 2.0), start date: 2021-12-28 02:06:00 -0800 and end date: 2023-03-14 05:35:00 -0700
     // Pluto Square Venus 12-28-2021 until 3-14-2023
     func testPlutoSquareVenus() throws {
         let chart = ClevelandTransits.chart
@@ -130,6 +133,7 @@ final class ClevelandTransits: XCTestCase {
         }
     }
 
+    // (CHECK) Transiting ☿ Mercury sextile with natal ♅ Uranus (orb: 2.5), start date: 2022-10-15 10:09:00 -0700 and end date: 2022-10-18 13:30:00 -0700
     // Mercury Sextile Uranus 10-15-2022 until 10-18-2022
     func testMercurySextileUranus() throws {
         let chart = ClevelandTransits.chart
@@ -155,6 +159,7 @@ final class ClevelandTransits: XCTestCase {
         }
     }
 
+    // (CHECK) Transiting ♃ Jupiter square with natal ♆ Neptune (orb: 2.0), start date: 2022-10-16 08:07:00 -0700 and end date: 2022-12-31 12:07:00 -0800
     // Jupiter Square Neptune 10-16-2022 until 12-31-2022
     func testJupiterSquareNeptune() throws {
         let chart = ClevelandTransits.chart
@@ -180,6 +185,7 @@ final class ClevelandTransits: XCTestCase {
         }
     }
 
+    // (CHECK) Transiting ♃ Jupiter square with natal ☋ Mean South Node (orb: 2.0), start date: 2022-10-10 15:21:00 -0700 and end date: 2023-01-05 20:12:00 -0800
     // Jupiter Square SN 10-10-2022 until 1-5-2023
     func testJupiterSquareSouthNode() throws {
         let chart = ClevelandTransits.chart
@@ -205,6 +211,7 @@ final class ClevelandTransits: XCTestCase {
         }
     }
 
+    // (CHECK) Transiting ♃ Jupiter square with natal ☊ Mean (North) Node (orb: 2.0), start date: 2022-10-10 15:21:00 -0700 and end date: 2023-01-05 20:12:00 -0800
     // Jupiter Square NN 10-10-2022 until 1-5-2023
     func testJupiterSquareNorthNode() throws {
         let chart = ClevelandTransits.chart
