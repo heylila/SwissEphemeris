@@ -417,13 +417,13 @@ public struct BirthChart {
 
         var positions = BodiesRequest(body: TBody.body).fetch(start: beforeFirstDay, end: firstDay, interval: TimeSlice.minute.slice)
         let starting = positions.first { now in
-            let a = Aspect(a: now.longitude, b: cusp.value, orb: orb)
+            let a = CuspAspect(body: now, cusp: cusp, orb: orb)
             return a != nil
         }
 
         positions = BodiesRequest(body: TBody.body).fetch(start: lastDay, end: afterLastDay, interval: TimeSlice.minute.slice)
         let ending = positions.last { now in
-            let a = Aspect(a: now.longitude, b: cusp.value, orb: orb)
+            let a = CuspAspect(body: now, cusp: cusp, orb: orb)
             return a != nil
         }
 
