@@ -103,7 +103,7 @@ public struct HouseCusps {
         self.longitude = longitude
 		swe_houses(date.julianDate(), latitude, longitude, houseSystem.rawValue, cuspPointer, ascendentPointer);
         ascendent = Cusp(value: ascendentPointer[0], name: "ascendant", number: 1)
-        midHeaven = Cusp(value: ascendentPointer[1], name: "midHeaven", number: 10)
+        midHeaven = Cusp(value: ascendentPointer[1], name: "midheaven", number: 10)
         first = Cusp(value: cuspPointer[1], name: "first", number: 1)
         second = Cusp(value: cuspPointer[2], name: "second", number: 2)
         third = Cusp(value: cuspPointer[3], name: "third", number: 3)
