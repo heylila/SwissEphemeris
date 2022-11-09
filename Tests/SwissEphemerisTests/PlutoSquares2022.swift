@@ -94,7 +94,7 @@ class PlutoSquares2022: XCTestCase {
         let positions = BodiesRequest(body: Planet.pluto.celestialObject).fetch(start: start, end: end, interval: TimeSlice.hour.slice)
         let orb = 1.5
 
-        let squares = positions.filter { Tpluto in
+        let _ = positions.filter { Tpluto in
             if let ca = CelestialAspect(body1: Tpluto, body2: natalVenus, orb: orb) {
                 return ca.kind == .square
             }
