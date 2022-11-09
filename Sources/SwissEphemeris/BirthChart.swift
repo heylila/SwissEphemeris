@@ -430,10 +430,11 @@ public struct BirthChart {
         return (starting, ending) as? (first: Coordinate, last: Coordinate)
     }
 
-    public func findNextAspect(for body: CelestialObject, with natal: Coordinate, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CelestialAspect) {
+    public func findNextAspect(for body: CelestialObject, with natal: Coordinate, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CelestialAspect, start: Coordinate, end: Coordinate) {
         let TBody = Coordinate(body: body, date: date)
         if let a = CelestialAspect(body1: TBody, body2: natal, orb: orb) {
-            return (date, a)
+            let tuple = self.transitingCoordinates(for: body, with: natal, on: date)
+            return (date, a, tuple!.first, tuple!.last)
         }
 
         var aspect: CelestialAspect?
@@ -445,13 +446,15 @@ public struct BirthChart {
             aspect = CelestialAspect(body1: tomorrowTBody, body2: natal, orb: orb)
         }
 
-        return (tomorrow, aspect!)
+        let tuple = self.transitingCoordinates(for: body, with: natal, on: tomorrow, orb: orb)
+        return (tomorrow, aspect!, tuple!.first, tuple!.last)
     }
 
-    public func findNextAspect(for body: CelestialObject, with cusp: Cusp, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CuspAspect) {
+    public func findNextAspect(for body: CelestialObject, with cusp: Cusp, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CuspAspect, start: Coordinate, end: Coordinate) {
         let TBody = Coordinate(body: body, date: date)
         if let a = CuspAspect(body: TBody, cusp: cusp, orb: orb) {
-            return (date, a)
+            let tuple = self.transitingCoordinates(for: body, with: cusp, on: date, orb: orb)
+            return (date, a, tuple!.first, tuple!.last)
         }
 
         var aspect: CuspAspect?
@@ -463,7 +466,8 @@ public struct BirthChart {
             aspect = CuspAspect(body: tomorrowTBody, cusp: cusp, orb: orb)
         }
 
-        return (tomorrow, aspect!)
+        let tuple = self.transitingCoordinates(for: body, with: cusp, on: tomorrow, orb: orb)
+        return (tomorrow, aspect!, tuple!.first, tuple!.last)
     }
 }
 
