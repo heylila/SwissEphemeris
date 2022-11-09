@@ -433,7 +433,7 @@ public struct BirthChart {
     public func findNextAspect(for body: CelestialObject, with natal: Coordinate, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CelestialAspect, start: Coordinate, end: Coordinate) {
         let TBody = Coordinate(body: body, date: date)
         if let a = CelestialAspect(body1: TBody, body2: natal, orb: orb) {
-            let tuple = self.transitingCoordinates(for: body, with: natal, on: date)
+            let tuple = self.transitingCoordinates(for: body, with: natal, on: date, orb: orb)
             return (date, a, tuple!.first, tuple!.last)
         }
 
