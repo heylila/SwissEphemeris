@@ -78,30 +78,24 @@ final class BirthChartTests: XCTestCase {
         XCTAssert(aspectDate.component(.day) == 19)
         XCTAssert(aspectDate.component(.year) == 2022)
 
-        let window = chart.transitingCoordinates(for: body, with: chart.mercury, on: tuple.aspect.body1.date)
-        if let openDate = window?.first.date {
-            XCTAssert(openDate.component(.month) == 11)
-            XCTAssert(openDate.component(.day) == 18)
-        }
+        let startDate = tuple.start.date
+        XCTAssert(startDate.component(.month) == 11)
+        XCTAssert(startDate.component(.day) == 18)
 
-        if let closeDate = window?.last.date {
-            XCTAssert(closeDate.component(.month) == 11)
-            XCTAssert(closeDate.component(.day) == 22)
-            XCTAssert(closeDate.component(.hour) == 22)
-        }
-
-        print("open: \(window!.first.date.toString(format: .cocoaDateTime)!)")
-        print("close: \(window!.last.date.toString(format: .cocoaDateTime)!)")
+        let endDate = tuple.end.date
+        XCTAssert(endDate.component(.month) == 11)
+        XCTAssert(endDate.component(.day) == 22)
+        XCTAssert(endDate.component(.hour) == 22)
     }
 
     func testFindAllNextAspectsForEachNatalBody() throws {
         let chart = ClevelandTransits.chart
-        var earliestAspects = [(date: Date, aspect: CelestialAspect)]()
+        var earliestAspects = [(date: Date, aspect: CelestialAspect, start: Coordinate, end: Coordinate)]()
         let date = Date(fromString: "2022-11-04 12:00:00 -0700")!
         let allBodyCases = BirthChart.allBodyCases.filter{ $0 != Planet.moon.celestialObject }
 
         for natal in chart.allBodies {
-            var tupleArray = [(date: Date, aspect: CelestialAspect)]()
+            var tupleArray = [(date: Date, aspect: CelestialAspect, start: Coordinate, end: Coordinate)]()
 
             for TBody in allBodyCases {
                 let tuple = chart.findNextAspect(for: TBody, with: natal, on: date)
@@ -118,8 +112,7 @@ final class BirthChartTests: XCTestCase {
         for tuple in earliestAspects {
             let TBody = tuple.aspect.body1.body
             let natal = tuple.aspect.body2
-            let window = chart.transitingCoordinates(for: TBody, with: natal, on: tuple.date)
-            print("For T-body: \(tuple.aspect.body1.body.formatted) \(tuple.aspect.kind) Natal \(tuple.aspect.body2.body.formatted), open date: \(window!.first.date.toString(format: .cocoaDateTime)!) and close date: \(window!.last.date.toString(format: .cocoaDateTime)!)")
+            print("For T-body: \(TBody.formatted) \(tuple.aspect.kind) Natal \(natal.formatted), open date: \(tuple.start.date.toString(format: .cocoaDateTime)!) and close date: \(tuple.end.date.toString(format: .cocoaDateTime)!)")
         }
     }
 
@@ -129,19 +122,18 @@ final class BirthChartTests: XCTestCase {
         let testDate = ClevelandTransits.testDate
         let body = Planet.mercury.celestialObject
         let aspect = chart.findNextAspect(for: body, with: asc, on: testDate)
-        let boundaries = chart.transitingCoordinates(for: body, with: asc, on: aspect.date)
 
         // Mercury Trine Ascendant 10-13-2022 until 10-16-2022
-        let start = boundaries?.first.date
-        let end = boundaries?.last.date
+        let start = aspect.start.date
+        let end = aspect.end.date
 
-        XCTAssert(start?.component(.month) == 10)
-        XCTAssert(start?.component(.day) == 13)
-        XCTAssert(start?.component(.year) == 2022)
+        XCTAssert(start.component(.month) == 10)
+        XCTAssert(start.component(.day) == 13)
+        XCTAssert(start.component(.year) == 2022)
 
-        XCTAssert(end?.component(.month) == 10)
-        XCTAssert(end?.component(.day) == 16)
-        XCTAssert(end?.component(.year) == 2022)
+        XCTAssert(end.component(.month) == 10)
+        XCTAssert(end.component(.day) == 16)
+        XCTAssert(end.component(.year) == 2022)
 
         for body in BirthChart.allBodyCases {
             let window = chart.findNextAspect(for: body, with: asc, on: testDate)
