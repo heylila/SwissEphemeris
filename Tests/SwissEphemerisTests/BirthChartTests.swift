@@ -26,33 +26,6 @@ final class BirthChartTests: XCTestCase {
         return BirthChart(date: birthDate, latitude: lat, longitude: long, houseSystem: .placidus)
     }
 
-    func testPlanetaryAspects() throws {
-        let chart = BirthChartTests.chart
-        XCTAssert(chart.planetToPlanetAspects?.count == 17)
-    }
-
-    func testPlanetToChironAspects() throws {
-        let chart = BirthChartTests.chart
-        XCTAssert(chart.planetToChironAspects?.count == 2)
-    }
-
-    func testPlanetToNodeAspects() throws {
-        let chart = BirthChartTests.chart
-        let aspects = chart.planetToNodeAspects!
-        let aspectCount = aspects.count
-        XCTAssert(aspectCount == 12, "Aspect count is \(aspectCount)")
-
-        for aspect in aspects {
-            print("\(aspect.aspectString)")
-        }
-    }
-
-    func testChironToNodeAspects() throws {
-        let chart = BirthChartTests.chart
-        let aspectCount = chart.chironToNodeAspects?.count ?? 0
-        XCTAssert(aspectCount == 0, "Aspect count is \(aspectCount)")
-    }
-
     func testAllAspects() throws {
         let chart = BirthChartTests.chart
         let aspectCount = chart.allAspects?.count ?? 0
