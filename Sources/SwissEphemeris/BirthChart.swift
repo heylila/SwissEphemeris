@@ -265,6 +265,65 @@ public struct BirthChart {
         return nil
     }
 
+    public func transitToTransitCoordinates(for TBody1: CelestialObject, with TBody2: CelestialObject, on date: Date, orb: Double = 6.0) -> (first: Coordinate, last: Coordinate)? {
+        precondition(TBody1 != TBody2, "Celestial Objects cannot be the same")
+        precondition(TBody1 != .all, "All is not allowed")
+        precondition(TBody2 != .all, "All is not allowed")
+        precondition(TBody1 != .noBody, "No Body is not allowed")
+        precondition(TBody2 != .noBody, "No Body is not allowed")
+
+        var TBody = Coordinate(body: TBody1, date: date)
+        var OTBody = Coordinate(body: TBody2, date: date)
+        guard let a = CelestialAspect(body1: TBody, body2: OTBody, orb: orb) else {
+            return nil
+        }
+
+        var yesterday: CelestialAspect? = a
+        var tomorrow: CelestialAspect? = a
+        var dayBefore = date
+        var dayAfter = date
+
+        while yesterday != nil {
+            dayBefore = dayBefore.offset(.day, value: -1)!
+            let yesterdayTBody = Coordinate(body: TBody1, date: dayBefore)
+            let yesterdayOTBody = Coordinate(body: TBody2, date: dayBefore)
+            yesterday = CelestialAspect(body1: yesterdayTBody, body2: yesterdayOTBody, orb: orb)
+        }
+
+        while tomorrow != nil {
+            dayAfter = dayAfter.offset(.day, value: 1)!
+            let tomorrowTBody = Coordinate(body: TBody1, date: dayAfter)
+            let tomorrowOTBody = Coordinate(body: TBody2, date: dayAfter)
+            tomorrow = CelestialAspect(body1: tomorrowTBody, body2: tomorrowOTBody, orb: orb)
+        }
+
+        let beforeFirstDay = dayBefore
+        let firstDay = dayBefore.offset(.day, value: 1)!
+
+        var TBodyPositions = BodiesRequest(body: TBody1).fetch(start: beforeFirstDay, end: firstDay, interval: TimeSlice.minute.slice)
+        var OTBodyPositions = BodiesRequest(body: TBody2).fetch(start: beforeFirstDay, end: firstDay, interval: TimeSlice.minute.slice)
+        let starting = zip(TBodyPositions, OTBodyPositions)
+            .first { (TBodyNow, OTBodyNow) in
+                let a = CelestialAspect(body1: TBodyNow, body2: OTBodyNow, orb: orb)
+                return a != nil
+            }
+
+        let afterLastDay = dayAfter
+        let lastDay = dayAfter.offset(.day, value: -1)!
+        TBodyPositions = BodiesRequest(body: TBody1).fetch(start: lastDay, end: afterLastDay, interval: TimeSlice.minute.slice)
+        OTBodyPositions = BodiesRequest(body: TBody2).fetch(start: lastDay, end: afterLastDay, interval: TimeSlice.minute.slice)
+        let ending = Array(zip(TBodyPositions, OTBodyPositions))
+            .last { (TBodyNow, OTBodyNow) in
+                let a = CelestialAspect(body1: TBodyNow, body2: OTBodyNow, orb: orb)
+                return a != nil
+            }
+
+        let TBodyStart = starting!.0
+        let TBodyEnd = ending!.0
+        return (TBodyStart, TBodyEnd)
+    }
+
+
     public func transitingCoordinates(for transitingBody: CelestialObject, with natalBody: Coordinate, on date: Date, orb: Double = 2.0) -> (first: Coordinate, last: Coordinate)? {
         precondition(transitingBody != .all, "All is not allowed")
         precondition(transitingBody != .noBody, "No Body is not allowed")
