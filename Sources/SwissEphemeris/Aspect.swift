@@ -46,6 +46,12 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
         return "\(body1.body) \(kind) \(body2.body) with orb: \(orbDelta)"
     }
 
+    public init?(body1: CelestialObject, body2: CelestialObject, date: Date, orb: Double) {
+        let TBody1 = Coordinate(body: body1, date: date)
+        let TBody2 = Coordinate(body: body2, date: date)
+        self.init(body1: TBody1, body2: TBody2, orb: orb)
+    }
+
     public init?(body1: Coordinate, body2: Coordinate, orb: Double) {
         if let a = Aspect(a: body1.longitude, b: body2.longitude, orb: orb) {
             self.body1 = body1
