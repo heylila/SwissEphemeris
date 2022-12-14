@@ -272,8 +272,8 @@ public struct BirthChart {
         precondition(TBody1 != .noBody, "No Body is not allowed")
         precondition(TBody2 != .noBody, "No Body is not allowed")
 
-        var TBody = Coordinate(body: TBody1, date: date)
-        var OTBody = Coordinate(body: TBody2, date: date)
+        let TBody = Coordinate(body: TBody1, date: date)
+        let OTBody = Coordinate(body: TBody2, date: date)
         guard let a = CelestialAspect(body1: TBody, body2: OTBody, orb: orb) else {
             return nil
         }
