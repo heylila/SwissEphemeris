@@ -72,6 +72,32 @@ public enum Planet: Int32 {
             return "♇ Pluto"
         }
     }
+
+    /// The key name of the planet without its associated `symbol`.
+    public var keyName: String {
+        switch self {
+        case .sun:
+            return "Sun"
+        case .moon:
+            return "Moon"
+        case .mercury:
+            return "Mercury"
+        case .venus:
+            return "Venus"
+        case .mars:
+            return "Mars"
+        case .jupiter:
+            return "Jupiter"
+        case .saturn:
+            return "Saturn"
+        case .uranus:
+            return "Uranus"
+        case .neptune:
+            return "Neptune"
+        case .pluto:
+            return "Pluto"
+        }
+    }
 }
 
 // MARK: CelestialBody Conformance

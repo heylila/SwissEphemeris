@@ -70,4 +70,20 @@ extension CelestialObject {
         }
     }
 
+    public var keyName: String {
+        switch self {
+        case .asteroid(let asteroid):
+            return asteroid.keyName
+        case .lunarNode(let lunarNode):
+            return lunarNode.keyName
+        case .planet(let planet):
+            return planet.keyName
+        case .fixedStar(let fixedStar):
+            return fixedStar.keyName
+        case .all:
+            return "all"
+        case .noBody:
+            return "no body"
+        }
+    }
 }

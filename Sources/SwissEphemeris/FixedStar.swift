@@ -74,6 +74,10 @@ public enum FixedStar: String, CaseIterable {
             return "Betelgeuse"
         }
     }
+
+    public var keyName: String {
+        return formatted
+    }
 }
 
 // MARK: CelestialBody Conformance
