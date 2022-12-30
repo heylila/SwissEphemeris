@@ -136,10 +136,10 @@ final class ColumbiaTransits: XCTestCase {
         let testDate = ColumbiaTransits.testDate
         let body = Planet.jupiter.celestialObject
         let natal = chart.mercury
-        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
+        let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate, orb: 2.5)
         XCTAssertNotNil(boundaries)
 
-        let kind = chart.transitType(for: body, with: natal, on: testDate)
+        let kind = chart.transitType(for: body, with: natal, on: testDate, orb: 2.5)
         XCTAssert(kind == .trine)
 
         if let first = boundaries?.first {
@@ -149,8 +149,8 @@ final class ColumbiaTransits: XCTestCase {
         }
 
         if let last = boundaries?.last {
-            XCTAssert(last.date.component(.month) == 12)
-            XCTAssert(last.date.component(.day) == 29)
+            XCTAssert(last.date.component(.month) == 1)
+            XCTAssert(last.date.component(.day) == 2)
             XCTAssert(last.date.component(.year) == 2023)
         }
     }

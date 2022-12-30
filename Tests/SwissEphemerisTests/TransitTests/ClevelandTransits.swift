@@ -164,7 +164,7 @@ final class ClevelandTransits: XCTestCase {
     // Jupiter Square Neptune 10-16-2022 until 12-31-2022
     func testJupiterSquareNeptune() throws {
         let chart = ClevelandTransits.chart
-        let testDate = ClevelandTransits.testDate
+        let testDate = ClevelandTransits.testDate.offset(.minute, value: 5)!
         let body = Planet.jupiter.celestialObject
         let natal = chart.neptune
         let boundaries = chart.transitingCoordinates(for: body, with: natal, on: testDate)
