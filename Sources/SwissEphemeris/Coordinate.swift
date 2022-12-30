@@ -10,7 +10,7 @@ import CSwissEphemeris
 
 
 /// Models a `CelestialBody` point in the sky.
-public struct Coordinate: Equatable {
+public struct Coordinate: Equatable, Hashable {
 	
 	/// The type of `CelestialBody`.
 	public let body: CelestialObject
@@ -55,6 +55,17 @@ public struct Coordinate: Equatable {
                 lhs.distance != rhs.distance ||
                 lhs.speedLongitude != rhs.speedLongitude ||
                 lhs.speedDistance != rhs.speedDistance)
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(body)
+        hasher.combine(date)
+        hasher.combine(longitude)
+        hasher.combine(latitude)
+        hasher.combine(declination)
+        hasher.combine(distance)
+        hasher.combine(speedLongitude)
+        hasher.combine(speedDistance)
     }
 
 	/// Creates a `Coordinate`.
