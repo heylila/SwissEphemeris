@@ -63,12 +63,12 @@ final class BirthChartTests: XCTestCase {
 
     func testFindAllNextAspectsForEachNatalBody() throws {
         let chart = ClevelandTransits.chart
-        var earliestAspects = [(date: Date, aspect: CelestialAspect, start: Coordinate, end: Coordinate)]()
+        var earliestAspects = [(aspect: CelestialAspect, start: Coordinate, end: Coordinate)]()
         let date = Date(fromString: "2022-11-04 12:00:00 -0700")!
         let allBodyCases = BirthChart.allBodyCases.filter{ $0 != Planet.moon.celestialObject }
 
         for natal in chart.allBodies {
-            var tupleArray = [(date: Date, aspect: CelestialAspect, start: Coordinate, end: Coordinate)]()
+            var tupleArray = [(aspect: CelestialAspect, start: Coordinate, end: Coordinate)]()
 
             for TBody in allBodyCases {
                 let tuple = chart.findNextAspect(for: TBody, with: natal, on: date)
@@ -76,7 +76,7 @@ final class BirthChartTests: XCTestCase {
             }
 
             let min = tupleArray.min { lhs, rhs in
-                return lhs.date < rhs.date
+                return lhs.start.date < rhs.start.date
             }
 
             earliestAspects.append(min!)

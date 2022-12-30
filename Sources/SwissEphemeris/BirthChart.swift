@@ -413,27 +413,7 @@ public struct BirthChart {
         return (starting, ending) as? (first: Coordinate, last: Coordinate)
     }
 
-    public func findNextAspect(for body: CelestialObject, with natal: Coordinate, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CelestialAspect, start: Coordinate, end: Coordinate) {
-        let TBody = Coordinate(body: body, date: date)
-        if let a = CelestialAspect(body1: TBody, body2: natal, orb: orb) {
-            let tuple = self.transitingCoordinates(for: body, with: natal, on: date, orb: orb)
-            return (date, a, tuple!.first, tuple!.last)
-        }
-
-        var aspect: CelestialAspect?
-        var tomorrow = date
-
-        while aspect == nil {
-            tomorrow = tomorrow.offset(.day, value: 1)!
-            let tomorrowTBody = Coordinate(body: TBody.body, date: tomorrow)
-            aspect = CelestialAspect(body1: tomorrowTBody, body2: natal, orb: orb)
-        }
-
-        let tuple = self.transitingCoordinates(for: body, with: natal, on: tomorrow, orb: orb)
-        return (tomorrow, aspect!, tuple!.first, tuple!.last)
-    }
-
-    public func findNextDateFreeAspect(for body: CelestialObject, with natal: Coordinate, on date: Date, with orb: Double = 2.0) -> (aspect: CelestialAspect, start: Coordinate, end: Coordinate) {
+    public func findNextAspect(for body: CelestialObject, with natal: Coordinate, on date: Date, with orb: Double = 2.0) -> (aspect: CelestialAspect, start: Coordinate, end: Coordinate) {
         let TBody = Coordinate(body: body, date: date)
         if let a = CelestialAspect(body1: TBody, body2: natal, orb: orb) {
             let tuple = self.transitingCoordinates(for: body, with: natal, on: date, orb: orb)
@@ -453,27 +433,7 @@ public struct BirthChart {
         return (aspect!, tuple!.first, tuple!.last)
     }
 
-    public func findNextAspect(for body: CelestialObject, with cusp: Cusp, on date: Date, with orb: Double = 2.0) -> (date: Date, aspect: CuspAspect, start: Coordinate, end: Coordinate) {
-        let TBody = Coordinate(body: body, date: date)
-        if let a = CuspAspect(body: TBody, cusp: cusp, orb: orb) {
-            let tuple = self.transitingCoordinates(for: body, with: cusp, on: date, orb: orb)
-            return (date, a, tuple!.first, tuple!.last)
-        }
-
-        var aspect: CuspAspect?
-        var tomorrow = date
-
-        while aspect == nil {
-            tomorrow = tomorrow.offset(.day, value: 1)!
-            let tomorrowTBody = Coordinate(body: TBody.body, date: tomorrow)
-            aspect = CuspAspect(body: tomorrowTBody, cusp: cusp, orb: orb)
-        }
-
-        let tuple = self.transitingCoordinates(for: body, with: cusp, on: tomorrow, orb: orb)
-        return (tomorrow, aspect!, tuple!.first, tuple!.last)
-    }
-
-    public func findNextDateFreeAspect(for body: CelestialObject, with cusp: Cusp, on date: Date, with orb: Double = 2.0) -> (aspect: CuspAspect, start: Coordinate, end: Coordinate) {
+    public func findNextAspect(for body: CelestialObject, with cusp: Cusp, on date: Date, with orb: Double = 2.0) -> (aspect: CuspAspect, start: Coordinate, end: Coordinate) {
         let TBody = Coordinate(body: body, date: date)
         if let a = CuspAspect(body: TBody, cusp: cusp, orb: orb) {
             let tuple = self.transitingCoordinates(for: body, with: cusp, on: date, orb: orb)
