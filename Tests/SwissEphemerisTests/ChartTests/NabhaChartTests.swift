@@ -32,6 +32,4 @@ final class NabhaChartTests: XCTestCase {
         XCTAssert(asc.sign == Zodiac.pisces)
         XCTAssert(Int(asc.degree) == 20)
     }
-
-
 }
