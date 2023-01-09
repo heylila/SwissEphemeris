@@ -109,11 +109,14 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
         hasher.combine(body1.latitude)
         hasher.combine(body1.longitude)
         hasher.combine(body1.value)
+        hasher.combine(body1.body)
         hasher.combine(body2.date)
         hasher.combine(body2.latitude)
         hasher.combine(body2.longitude)
         hasher.combine(body2.value)
+        hasher.combine(body2.body)
         hasher.combine(angle)
+        hasher.combine(kind)
     }
 }
 
@@ -191,9 +194,11 @@ public struct CuspAspect: Codable, Equatable, Hashable {
         hasher.combine(body.date)
         hasher.combine(body.latitude)
         hasher.combine(body.longitude)
+        hasher.combine(body.body)
         hasher.combine(cusp.name)
         hasher.combine(cusp.value)
         hasher.combine(angle)
+        hasher.combine(kind)
     }
 }
 
