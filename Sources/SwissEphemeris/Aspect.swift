@@ -147,6 +147,7 @@ public struct CuspAspect: Codable, Equatable, Hashable {
     public let body: Coordinate
     public let cusp: Cusp
     public let angle: Double
+    public let orb: Double
 
     public var orbDelta: Double {
         switch kind {
@@ -171,6 +172,7 @@ public struct CuspAspect: Codable, Equatable, Hashable {
         if let a = Aspect(body: body, cusp: cusp, orb: orb) {
             self.body = body
             self.cusp = cusp
+            self.orb = orb
 
             switch a {
             case .conjunction(_):
@@ -208,7 +210,27 @@ public struct CuspAspect: Codable, Equatable, Hashable {
                      lhs.cusp.value == rhs.cusp.value &&
                      lhs.kind == rhs.kind &&
                      lhs.angle == rhs.angle)
-        return test1 || test2 || test3
+
+        // CONCERN: The only thing that about this is that
+        // two of the same type of aspect happening at substantially
+        // different times of the calendar could be identified as "equal" even
+        // though they aren't actually equal. This is a quick and dirty
+        // way to test for practical equivalence in a relatively narrow range of time.
+        func testEqualityWithOrb() -> Bool {
+            let lhsRange = (lhs.angle - lhs.orb)...(lhs.angle + lhs.orb)
+            let rhsRange = (rhs.angle - rhs.orb)...(rhs.angle + rhs.orb)
+            let angleWithOrbTest = lhsRange.overlaps(rhsRange)
+
+            return (lhs.body.body == rhs.body.body &&
+                    lhs.cusp.name == rhs.cusp.name &&
+                    lhs.cusp.value == rhs.cusp.value &&
+                    lhs.kind == rhs.kind &&
+                    angleWithOrbTest)
+        }
+
+        let test4 = testEqualityWithOrb()
+
+        return test1 || test2 || test3 || test4
     }
 
     public func hash(into hasher: inout Hasher) {
