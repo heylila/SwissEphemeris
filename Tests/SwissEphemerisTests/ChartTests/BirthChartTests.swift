@@ -52,6 +52,21 @@ final class BirthChartTests: XCTestCase {
         XCTAssert(sextile2 == sextile3)
     }
 
+    func testCuspAspectEquality() throws {
+        let chart = BirthChartTests.chart
+        let asc = chart.houseCusps.ascendent
+        let wednesday = Date(fromString: "2023-01-18 14:00:00 -0800")!
+        let TMarsWednesday = Coordinate(body: Planet.mars.celestialObject, date: wednesday)
+        let orb = 6.0
+        let wednesdayAspect = CuspAspect(body: TMarsWednesday, cusp: asc, orb: orb)
+
+        let thursday = wednesday.offset(.day, value: 1)!
+        let TMarsThursday = Coordinate(body: Planet.mars.celestialObject, date: thursday)
+        let thursdayAspect = CuspAspect(body: TMarsThursday, cusp: asc, orb: orb)
+
+        XCTAssert(wednesdayAspect == thursdayAspect)
+    }
+
     func testFindNextAspectOfJupiterAndMercury() throws {
         let date = Date(fromString: "2022-11-03 20:00:00 -0700")!
         let chart = ColumbiaTransits.chart
