@@ -32,22 +32,22 @@ final class BirthChartTests: XCTestCase {
         XCTAssert(aspectCount == 32, "Aspect count is \(aspectCount)")
     }
 
-    func testAspectEquality() throws {
+    func testCelestialAspectEquality() throws {
         let chart = BirthChartTests.chart
         let orb = 6.0
 
-        let today = Date(fromString: "2023-01-18 14:00:00 -0800")!
-        let TSunToday = Coordinate(body: Planet.sun.celestialObject, date: today)
-        let sextile1 = CelestialAspect(body1: TSunToday, body2: chart.sun, orb: orb)
+        let wednesday = Date(fromString: "2023-01-18 14:00:00 -0800")!
+        let TSunWednesday = Coordinate(body: Planet.sun.celestialObject, date: wednesday)
+        let sextile1 = CelestialAspect(body1: TSunWednesday, body2: chart.sun, orb: orb)
 
-        let tomorrow = today.offset(.day, value: 1)!
-        let TSunTomorrow = Coordinate(body: Planet.sun.celestialObject, date: tomorrow)
-        let sextile2 = CelestialAspect(body1: TSunTomorrow, body2: chart.sun, orb: orb)
+        let thursday = wednesday.offset(.day, value: 1)!
+        let TSunThursday = Coordinate(body: Planet.sun.celestialObject, date: thursday)
+        let sextile2 = CelestialAspect(body1: TSunThursday, body2: chart.sun, orb: orb)
         XCTAssert(sextile1 == sextile2)
 
-        let todayPlus2 = today.offset(.day, value: 2)!
-        let TSunTomorrowPlus2 = Coordinate(body: Planet.sun.celestialObject, date: todayPlus2)
-        let sextile3 = CelestialAspect(body1: TSunTomorrowPlus2, body2: chart.sun, orb: orb)
+        let friday = wednesday.offset(.day, value: 2)!
+        let TSunFriday = Coordinate(body: Planet.sun.celestialObject, date: friday)
+        let sextile3 = CelestialAspect(body1: TSunFriday, body2: chart.sun, orb: orb)
         XCTAssert(sextile1 == sextile3)
         XCTAssert(sextile2 == sextile3)
     }
