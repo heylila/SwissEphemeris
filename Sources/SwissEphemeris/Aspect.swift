@@ -26,6 +26,7 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
     public let body1: Coordinate
     public let body2: Coordinate
     public let angle: Double
+    public let orb: Double
 
     public var orbDelta: Double {
         switch kind {
@@ -56,6 +57,7 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
         if let a = Aspect(a: body1.longitude, b: body2.longitude, orb: orb) {
             self.body1 = body1
             self.body2 = body2
+            self.orb = orb
 
             switch a {
             case .conjunction(_):
