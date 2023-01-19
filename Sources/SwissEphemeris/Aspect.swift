@@ -104,11 +104,11 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
                      lhs.kind == rhs.kind &&
                      lhs.angle == rhs.angle)
 
-        // CONCERN: The only thing that I DON'T KNOW here is if
-        // two of the same bodies that make the same aspect NOW
-        // could be considered identity-wise to make the same aspect at the same
-        // angle+orb in the distant future or distant past.
-        // My intuition tells me "no" but that's not really what's being tested here
+        // CONCERN: The only thing that about this is that
+        // two of the same type of aspect happening at substantially
+        // different times of the calendar could be identified as "equal" even
+        // though they aren't actually equal. This is a quick and dirty
+        // way to test for practical equivalence in a relatively narrow range of time.
         func testEqualityWithOrb() -> Bool {
             let lhsRange = (lhs.angle - lhs.orb)...(lhs.angle + lhs.orb)
             let rhsRange = (rhs.angle - rhs.orb)...(rhs.angle + rhs.orb)
