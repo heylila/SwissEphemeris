@@ -103,7 +103,21 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
         let test3 = (lhs.body2.formatted == lhs.body1.formatted &&
                      lhs.kind == rhs.kind &&
                      lhs.angle == rhs.angle)
-        return test1 || test2 || test3
+
+        func testEqualityWithOrb() -> Bool {
+            let lhsRange = (lhs.angle - lhs.orb)...(lhs.angle + lhs.orb)
+            let rhsRange = (rhs.angle - rhs.orb)...(rhs.angle + rhs.orb)
+            let angleWithOrbTest = lhsRange.overlaps(rhsRange)
+
+            return (lhs.body1.body == rhs.body1.body &&
+                    lhs.body2.body == rhs.body2.body &&
+                    lhs.kind == rhs.kind &&
+                    angleWithOrbTest)
+        }
+
+        let test4 = testEqualityWithOrb()
+
+        return test1 || test2 || test3 || test4
     }
 
     public func hash(into hasher: inout Hasher) {
