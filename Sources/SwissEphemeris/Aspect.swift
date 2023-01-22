@@ -105,10 +105,11 @@ public struct CelestialAspect: Codable, Equatable, Hashable {
                      lhs.angle == rhs.angle)
 
         // CONCERN: The only thing that about this is that
-        // two of the same type of aspect happening at substantially
-        // different times of the calendar could be identified as "equal" even
-        // though they aren't actually equal. This is a quick and dirty
-        // way to test for practical equivalence in a relatively narrow range of time.
+        // two of the same type of aspect (same bodies, same angle)
+        // happening at substantially different times of the calendar
+        // could be identified as "equal" even though they aren't actually equal.
+        // This is a quick and dirty way to test for practical equivalence
+        // in a relatively narrow range of time.
         func testEqualityWithOrb() -> Bool {
             let lhsRange = (lhs.angle - lhs.orb)...(lhs.angle + lhs.orb)
             let rhsRange = (rhs.angle - rhs.orb)...(rhs.angle + rhs.orb)
@@ -212,10 +213,11 @@ public struct CuspAspect: Codable, Equatable, Hashable {
                      lhs.angle == rhs.angle)
 
         // CONCERN: The only thing that about this is that
-        // two of the same type of aspect happening at substantially
-        // different times of the calendar could be identified as "equal" even
-        // though they aren't actually equal. This is a quick and dirty
-        // way to test for practical equivalence in a relatively narrow range of time.
+        // two of the same type of aspect (same body, same angle)
+        // happening at substantially different times of the calendar
+        // could be identified as "equal" even though they aren't actually equal.
+        // This is a quick and dirty way to test for practical equivalence
+        // in a relatively narrow range of time.
         func testEqualityWithOrb() -> Bool {
             let lhsRange = (lhs.angle - lhs.orb)...(lhs.angle + lhs.orb)
             let rhsRange = (rhs.angle - rhs.orb)...(rhs.angle + rhs.orb)
