@@ -54,31 +54,35 @@ public enum Zodiac: Int, Codable {
     
 	/// The name of the sign formatted with the `symbol`.
     public var formatted: String {
+        return "\(keyName) \(symbol)"
+    }
+
+    public var keyName: String {
         switch self {
         case .aries:
-            return "Aries ♈︎"
+            return "Aries"
         case .taurus:
-            return "Taurus ♉︎"
+            return "Taurus"
         case .gemini:
-            return "Gemini ♊︎"
+            return "Gemini"
         case .cancer:
-            return "Cancer ♋︎"
+            return "Cancer"
         case .leo:
-            return "Leo ♌︎"
+            return "Leo"
         case .virgo:
-            return "Virgo ♍︎"
+            return "Virgo"
         case .libra:
-            return "Libra ♎︎"
+            return "Libra"
         case .scorpio:
-            return "Scorpio ♏︎"
+            return "Scorpio"
         case .sagittarius:
-            return "Sagittarius ♐︎"
+            return "Sagittarius"
         case .capricorn:
-            return "Capricorn ♑︎"
+            return "Capricorn"
         case .aquarius:
-            return "Aquarius ♒︎"
+            return "Aquarius"
         case .pisces:
-            return "Pisces ♓︎"
+            return "Pisces"
         }
     }
 }

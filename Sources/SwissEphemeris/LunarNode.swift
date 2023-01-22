@@ -16,16 +16,17 @@ public enum LunarNode: Int32 {
     case trueSouthNode = 25
 
     public var formatted: String {
+        return "\(keyName) \(symbol)"
+    }
+
+    public var symbol: String {
         switch self {
-        case .meanNode:
-            return "☊ Mean North Node"
-        case .trueNode:
-            return "☊ True North Node"
-        case .meanSouthNode:
-            return "☋ Mean South Node"
-        case .trueSouthNode:
-            return "☋ True South Node"
+        case .meanNode, .trueNode:
+            return "☊"
+        case .meanSouthNode, .trueSouthNode:
+            return "☋"
         }
+
     }
 
     public var keyName: String {

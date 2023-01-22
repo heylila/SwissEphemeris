@@ -18,18 +18,27 @@ public enum Asteroid: Int32 {
 
     public var formatted: String {
         switch self {
-        case .chiron:
-            return "⚷ Chiron"
+        case .chiron, .ceres, .pallas, .juno, .vesta:
+            return "\(keyName) \(symbol)"
         case .pholus:
-            return "Pholus"
+            return "\(keyName)"
+        }
+    }
+
+    public var symbol: String {
+        switch self {
+        case .chiron:
+            return "⚷"
+        case .pholus:
+            return ""
         case .ceres:
-            return "⚳ Ceres"
+            return "⚳"
         case .pallas:
-            return "⚴ Pallas"
+            return "⚴"
         case .juno:
-            return "⚵ Juno"
+            return "⚵"
         case .vesta:
-            return "⚶ Vesta"
+            return "⚶"
         }
     }
 
