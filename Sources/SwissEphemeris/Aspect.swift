@@ -344,7 +344,7 @@ public enum Aspect: Equatable, Hashable, Codable {
     }
 	
 	/// The number of degrees from exactness.
-	var remainder: Double {
+	public var remainder: Double {
 		switch self {
 		case .conjunction(let remainder):
 			return remainder
@@ -359,7 +359,7 @@ public enum Aspect: Equatable, Hashable, Codable {
 		}
 	}
 
-    var isConjunction: Bool {
+    public var isConjunction: Bool {
         switch self {
         case .conjunction(_):
             return true
@@ -368,7 +368,7 @@ public enum Aspect: Equatable, Hashable, Codable {
         }
     }
 
-    var isSextile: Bool {
+    public var isSextile: Bool {
         switch self {
         case .sextile(_):
             return true
@@ -377,7 +377,7 @@ public enum Aspect: Equatable, Hashable, Codable {
         }
     }
 
-    var isSquare: Bool {
+    public var isSquare: Bool {
         switch self {
         case .square(_):
             return true
@@ -386,7 +386,7 @@ public enum Aspect: Equatable, Hashable, Codable {
         }
     }
 
-    var isTrine: Bool {
+    public var isTrine: Bool {
         switch self {
         case .trine(_):
             return true
@@ -395,7 +395,7 @@ public enum Aspect: Equatable, Hashable, Codable {
         }
     }
 
-    var isOpposition: Bool {
+    public var isOpposition: Bool {
         switch self {
         case .opposition(_):
             return true
