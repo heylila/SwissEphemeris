@@ -156,4 +156,27 @@ public struct HouseCusps {
 
         return cusp
     }
+
+    public func rulerForCusp(_ cusp: Cusp) -> [Planet] {
+        let standardRulers: [ Zodiac: [Planet] ] = [
+            .aries : [.mars],
+            .taurus : [.venus],
+            .gemini : [.mercury],
+            .cancer : [.moon],
+            .leo : [.sun],
+            .virgo : [.mercury],
+            .libra : [.venus],
+            .scorpio : [.mars, .pluto],
+            .sagittarius : [.jupiter],
+            .capricorn : [.saturn],
+            .aquarius : [.saturn, .uranus],
+            .pisces : [.jupiter, .neptune]
+        ]
+
+        let houseRulers = standardRulers[cusp.sign]!
+        return houseRulers
+    }
+
+
+
 }
