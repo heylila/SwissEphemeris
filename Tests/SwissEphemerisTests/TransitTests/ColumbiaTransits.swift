@@ -255,6 +255,24 @@ final class ColumbiaTransits: XCTestCase {
         }
     }
 
+    func test2ndHouseRuler() throws {
+        let chart = ColumbiaTransits.chart
+        let saturn = chart.saturn;
+        let testCusp = chart.houseCusps.cuspForLongitude(saturn.longitude)
+        let ruler = chart.houseCusps.rulersForCusp(testCusp!)
+        XCTAssert(ruler.contains(Planet.mercury))
+    }
+
+    func test7thHouseRulers() throws {
+        let chart = ColumbiaTransits.chart
+        let sun = chart.sun;
+        let testCusp = chart.houseCusps.cuspForLongitude(sun.longitude)
+        let rulers = chart.houseCusps.rulersForCusp(testCusp!)
+        XCTAssert(rulers.contains(Planet.mars))
+        XCTAssert(rulers.contains(Planet.pluto))
+
+    }
+
 //    func testFindPeakCoordinate() throws {
 //        let chart = ColumbiaTransits.chart
 //        let testDate = ColumbiaTransits.testDate
