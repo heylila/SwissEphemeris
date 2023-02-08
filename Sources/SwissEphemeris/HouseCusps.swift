@@ -157,7 +157,7 @@ public struct HouseCusps {
         return cusp
     }
 
-    public func rulerForCusp(_ cusp: Cusp) -> [Planet] {
+    public func rulersForCusp(_ cusp: Cusp) -> [Planet] {
         let standardRulers: [ Zodiac: [Planet] ] = [
             .aries : [.mars],
             .taurus : [.venus],

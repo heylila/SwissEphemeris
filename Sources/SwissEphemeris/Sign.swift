@@ -14,7 +14,7 @@ public struct Sign {
     public let value: Double
     public let houseNumber: Int
 
-    var sign: Zodiac { Zodiac(rawValue: houseNumber)! }
+    public var sign: Zodiac { Zodiac(rawValue: houseNumber)! }
 
     var degree: Double { value }
 
@@ -29,6 +29,10 @@ public struct Sign {
         self.value = round(preRoundedValue * 1000) / 1000.0
         assert(houseNumber >= 0 && houseNumber < 12)
         self.houseNumber = houseNumber
+    }
+
+    public var range: Range<Double> {
+        return degree..<(degree + 30.0)
     }
 
     var formatted: String {
