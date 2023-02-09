@@ -273,6 +273,27 @@ final class ColumbiaTransits: XCTestCase {
 
     }
 
+    func testScenario3() throws {
+        let now = Date(fromString: "2023-02-08 22:05:00 -0800")!
+        let moon = Coordinate(body: Planet.moon.celestialObject, date: now)
+        let chart = ColumbiaTransits.chart
+
+        // Step 1: find the house that the transiting moon is in.
+        let cusp = chart.houseCusps.cuspForLongitude(moon.longitude)
+
+        // Step 2: Look up the sign on the cusp of that house.
+        // Step 3: Look up the ruler(s) of that sign. Note: in some cases, the house will have 2 rulers and we will display transits to both planetary rulers.
+        let rulers = chart.houseCusps.rulersForCusp(cusp!)
+        XCTAssert(rulers.count == 1)
+        XCTAssert(rulers.contains(Planet.mercury))
+        let rulerObject = rulers.first!
+        let natalRuler = chart.allBodies.filter { $0.body == rulerObject.celestialObject }.first!
+
+        // Step 4: Display all current transits to the ruler.
+        let aspects = chart.aspects(for: natalRuler, on: now)!
+        XCTAssert(aspects.count == 3)
+    }
+
 //    func testFindPeakCoordinate() throws {
 //        let chart = ColumbiaTransits.chart
 //        let testDate = ColumbiaTransits.testDate
