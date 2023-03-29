@@ -47,10 +47,11 @@ public struct Cusp: Equatable, Comparable, Codable {
         let radLongitude = longitude * Double.pi / 180
         let radObliquity = obliquity * Double.pi / 180
 
-        let ra = atan2(cos(radObliquity) * sin(radLongitude), cos(radLongitude))
+    func eclipticToEquatorial(obliquity: Double) -> Double {
+        let radLongitude = self.value * Double.pi / 180
+        let radObliquity = obliquity * Double.pi / 180
         let declination = asin(sin(radObliquity) * sin(radLongitude))
-
-        return (ra * 180 / Double.pi, declination * 180 / Double.pi)
+        return (declination * 180 / Double.pi)
     }
 
     func obliquity(_ julianDay: Double) -> Double {
