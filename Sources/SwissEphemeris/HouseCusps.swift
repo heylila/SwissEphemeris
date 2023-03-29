@@ -102,20 +102,20 @@ public struct HouseCusps {
         self.latitude = latitude
         self.longitude = longitude
 		swe_houses(date.julianDate(), latitude, longitude, houseSystem.rawValue, cuspPointer, ascendentPointer);
-        ascendent = Cusp(value: ascendentPointer[0], name: "ascendant", number: 1)
-        midHeaven = Cusp(value: ascendentPointer[1], name: "midheaven", number: 10)
-        first = Cusp(value: cuspPointer[1], name: "first", number: 1)
-        second = Cusp(value: cuspPointer[2], name: "second", number: 2)
-        third = Cusp(value: cuspPointer[3], name: "third", number: 3)
-        fourth =  Cusp(value: cuspPointer[4], name: "fourth", number: 4)
-        fifth = Cusp(value: cuspPointer[5], name: "fifth", number: 5)
-        sixth = Cusp(value: cuspPointer[6], name: "sixth", number: 6)
-        seventh = Cusp(value: cuspPointer[7], name: "seventh", number: 7)
-        eighth =  Cusp(value: cuspPointer[8], name: "eighth", number: 8)
-        ninth =  Cusp(value: cuspPointer[9], name: "ninth", number: 9)
-        tenth = Cusp(value: cuspPointer[10], name: "tenth", number: 10)
-        eleventh = Cusp(value: cuspPointer[11], name: "eleventh", number: 11)
-        twelfth =  Cusp(value: cuspPointer[12], name: "twelfth", number: 12)
+        ascendent = Cusp(value: ascendentPointer[0], name: "ascendant", number: 1, date: date)
+        midHeaven = Cusp(value: ascendentPointer[1], name: "midheaven", number: 10, date: date)
+        first = Cusp(value: cuspPointer[1], name: "first", number: 1, date: date)
+        second = Cusp(value: cuspPointer[2], name: "second", number: 2, date: date)
+        third = Cusp(value: cuspPointer[3], name: "third", number: 3, date: date)
+        fourth =  Cusp(value: cuspPointer[4], name: "fourth", number: 4, date: date)
+        fifth = Cusp(value: cuspPointer[5], name: "fifth", number: 5, date: date)
+        sixth = Cusp(value: cuspPointer[6], name: "sixth", number: 6, date: date)
+        seventh = Cusp(value: cuspPointer[7], name: "seventh", number: 7, date: date)
+        eighth =  Cusp(value: cuspPointer[8], name: "eighth", number: 8, date: date)
+        ninth =  Cusp(value: cuspPointer[9], name: "ninth", number: 9, date: date)
+        tenth = Cusp(value: cuspPointer[10], name: "tenth", number: 10, date: date)
+        eleventh = Cusp(value: cuspPointer[11], name: "eleventh", number: 11, date: date)
+        twelfth =  Cusp(value: cuspPointer[12], name: "twelfth", number: 12, date: date)
 
         houses = [
             first, second, third, fourth, fifth, sixth,
