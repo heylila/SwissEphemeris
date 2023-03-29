@@ -43,9 +43,13 @@ public struct Cusp: Equatable, Comparable, Codable {
         return lhs.value == rhs.value
     }
 
-    func eclipticToEquatorial(longitude: Double, obliquity: Double) -> (rightAscension: Double, declination: Double) {
-        let radLongitude = longitude * Double.pi / 180
-        let radObliquity = obliquity * Double.pi / 180
+    /// This is the declination angle of the Cusp. It requires its
+    public var declination: Double {
+        let julianDay = self.date.julianDate()
+        let obliquityOfEcliptic = obliquity(julianDay)
+        let _declination = eclipticToEquatorial(obliquity: obliquityOfEcliptic)
+        return _declination
+    }
 
     func eclipticToEquatorial(obliquity: Double) -> Double {
         let radLongitude = self.value * Double.pi / 180
