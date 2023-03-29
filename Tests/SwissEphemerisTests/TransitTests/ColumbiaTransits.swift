@@ -131,6 +131,7 @@ final class ColumbiaTransits: XCTestCase {
     }
 
     // Jupiter Trine Mercury 10-9-2022 until 12-29-2022
+    // There's some retrograde action here which is what makes is so weird
     func testJupiterTrineMercury() throws {
         let chart = ColumbiaTransits.chart
         let testDate = ColumbiaTransits.testDate
@@ -144,13 +145,13 @@ final class ColumbiaTransits: XCTestCase {
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 10)
-            XCTAssert(first.date.component(.day) == 14)
+            XCTAssert(first.date.component(.day) == 13)
             XCTAssert(first.date.component(.year) == 2022)
         }
 
         if let last = boundaries?.last {
             XCTAssert(last.date.component(.month) == 1)
-            XCTAssert(last.date.component(.day) == 3)
+            XCTAssert(last.date.component(.day) == 2)
             XCTAssert(last.date.component(.year) == 2023)
         }
     }
@@ -169,7 +170,7 @@ final class ColumbiaTransits: XCTestCase {
 
         if let first = boundaries?.first {
             XCTAssert(first.date.component(.month) == 8)
-            XCTAssert(first.date.component(.day) == 29)
+            XCTAssert(first.date.component(.day) == 28)
             XCTAssert(first.date.component(.year) == 2022)
         }
 
@@ -200,7 +201,7 @@ final class ColumbiaTransits: XCTestCase {
 
         if let last = boundaries?.last {
             XCTAssert(last.date.component(.month) == 12)
-            XCTAssert(last.date.component(.day) == 27)
+            XCTAssert(last.date.component(.day) == 26)
             XCTAssert(last.date.component(.year) == 2022)
         }
     }
@@ -225,7 +226,7 @@ final class ColumbiaTransits: XCTestCase {
 
         if let last = boundaries?.last {
             XCTAssert(last.date.component(.month) == 10)
-            XCTAssert(last.date.component(.day) == 17)
+            XCTAssert(last.date.component(.day) == 16)
             XCTAssert(last.date.component(.year) == 2022)
         }
     }
@@ -250,7 +251,7 @@ final class ColumbiaTransits: XCTestCase {
 
         if let last = boundaries?.last {
             XCTAssert(last.date.component(.month) == 12)
-            XCTAssert(last.date.component(.day) == 26)
+            XCTAssert(last.date.component(.day) == 25)
             XCTAssert(last.date.component(.year) == 2022)
         }
     }

@@ -74,34 +74,34 @@ final class LilaCelestialBodyTests: XCTestCase {
         for (index, planet) in Planet.allCases.enumerated() {
             switch index {
             case 0:
-                XCTAssertEqual(planet.formatted, "☉ Sun")
+                XCTAssertEqual(planet.formatted, "Sun ☉")
                 XCTAssertEqual(planet.symbol, "☉")
             case 1:
-                XCTAssertEqual(planet.formatted, "☾ Moon")
+                XCTAssertEqual(planet.formatted, "Moon ☾")
                 XCTAssertEqual(planet.symbol, "☾")
             case 2:
-                XCTAssertEqual(planet.formatted, "☿ Mercury")
+                XCTAssertEqual(planet.formatted, "Mercury ☿")
                 XCTAssertEqual(planet.symbol, "☿")
             case 3:
-                XCTAssertEqual(planet.formatted, "♀ Venus")
+                XCTAssertEqual(planet.formatted, "Venus ♀")
                 XCTAssertEqual(planet.symbol, "♀")
             case 4:
-                XCTAssertEqual(planet.formatted, "♂️ Mars")
+                XCTAssertEqual(planet.formatted, "Mars ♂︎")
                 XCTAssertEqual(planet.symbol, "♂︎")
             case 5:
-                XCTAssertEqual(planet.formatted, "♃ Jupiter")
+                XCTAssertEqual(planet.formatted, "Jupiter ♃")
                 XCTAssertEqual(planet.symbol, "♃")
             case 6:
-                XCTAssertEqual(planet.formatted, "♄ Saturn")
+                XCTAssertEqual(planet.formatted, "Saturn ♄")
                 XCTAssertEqual(planet.symbol, "♄")
             case 7:
-                XCTAssertEqual(planet.formatted, "♅ Uranus")
+                XCTAssertEqual(planet.formatted, "Uranus ♅")
                 XCTAssertEqual(planet.symbol, "♅")
             case 8:
-                XCTAssertEqual(planet.formatted, "♆ Neptune")
+                XCTAssertEqual(planet.formatted, "Neptune ♆")
                 XCTAssertEqual(planet.symbol, "♆")
             case 9:
-                XCTAssertEqual(planet.formatted, "♇ Pluto")
+                XCTAssertEqual(planet.formatted, "Pluto ♇")
                 XCTAssertEqual(planet.symbol, "♇")
             default:
                 XCTFail("Failed because there are planets that not tested")
