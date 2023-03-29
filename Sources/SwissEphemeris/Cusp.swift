@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CSwissEphemeris
 
 /// Models the point between two houses
 public struct Cusp: Equatable, Comparable, Codable {
@@ -34,6 +35,25 @@ public struct Cusp: Equatable, Comparable, Codable {
     static public func == (lhs: Cusp, rhs: Cusp) -> Bool {
         return lhs.value == rhs.value
     }
+
+    func eclipticToEquatorial(longitude: Double, obliquity: Double) -> (rightAscension: Double, declination: Double) {
+        let radLongitude = longitude * Double.pi / 180
+        let radObliquity = obliquity * Double.pi / 180
+
+        let ra = atan2(cos(radObliquity) * sin(radLongitude), cos(radLongitude))
+        let declination = asin(sin(radObliquity) * sin(radLongitude))
+
+        return (ra * 180 / Double.pi, declination * 180 / Double.pi)
+    }
+
+    func obliquity(julianDay: Double) -> Double {
+        var eps = UnsafeMutablePointer<Double>.allocate(capacity: 1)
+        swe_calc(julianDay, SE_ECL_NUT, 0, eps, nil)
+        let obliquity = eps.pointee
+        eps.deallocate()
+        return obliquity
+    }
+
 }
 
 // MARK: - ZodiacCoordinate Conformance
