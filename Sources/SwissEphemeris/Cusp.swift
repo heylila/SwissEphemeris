@@ -53,11 +53,14 @@ public struct Cusp: Equatable, Comparable, Codable {
         return (ra * 180 / Double.pi, declination * 180 / Double.pi)
     }
 
-    func obliquity(julianDay: Double) -> Double {
-        var eps = UnsafeMutablePointer<Double>.allocate(capacity: 1)
-        swe_calc(julianDay, SE_ECL_NUT, 0, eps, nil)
-        let obliquity = eps.pointee
-        eps.deallocate()
+    func obliquity(_ julianDay: Double) -> Double {
+        let count = 6
+        // cas = Coordinates And Speeds
+        let cas = UnsafeMutablePointer<Double>.allocate(capacity: count)
+        cas.initialize(repeating: 0.0, count: count)
+        swe_calc(julianDay, SE_ECL_NUT, 0, cas, nil)
+        let obliquity = cas.pointee
+        cas.deallocate()
         return obliquity
     }
 
