@@ -265,6 +265,12 @@ public struct BirthChart {
         return nil
     }
 
+    // Actually, it would be better to return a tuple of 3 particles:
+    // 0 - Kind
+    // 1 - Start date
+    // 2 - End Date
+    // Why: Because both bodies are T-Bodies and prevents confusion as to *WHO* is moving
+    // Also, the other details (like Coordinates) can be hydrated from the dates
     public func transitToTransitCoordinates(for TBody1: CelestialObject, with TBody2: CelestialObject, on date: Date, orb: Double = 6.0) -> (first: Coordinate, last: Coordinate)? {
         precondition(TBody1 != TBody2, "Celestial Objects cannot be the same")
         precondition(TBody1 != .all, "All is not allowed")
