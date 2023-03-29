@@ -20,12 +20,19 @@ public struct Cusp: Equatable, Comparable, Codable {
     /// The number of the Cusp (1 = "first", 2 = "second", etc up to 12)
     public let number: Int
 
+    /// The date for the Cusp's creation
+    private let date: Date
+
 	/// Creates a `Cusp`.
-	/// - Parameter value: The latitudinal degree to set.
-    public init(value: Double, name: String, number: Int) {
+	/// - Parameter value: The longitudinal degree to set.
+    /// - Parameter name: The "name" of the cusp ("first", "ascendant", "midheaven", etc)
+    /// - Parameter number: The ordinal number of the Cusp (1, 2, 3, ...)
+    /// - Parameter date: The date the Cusp was created (should be the same as its House System)
+    public init(value: Double, name: String, number: Int, date: Date = Date()) {
 		self.value = value
         self.name = name
         self.number = number
+        self.date = date
 	}
 
     static public func < (lhs: Cusp, rhs: Cusp) -> Bool {
