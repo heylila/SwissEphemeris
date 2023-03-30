@@ -63,10 +63,11 @@ public struct Cusp: Equatable, Comparable, Codable {
         // The O.G. API documentation is here:
         // https://www.astro.com/swisseph/swephprg.htm#_Toc112948958
         //
-        // It specifically says "xx = array of 6 doubles for longitude, latitude, distance, speed in long., speed in lat., and speed in dist.
+        // It specifically says "xx = array of 6 doubles for longitude, latitude, distance, \
+        //   speed in long., speed in lat., and speed in dist.
 
         let casCount = 6
-        // cas = Coordinates And Speeds
+        // cas = Coordinate And Speed components
         let cas = UnsafeMutablePointer<Double>.allocate(capacity: casCount)
         cas.initialize(repeating: 0.0, count: casCount)
         swe_calc(julianDay, SE_ECL_NUT, 0, cas, nil)
