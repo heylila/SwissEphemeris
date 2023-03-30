@@ -59,10 +59,16 @@ public struct Cusp: Equatable, Comparable, Codable {
     }
 
     func obliquity(_ julianDay: Double) -> Double {
-        let count = 6
+        // We only know the count by reading the documentation for swe_calc() or the source code
+        // The O.G. API documentation is here:
+        // https://www.astro.com/swisseph/swephprg.htm#_Toc112948958
+        //
+        // It specifically says "xx = array of 6 doubles for longitude, latitude, distance, speed in long., speed in lat., and speed in dist.
+
+        let casCount = 6
         // cas = Coordinates And Speeds
-        let cas = UnsafeMutablePointer<Double>.allocate(capacity: count)
-        cas.initialize(repeating: 0.0, count: count)
+        let cas = UnsafeMutablePointer<Double>.allocate(capacity: casCount)
+        cas.initialize(repeating: 0.0, count: casCount)
         swe_calc(julianDay, SE_ECL_NUT, 0, cas, nil)
         let obliquity = cas.pointee
         cas.deallocate()
